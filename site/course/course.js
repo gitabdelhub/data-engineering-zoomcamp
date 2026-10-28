@@ -68,6 +68,13 @@ window.COURSE = {
       cover: ["#4d93ff", "#0b4fc4"], logo: ["github", "#181717"],
       sats: [["docker", "#2496ED"], ["terraform", "#844FBA"], ["googlebigquery", "#4285F4"], ["dbt", "#FF694B"]], help: 1,
       planned: 4, gate: "Ton projet rendu et relu", team: true, items: []
+    },
+    {
+      id: "B", bonus: true, dir: "02-workflow-orchestration", title: "Kestra, l'autre orchestrateur", chips: ["Kestra", "Facultatif"],
+      intro: "Le module 2 officiel de la cohorte 2026 se fait avec Kestra. Ici tu as appris Airflow, le plus utilisé en entreprise. Ce bonus, c'est le cours officiel tel quel, avec ses vidéos : fais-le si tu veux comparer les deux outils, ou si une offre de stage parle de Kestra. Rien ne dépend de lui.",
+      cover: ["#a77bff", "#3b1a8c"], logo: ["kestra"],
+      sats: [["docker", "#2496ED"], ["postgresql", "#4169E1"], ["googlebigquery", "#4285F4"]], help: 1,
+      planned: 18, gate: "Facultatif", items: []
     }
   ]
 };
