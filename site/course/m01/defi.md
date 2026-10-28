@@ -34,7 +34,7 @@ Quand tu penses avoir fini, lance depuis la racine de ton fork :
 bash site/checks/defi-01.sh
 ```
 
-Le script interroge ta base avec cinq requêtes et affiche ✅ ou ❌ pour chacune. Il ne dit pas ce qui est attendu : seulement si c'est juste. Quand tout est vert, il affiche un **code de réussite** : entre-le ci-dessous pour valider le défi et débloquer la suite.
+Le script interroge ta base avec cinq requêtes et affiche ✅ ou ❌ pour chacune. Il ne dit pas ce qui est attendu : seulement si c'est juste. Quand tout est vert, il affiche un **code de réussite** : entre-le ci-dessous pour valider le défi.
 
 @@ hints
 - Si une vérification sur les continents échoue alors que tout semble correct, compte les valeurs `NULL` de la colonne `continent`. Puis cherche comment pandas lit certaines chaînes de caractères par défaut.

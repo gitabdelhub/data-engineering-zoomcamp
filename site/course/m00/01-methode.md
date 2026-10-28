@@ -4,7 +4,7 @@ Ce cours reprend le **Data Engineering Zoomcamp** de DataTalksClub (contenu de l
 
 ## Comment avance le cours
 
-Tout est rangé dans un ordre précis : module 0, module 1, puis les suivants jusqu'au projet final. Chaque leçon s'ouvre seulement quand la précédente est terminée. Il n'y a ni date ni deadline : tu avances à ton rythme.
+Tout est rangé dans un ordre conseillé : module 0, module 1, puis les suivants jusqu'au projet final. Tout est ouvert : tu peux jeter un œil à n'importe quel module pour te motiver, et le bouton **Continuer** te ramène toujours à ta prochaine étape. Il n'y a ni date ni deadline : tu avances à ton rythme.
 
 Une leçon se fait toujours en 5 étapes, dans cet ordre :
 
