@@ -212,7 +212,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--bg-2);border:1px s
 .weeks li.now .gate{background:var(--blue);color:#fff;border-color:transparent}
 @media (max-width:640px){.weeks li{grid-template-columns:52px minmax(0,1fr)}.weeks .gate{grid-column:2;justify-self:start;white-space:normal}}
 .team{font-style:normal;font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--warn);background:var(--warn-soft);padding:1px 6px;border-radius:4px}
-.mod.locked{cursor:not-allowed}
+.mod.locked{cursor:pointer}
 .mod.locked .cover{filter:grayscale(.85) brightness(.75)}
 .mod.locked .ring,.mod.locked .ring .sat{animation-play-state:paused}
 .mod.locked:hover{transform:none;box-shadow:none}
@@ -391,7 +391,7 @@ pre.mermaid svg{max-width:100%;height:auto}
 .mlist li.cur{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
 .mlist li.lockd{opacity:.55}
 .mod{color:var(--ink)}
-.mod.locked{cursor:not-allowed}
+.mod.locked{cursor:pointer}
 
 /* page verrouillée */
 .locked-page{padding-block:90px 140px;display:grid;gap:18px;justify-items:start;max-width:640px}
@@ -509,3 +509,9 @@ code,.md a{overflow-wrap:anywhere}
 .chal span.bridge{color:var(--muted);font-weight:500}
 .chal.gitsit{border-left:4px solid #f05032}
 .chal.gitsit .lab{color:#e2401f}
+
+/* La visite libre : lire une étape avant son tour, ou le cours officiel d'un module pas encore construit */
+.visit{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;padding:14px 16px;border:1px dashed color-mix(in srgb,var(--blue) 50%,transparent);border-radius:12px;background:color-mix(in srgb,var(--blue) 5%,transparent)}
+.visit b{color:var(--blue);white-space:nowrap}
+.visit span{flex:1 1 260px;min-width:0}
+.modbody .visit{margin-bottom:16px}

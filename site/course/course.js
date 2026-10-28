@@ -1,4 +1,5 @@
-// Le plan du cours : les modules dans l'ordre imposé.
+// Le plan du cours : les modules dans l'ordre conseillé (tout est ouvert).
+// dir / docs : le cours officiel d'un module pas encore construit, lisible en aperçu.
 // Le contenu de chaque module (leçons, homework, défi) est ajouté par course/mXX.js.
 window.COURSE = {
   title: "Mon Zoomcamp",
@@ -27,43 +28,43 @@ window.COURSE = {
       planned: 10, gate: "Homework 2", items: []
     },
     {
-      id: "W1", title: "Workshop ingestion", chips: ["dlt", "API"],
+      id: "W1", docs: [["Le workshop dlt : présentation", "cohorts/2026/workshops/dlt.md"], ["Le workshop dlt : pas à pas", "cohorts/2026/workshops/dlt/README.md"]], title: "Workshop ingestion", chips: ["dlt", "API"],
       cover: ["#59c1d5", "#0e3f4a"], logo: ["dlt"], wide: true,
       sats: [["duckdb", "#000000"]], help: 2,
       planned: 2, gate: "Homework du workshop", items: []
     },
     {
-      id: "03", title: "Data warehouse", chips: ["BigQuery", "BigQuery ML"],
+      id: "03", dir: "03-data-warehouse", title: "Data warehouse", chips: ["BigQuery", "BigQuery ML"],
       cover: ["#8ab4ff", "#1a57d6"], logo: ["googlebigquery", "#4285F4"],
       sats: [["googlecloud", "#4285F4"]], help: 2,
       planned: 6, gate: "Homework 3", items: []
     },
     {
-      id: "04", title: "Analytics engineering", chips: ["dbt", "DuckDB"],
+      id: "04", dir: "04-analytics-engineering", title: "Analytics engineering", chips: ["dbt", "DuckDB"],
       cover: ["#ff9a7f", "#d93f1f"], logo: ["dbt", "#FF694B"],
       sats: [["duckdb", "#000000"], ["googlebigquery", "#4285F4"]], help: 2,
       planned: 11, gate: "Homework 4 et ta CI dbt au vert", team: true, items: []
     },
     {
-      id: "05", title: "Data platforms", chips: ["Bruin"],
+      id: "05", dir: "05-data-platforms", title: "Data platforms", chips: ["Bruin"],
       cover: ["#ff8a96", "#c42a3f"], logo: ["bruin"],
       sats: [["googlebigquery", "#4285F4"]], help: 2,
       planned: 10, gate: "Homework 5", items: []
     },
     {
-      id: "06", title: "Batch processing", chips: ["Spark", "Dataproc"],
+      id: "06", dir: "06-batch", title: "Batch processing", chips: ["Spark", "Dataproc"],
       cover: ["#ff9a5c", "#b83c06"], logo: ["apachespark", "#E25A1C"],
       sats: [["googlecloud", "#4285F4"], ["googlebigquery", "#4285F4"]], help: 1,
       planned: 16, gate: "Homework 6", items: []
     },
     {
-      id: "07", title: "Streaming", chips: ["Kafka", "Flink"],
+      id: "07", dir: "07-streaming", title: "Streaming", chips: ["Kafka", "Flink"],
       cover: ["#4a4a4a", "#0a0a0a"], logo: ["apachekafka", "#231F20"],
       sats: [["apacheflink", "#E6526F"], ["postgresql", "#4169E1"]], help: 1,
       planned: 14, gate: "Homework 7", items: []
     },
     {
-      id: "P", title: "Projet final", chips: ["Ton dataset", "Terraform en CD", "Dashboard"],
+      id: "P", docs: [["L'énoncé officiel du projet final", "cohorts/2026/project.md"]], title: "Projet final", chips: ["Ton dataset", "Terraform en CD", "Dashboard"],
       cover: ["#4d93ff", "#0b4fc4"], logo: ["github", "#181717"],
       sats: [["docker", "#2496ED"], ["terraform", "#844FBA"], ["googlebigquery", "#4285F4"], ["dbt", "#FF694B"]], help: 1,
       planned: 4, gate: "Ton projet rendu et relu", team: true, items: []
