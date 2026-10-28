@@ -84,7 +84,7 @@
     return { pos: lessons.indexOf(it) + 1, total: lessons.length };
   }
   // Le nom d'un module tel qu'on l'écrit dans une phrase.
-  function modName(m) { return m.id === "P" ? "Projet final" : m.id === "W1" ? "Workshop" : "Module " + Number(m.id); }
+  function modName(m) { return m.id === "P" ? "Projet final" : m.id === "W1" ? "Workshop" : m.bonus ? "Bonus" : "Module " + Number(m.id); }
   function itemLabel(it) {
     if (it.type === "homework") return "Homework";
     if (it.type === "defi") return "Défi";
@@ -497,9 +497,9 @@
       const cls = s === "done" ? "ok" : s === "progress" || s === "open" ? "now" : "";
       const n = m.items.length;
       const total = m.items.reduce((a, i) => a + (i.min || 0), 0);
-      const content = n ? `${m.items.filter(i => i.type === "lesson").length} leçons${m.items.some(i => i.type === "homework") ? ", homework" : ""}${m.items.some(i => i.type === "defi") ? ", défi" : ""}${total ? " · environ " + fmtMin(total) : ""}` : `${m.planned} leçons, en préparation`;
-      const gate = s === "done" ? "✓ Validé" : s === "soon" ? "Bientôt" : "Pour valider : " + m.gate;
-      return `<li class="${cls}"><span class="wk">${m.id}</span><div><b>${m.id === "P" ? "" : m.id === "W1" ? "Workshop · " : "Module " + Number(m.id) + " · "}${esc(m.title)}</b><small>${content}${m.team || m.items.some(i => i.team) ? ' · <i class="team">Équipe</i>' : ""}</small></div><span class="gate">${esc(gate)}</span></li>`;
+      const content = n ? `${m.items.filter(i => i.type === "lesson").length} leçons${m.items.some(i => i.type === "homework") ? ", homework" : ""}${m.items.some(i => i.type === "defi") ? ", défi" : ""}${total ? " · environ " + fmtMin(total) : ""}` : m.bonus ? `${m.planned} leçons officielles, facultatif` : `${m.planned} leçons, en préparation`;
+      const gate = m.bonus ? "Facultatif" : s === "done" ? "✓ Validé" : s === "soon" ? "Bientôt" : "Pour valider : " + m.gate;
+      return `<li class="${cls}"><span class="wk">${m.id}</span><div><b>${m.id === "P" ? "" : modName(m) + " · "}${esc(m.title)}</b><small>${content}${m.team || m.items.some(i => i.team) ? ' · <i class="team">Équipe</i>' : ""}</small></div><span class="gate">${esc(gate)}</span></li>`;
     }).join("")}</ol>`;
   }
 
@@ -525,12 +525,12 @@
       return `<span class="sat" style="left:${(75 + 75 * Math.cos(a)).toFixed(1)}px;top:${(75 + 75 * Math.sin(a)).toFixed(1)}px">${icon(x[0], x[1])}</span>`;
     }).join("");
     const badge = s === "done" ? '<span class="badge">Validé</span>' : s === "progress" ? '<span class="badge">En cours</span>' : s === "open" ? '<span class="badge">À toi</span>'
-      : s === "soon" ? '<span class="lockb">Bientôt</span>' : '<span class="badge">Ouvert</span>';
+      : m.bonus ? '<span class="lockb">Bonus</span>' : s === "soon" ? '<span class="lockb">Bientôt</span>' : '<span class="badge">Ouvert</span>';
     const open = s !== "soon";
     const tag = "a";
     const total = m.items.reduce((a, i) => a + (i.min || 0), 0);
     const count = n ? `${d} / ${n} étapes${total ? " · " + fmtMin(total) : ""}` : `${m.planned} leçons`;
-    return `<${tag} class="mod${open ? "" : " locked"}" href="#/m/${m.id}"${open ? "" : ' title="Bientôt : tu peux déjà lire le cours officiel"'}>
+    return `<${tag} class="mod${open ? "" : " locked"}" href="#/m/${m.id}"${open ? "" : m.bonus ? ' title="Bonus facultatif : le cours officiel avec Kestra"' : ' title="Bientôt : tu peux déjà lire le cours officiel"'}>
       <div class="cover" style="--c1:${m.cover[0]};--c2:${m.cover[1]}"><span class="ring">${sats}</span><span class="logo-main${m.wide ? " wide" : ""}">${icon(m.logo[0], m.logo[1])}</span><span class="num">${m.id}</span>${badge}<span class="big">${m.id}</span></div>
       <div class="b"><h3>${esc(m.title)}</h3><div class="chips">${m.chips.map(c => `<span class="chip">${esc(c)}</span>`).join("")}</div>
         <div class="track"><b style="width:${pct}%"></b></div>
@@ -671,13 +671,13 @@
     }).join("");
     app.innerHTML = `
     <section class="modhero gut" style="--c1:${m.cover[0]};--c2:${m.cover[1]}"><div class="max in">
-      <nav class="crumbs light"><a href="#/">Accueil</a><span>/</span><span>Module ${m.id}</span></nav>
+      <nav class="crumbs light"><a href="#/">Accueil</a><span>/</span><span>${esc(modName(m))}</span></nav>
       <div class="modhead"><span class="logo-main${m.wide ? " wide" : ""}">${icon(m.logo[0], m.logo[1])}</span>
-        <div><span class="eyebrow light">${m.id === "P" ? "Projet" : m.id === "W1" ? "Workshop" : "Module " + m.id}</span><h1>${esc(m.title)}</h1></div></div>
+        <div><span class="eyebrow light">${m.id === "P" ? "Projet" : m.id === "W1" ? "Workshop" : m.bonus ? "Bonus facultatif" : "Module " + m.id}</span><h1>${esc(m.title)}</h1></div></div>
       <div class="chips">${m.chips.map(c => `<span class="chip light">${esc(c)}</span>`).join("")}</div>
     </div></section>
     <section class="gut" style="padding-block:36px 120px"><div class="max modbody">
-      ${s === "soon" ? `<div class="chal"><span class="lab">En préparation</span><p>Je construis ce module (${m.planned} leçons) avec la même méthode quand tu approches de la fin du module précédent. Préviens-moi dans ton projet Claude.</p></div><div id="plan"></div>` : ""}
+      ${m.bonus ? `<div class="chal"><span class="lab">Bonus facultatif</span><p>${esc(m.intro)}</p></div><div id="plan"></div>` : s === "soon" ? `<div class="chal"><span class="lab">En préparation</span><p>Je construis ce module (${m.planned} leçons) avec la même méthode quand tu approches de la fin du module précédent. Préviens-moi dans ton projet Claude.</p></div><div id="plan"></div>` : ""}
       ${m.items.length ? `<div class="modmeta"><span><b>${doneCount(m.items)} / ${m.items.length}</b> étapes faites</span>${remaining(m.items) ? `<span>Reste environ <b>${esc(fmtMin(remaining(m.items)))}</b></span>` : ""}<span>Pour valider : ${esc(m.gate)}</span><span class="help">Niveau d'aide ${[1, 2, 3].map(k => `<i class="${k <= m.help ? "on" : ""}"></i>`).join("")}</span></div>
       <ol class="mlist">${rows}</ol>` : ""}
     </div></section>`;
@@ -701,8 +701,8 @@
     let units = [];
     try { units = await loadPlan(m); } catch (e) { /* plan indisponible */ }
     if (token !== routeToken || !units.length) return;
-    $("#plan").innerHTML = `<div class="visit"><b>Aperçu</b><span>En attendant, tu peux lire le cours officiel de ce module (en anglais) et regarder ses vidéos.</span></div>
-      <ol class="mlist">${units.map((u, i) => `<li><span class="c">·</span><div><a href="#/v/${m.id}/${i}">${esc(u.title)}</a><small>Aperçu du cours officiel</small></div></li>`).join("")}</ol>`;
+    $("#plan").innerHTML = `<div class="visit"><b>Aperçu</b><span>${m.bonus ? "Le cours officiel (en anglais), leçon par leçon, avec ses vidéos." : "En attendant, tu peux lire le cours officiel de ce module (en anglais) et regarder ses vidéos."}</span></div>
+      <ol class="mlist">${units.map((u, i) => `<li><span class="c">·</span><div><a href="#/v/${m.id}/${i}">${esc(u.title)}</a><small>${m.bonus ? "Cours officiel" : "Aperçu du cours officiel"}</small></div></li>`).join("")}</ol>`;
   }
   async function viewPreview(id, i) {
     const token = routeToken;
