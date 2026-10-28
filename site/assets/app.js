@@ -950,19 +950,24 @@
     function stuckBox(stepName, objective, getAttempt) {
       const d = doc.createElement("details");
       d.className = "stuck";
-      d.innerHTML = `<summary>Bloqué depuis plus de 20 minutes ?</summary>
+      d.innerHTML = `<summary>Bloqué ? Voici quoi faire</summary>
         <div class="stuck-in">
-          <p class="small">D'abord, relis l'erreur en entier et cherche-la dans la <a href="${C.faq}" target="_blank" rel="noopener">FAQ du cours</a>. Toujours bloqué : prépare un message, colle-le dans ton projet Claude et ajoute l'erreur exacte.</p>
-          <div class="row"><button class="btn ghost sm" type="button">Préparer mon message pour Claude</button></div>
-          <textarea class="mono stuckmsg" readonly hidden aria-label="Ton message pour Claude"></textarea>
+          <ol class="small stucksteps">
+            <li><b>Relis le message d'erreur en entier.</b> La dernière ligne dit presque toujours ce qui ne va pas.</li>
+            <li><b>Ouvre la solution</b> avec le bouton « Comparer avec la solution » : chaque ligne y est expliquée. Compare-la avec la tienne, ligne par ligne.</li>
+            <li><b>Cherche l'erreur</b> dans la <a href="${C.faq}" target="_blank" rel="noopener">FAQ du cours</a>, ou colle-la telle quelle dans Google : quelqu'un l'a presque toujours eue avant toi.</li>
+            <li><b>Demande à la communauté</b>, gratuitement : le <a href="https://datatalks.club/slack.html" target="_blank" rel="noopener">Slack de DataTalksClub</a>, canal <code>#course-data-engineering</code> (en anglais). Le bouton prépare ton message, à coller sur le Slack, sur un forum ou dans une IA.</li>
+          </ol>
+          <div class="row"><button class="btn ghost sm" type="button">Préparer mon message d'aide</button></div>
+          <textarea class="mono stuckmsg" readonly hidden aria-label="Ton message d'aide"></textarea>
         </div>`;
       const b = $("button", d), out = $("textarea", d);
       b.addEventListener("click", async () => {
         const tried = (getAttempt() || "").trim() || "(rien encore)";
-        const text = `Je suis bloqué au module ${mod.id}, leçon « ${it.title} », étape « ${stepName} ».\n\nL'objectif :\n${(objective || "").trim()}\n\nCe que j'ai essayé :\n${tried}\n\nL'erreur exacte que je vois :\n(colle-la ici)\n\nNe me donne pas la solution : un indice ou une question pour me débloquer.`;
+        const text = `Je suis bloqué au module ${mod.id}, leçon « ${it.title} », étape « ${stepName} ».\n\nL'objectif :\n${(objective || "").trim()}\n\nCe que j'ai essayé :\n${tried}\n\nL'erreur exacte que je vois :\n(colle-la ici)\n\nMerci de me donner un indice plutôt que la solution complète.`;
         out.value = text;
         out.hidden = false;
-        try { await navigator.clipboard.writeText(text); flash(b, "Copié ✓ Colle-le dans ton projet Claude"); }
+        try { await navigator.clipboard.writeText(text); flash(b, "Copié ✓ Colle-le où tu demandes de l'aide"); }
         catch (e) { out.focus(); out.select(); flash(b, "Texte sélectionné : copie-le avec Ctrl + C"); }
       });
       return d;
@@ -1037,6 +1042,8 @@
       const cons = listItems(ov.constraints);
       if (cons.length) c.insertAdjacentHTML("beforeend", `<p class="small">Ton résultat doit respecter :</p><ul class="checks">${cons.map(x => `<li><span>${mdInline(x)}</span></li>`).join("")}</ul>`);
       if (ov.team) box.appendChild(card("teamc", `<b>Travail en équipe</b><span>${mdInline(ov.team)}</span>`));
+      // Le chemin, étape par étape : ce qu'on fait, pourquoi, un exemple, puis ta commande.
+      if (ov.guide) mdCard(c, "guide", "Pas à pas", ov.guide);
       const t = it.prose ? area("attempt", "", "Ton texte, ici ou dans ton Codespace puis collé ici.", 25)
         : area("attempt", "mono", "Ton essai : les commandes, le code ou le fichier que tu as écrits dans ton Codespace.", 25);
       c.appendChild(t);

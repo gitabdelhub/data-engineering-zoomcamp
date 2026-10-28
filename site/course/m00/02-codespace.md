@@ -77,6 +77,53 @@ Prépare ton espace de travail **uniquement avec le terminal**, sans utiliser l'
 - Une commande affiche l'arborescence complète de `mon-travail/`
 - Tu connais la version de Docker et la version de Python de ton Codespace
 
+@@ guide
+### 1. Ouvre un terminal et regarde où tu es
+
+Dans ton Codespace, ouvre le terminal : menu **☰ → Terminal → New Terminal**, ou **Ctrl + `** (la touche à gauche du 1). Une zone s'ouvre en bas de l'écran : c'est là que tu tapes les commandes, puis **Entrée** pour les lancer.
+
+Tape `pwd` (pour *print working directory*, « affiche le dossier où je suis »). Le terminal doit répondre :
+
+~~~text
+/workspaces/data-engineering-zoomcamp
+~~~
+
+C'est la **racine de ton fork** : le dossier qui contient tout le cours. Si tu vois autre chose, tape `cd /workspaces/data-engineering-zoomcamp` pour y aller.
+
+### 2. Crée les deux dossiers
+
+La commande `mkdir` (*make directory*) crée un dossier. L'option `-p` crée aussi les dossiers du chemin qui n'existent pas encore. Exemple, pour créer un dossier `photos/vacances` :
+
+~~~bash
+mkdir -p photos/vacances
+~~~
+
+Toi, tu veux **deux** dossiers, `module-00` et `module-01`, tous les deux dans `mon-travail`. Écris ta commande : `mkdir -p`, puis les deux chemins séparés par un espace. Si la commande ne répond rien, c'est que tout s'est bien passé : sous Linux, pas de message veut dire pas d'erreur.
+
+### 3. Écris le titre dans le README en une seule commande
+
+`echo "texte"` affiche un texte. Le signe `>` envoie ce texte dans un fichier au lieu de l'écran, et crée le fichier s'il n'existe pas. Exemple :
+
+~~~bash
+echo "Bonjour" > test.txt
+~~~
+
+crée `test.txt` avec la ligne `Bonjour`. Fais pareil pour écrire `# Mon travail sur le Data Engineering Zoomcamp` dans `mon-travail/README.md`. Garde bien les guillemets autour du texte : sans eux, le `#` serait compris comme le début d'un commentaire.
+
+Vérifie avec `cat mon-travail/README.md` : `cat` affiche le contenu d'un fichier.
+
+### 4. Affiche toute l'arborescence
+
+L'**arborescence**, c'est la liste des dossiers et de tout ce qu'ils contiennent, sous-dossiers compris. `ls mon-travail` ne montre que le premier niveau. Avec l'option `-R` (*récursif*), `ls` descend aussi dans chaque sous-dossier. Tu dois voir `README.md`, `module-00` et `module-01`.
+
+### 5. Note les versions de Docker et de Python
+
+Presque tous les outils affichent leur version avec l'option `--version`. Essaie `docker --version`, puis la même chose avec `python3`. Note les deux numéros dans ta case ci-dessous : ils te serviront si un jour une commande du cours ne marche pas pareil chez toi.
+
+### 6. Fais le ménage
+
+À l'étape 2, si tu as testé l'exemple `photos/vacances` ou `test.txt`, supprime-les : `rm -r photos` supprime un dossier et son contenu, `rm test.txt` un fichier. Attention, `rm` ne passe pas par une corbeille.
+
 @@ hints
 - Commence par vérifier où tu es avec `pwd`. Tu dois être dans `/workspaces/data-engineering-zoomcamp`.
 - `mkdir` a une option qui crée les dossiers parents s'ils n'existent pas. Et `echo "texte" > fichier` écrit un texte dans un fichier.
@@ -84,13 +131,35 @@ Prépare ton espace de travail **uniquement avec le terminal**, sans utiliser l'
 
 @@ solution
 ~~~bash
+# Aller à la racine du fork (pwd doit afficher ce chemin)
 cd /workspaces/data-engineering-zoomcamp
+
+# Créer les deux dossiers ; -p crée aussi mon-travail s'il n'existe pas
 mkdir -p mon-travail/module-00 mon-travail/module-01
+
+# Écrire la ligne de titre dans le README ; > crée le fichier
 echo "# Mon travail sur le Data Engineering Zoomcamp" > mon-travail/README.md
+
+# Afficher tout le contenu de mon-travail, sous-dossiers compris
 ls -R mon-travail
+
+# Les versions des deux outils
 docker --version
 python3 --version
 ~~~
+
+`ls -R mon-travail` doit afficher quelque chose comme :
+
+~~~text
+mon-travail:
+README.md  module-00  module-01
+
+mon-travail/module-00:
+
+mon-travail/module-01:
+~~~
+
+Les deux dossiers sont vides pour l'instant, c'est normal.
 
 Attention à la différence entre `>` et `>>` : `>` remplace tout le contenu du fichier, `>>` ajoute à la fin.
 
