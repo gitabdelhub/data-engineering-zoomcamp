@@ -82,7 +82,7 @@ echo
 if [ "$ok" -eq "${#QUERIES[@]}" ]; then
   code="$(printf '%s' "$results" | sha256sum | cut -c1-8)"
   echo "🎉 Tout est vert. Ton code de réussite : ${code}"
-  echo "   Entre-le sur la page du défi pour débloquer la suite."
+  echo "   Entre-le sur la page du défi pour le valider."
 else
   echo "${ok} vérification(s) sur ${#QUERIES[@]}. Corrige et relance le script."
   exit 1

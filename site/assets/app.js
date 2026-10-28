@@ -1281,7 +1281,7 @@
     const H = S.hw[it.id] = Object.assign({ cur: 1, q: {} }, S.hw[it.id]);
     app.innerHTML = `<section class="gut"><div class="max">
       <div class="hwtop"><nav class="crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/m/${mod.id}">Module ${mod.id} · ${esc(mod.title)}</a><span>/</span><span>Homework</span></nav>
-      <span class="eyebrow">Module ${mod.id} · Homework de la cohorte 2026</span><h1>${esc(it.title.replace(/^Homework \d+ : /, ""))}</h1><div class="md lead2" id="hwintro"></div><div id="majbox"></div></div>
+      <span class="eyebrow">Module ${mod.id} · ${esc(it.eyebrow || "Homework de la cohorte 2026")}</span><h1>${esc(it.title.replace(/^Homework \d+ : /, ""))}</h1><div class="md lead2" id="hwintro"></div><details class="guidebox" id="hwguide" hidden><summary>Préparer ton environnement et les données, pas à pas</summary><div class="md"></div></details><div id="majbox"></div></div>
       <div class="hw"><article class="q" id="qcard"><p class="small">Chargement…</p></article><aside><div class="qlist" id="qlist"></div><div id="hwend"></div></aside></div>
       <div class="lnav" id="lnav">${itemNav(it)}</div>
     </div></section>`;
@@ -1297,6 +1297,7 @@
     }
     if (token !== routeToken) return;
     renderMd($("#hwintro"), ov.intro || "", base);
+    if (ov.guide) { const g = $("#hwguide"); g.hidden = false; renderMd($(".md", g), ov.guide, new URL(it.overlay, location.href).href); }
     const Q = hw.questions;
     const qs = n => H.q[n] = Object.assign({ choice: null, other: "", how: "", hints: 0 }, H.q[n]);
     const isQDone = n => { const q = H.q[n]; return q && (q.choice != null || q.other.trim()) && q.how.trim().length >= 30; };
@@ -1399,10 +1400,14 @@
     more.innerHTML = `
       ${ov.team ? `<div class="teamc"><b>Travail en équipe</b><span>${mdInline(ov.team)}</span></div>` : ""}
       <div class="chal"><span class="lab">Le script de vérification</span><p>Il est dans ton fork : <a href="${GH}/blob/${REPO.branch}/${it.script}" target="_blank" rel="noopener">${esc(it.script)}</a>. Lis-le avant de le lancer : c'est une bonne habitude avec n'importe quel script.</p></div>
+      ${ov.guide ? `<details class="guidebox"><summary>Plan d'attaque : par où commencer, étape par étape</summary><div class="md" id="defiguide"></div></details>` : ""}
       <div class="chal" id="hintsbox"><span class="lab">Si tu es vraiment bloqué</span></div>
+      ${ov.solution ? `<details class="guidebox"><summary>La solution complète, expliquée</summary><p class="small">Ouvre-la après avoir essayé, ou pour comparer avec la tienne. Elle passe les cinq vérifications.</p><div class="md" id="defisol"></div></details>` : ""}
       <div class="chal codebox"><span class="lab">Ton code de réussite</span>
-        ${isDone(it.id) ? `<p class="okmsg">✅ Défi validé. Bravo : tu l'as fait sans guide.</p>` : `<div class="row"><input type="text" id="code" placeholder="8 caractères" maxlength="16" autocomplete="off" spellcheck="false"><button class="btn" id="codeok">Valider le défi</button></div><p class="small" id="codemsg"></p><button class="btn ghost sm" id="skipdefi">Marquer comme fait sans le code</button>`}
+        ${isDone(it.id) ? `<p class="okmsg">✅ Défi validé. Bravo !</p>` : `<div class="row"><input type="text" id="code" placeholder="8 caractères" maxlength="16" autocomplete="off" spellcheck="false"><button class="btn" id="codeok">Valider le défi</button></div><p class="small" id="codemsg"></p><button class="btn ghost sm" id="skipdefi">Marquer comme fait sans le code</button>`}
       </div>`;
+    if (ov.guide) renderMd($("#defiguide"), ov.guide, base);
+    if (ov.solution) renderMd($("#defisol"), ov.solution, base);
     const hints = listItems(ov.hints);
     const hw = doc.createElement("div");
     hw.innerHTML = `<div class="hints"></div><button class="btn ghost sm"></button>`;
