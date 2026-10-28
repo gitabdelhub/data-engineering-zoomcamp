@@ -50,12 +50,84 @@ Décris ton environnement de data engineer dans `.devcontainer/devcontainer.json
 - Les ports 5432 et 8085 sont déclarés, avec les noms « Postgres » et « pgAdmin »
 - Après la reconstruction, `terraform -version`, `gcloud --version`, `uv --version` et `docker run --rm hello-world` marchent tous
 
+@@ guide
+### 1. Crée le fichier
+
+Le dossier commence par un point : `.devcontainer`. Crée-le avec le fichier, à la racine du fork :
+
+~~~bash
+cd /workspaces/data-engineering-zoomcamp
+mkdir -p .devcontainer
+code .devcontainer/devcontainer.json
+~~~
+
+### 2. Comprends la forme sur un exemple
+
+`devcontainer.json` est un fichier JSON : des paires `"clé": valeur`, séparées par des virgules, **sans virgule après la dernière**. Voici un devcontainer pour un tout autre projet, en Node.js :
+
+~~~json
+{
+  "name": "Mon site web",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "postCreateCommand": "npm install",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "Site" }
+  }
+}
+~~~
+
+Ligne par ligne : un nom ; l'image de base (un conteneur Node.js 22) ; une feature, c'est-à-dire un outil ajouté, ici la CLI GitHub ; une commande lancée une fois après la création ; un port déclaré, avec son nom dans l'onglet Ports.
+
+### 3. Écris le tien
+
+Reprends cette forme pour la consigne :
+
+- l'**image** : une image Python 3.13 du même catalogue (`mcr.microsoft.com/devcontainers/…`, le tag est la version de Python) ;
+- trois **features** : Docker dans le Codespace, Terraform, et la CLI Google Cloud. Leurs adresses sont sur [containers.dev/features](https://containers.dev/features) : cherche « docker-in-docker », « terraform » et « google-cloud-cli », et copie l'adresse de chacune avec `{}` comme valeur ;
+- la **commande après création** qui installe `uv` : `pip install uv` ;
+- les **ports** 5432 et 8085, nommés « Postgres » et « pgAdmin ».
+
+Enregistre. Si l'éditeur souligne une ligne en rouge, c'est souvent une virgule en trop ou en moins.
+
+### 4. Commite et pousse
+
+`git add .devcontainer/devcontainer.json`, `git commit`, `git push`. Le Codespace actuel ne change pas encore : il a été construit avant ce fichier.
+
+### 5. Reconstruis ton Codespace
+
+Ouvre la palette de commandes avec **F1** (ou Ctrl + Maj + P), tape `rebuild` et choisis **Codespaces: Rebuild Container**. Le Codespace redémarre et construit ton environnement : compte quelques minutes. Si la construction échoue, GitHub ouvre un Codespace de secours et affiche le journal : cherche la première ligne `error`, elle dit souvent quelle ligne du JSON pose problème.
+
+### 6. Vérifie chaque outil
+
+Dans un nouveau terminal :
+
+~~~bash
+terraform -version
+gcloud --version
+uv --version
+docker run --rm hello-world
+~~~
+
+Chaque commande doit répondre par un numéro de version, et Docker par `Hello from Docker!`.
+
 @@ hints
 - Les images Python des devcontainers sont sur `mcr.microsoft.com/devcontainers/python`, avec la version de Python comme tag.
 - Cherche sur [containers.dev/features](https://containers.dev/features) : « docker-in-docker », « terraform » et « google-cloud-cli ». Chaque feature a une adresse à mettre dans le bloc `features`.
 - `postCreateCommand` lance une commande une seule fois après la création : `pip install uv` suffit. Pour les noms de ports, regarde `portsAttributes` et sa clé `label`.
 
 @@ solution
+Chaque clé du fichier :
+
+- `image` : la base du conteneur, ici Python 3.13 ;
+- `features` : Docker dans le Codespace (`docker-in-docker`), Terraform et la CLI Google Cloud ;
+- `postCreateCommand` : installe `uv` une seule fois, après la création ;
+- `forwardPorts` et `portsAttributes` : les ports ouverts, et leur nom dans l'onglet Ports ;
+- `customizations` : des extensions VS Code installées d'office. Ce n'était pas demandé, c'est un bonus.
+
 ~~~json
 {
   "name": "Data Engineering Zoomcamp",

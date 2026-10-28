@@ -47,6 +47,50 @@ Personnalise ton site et suis son déploiement de bout en bout. Le site lit un p
 - Avant de pousser, tu as vérifié le site **en local** dans ton Codespace
 - Après la fusion, tu as suivi le déploiement dans l'onglet Actions jusqu'au vert, et l'accueil du site en ligne affiche ton prénom
 
+@@ guide
+### 1. Une branche pour la tâche
+
+Comme à la leçon 4 : `git switch main`, `git pull`, puis crée une branche avec un nom qui dit ce qu'elle fait, par exemple `module-00/moi`.
+
+### 2. Écris site/moi.json
+
+Le **JSON** est un format de texte très utilisé pour échanger des données : des paires `"clé": valeur` entre accolades. Exemple, pour une ville :
+
+~~~json
+{ "ville": "Casablanca" }
+~~~
+
+Ouvre le fichier avec `code site/moi.json` et écris la même chose avec la clé `prenom` (sans accent) et ton prénom comme valeur. Les guillemets doubles sont obligatoires autour de la clé et du texte. Enregistre avec Ctrl + S.
+
+### 3. Teste le site en local
+
+« En local », c'est dans ton Codespace, avant que quiconque le voie. À la racine du fork, lance un petit serveur web :
+
+~~~bash
+cd /workspaces/data-engineering-zoomcamp
+python3 -m http.server 8000
+~~~
+
+Le terminal reste occupé : c'est normal, le serveur tourne. Dans l'onglet **Ports**, clique sur le globe de la ligne 8000. La page qui s'ouvre liste les fichiers du fork : ajoute `/site/` à la fin de l'adresse. L'accueil doit te dire bonjour avec ton prénom.
+
+Rien ne change ? Vérifie le JSON : une seule faute de guillemet et le site l'ignore. Quand c'est bon, reviens dans le terminal et arrête le serveur avec **Ctrl + C**.
+
+### 4. Commit et push
+
+`git add site/moi.json`, `git commit -m "…"`, puis `git push -u origin` suivi du nom de ta branche.
+
+### 5. Pull request et fusion
+
+Sur GitHub : **Compare & pull request**, vérifie la ligne « base repository » (ton fork), décris ta PR, puis **Merge pull request**, **Confirm merge** et **Delete branch**.
+
+### 6. Suis le déploiement
+
+Onglet **Actions** de ton fork : un workflow **pages build and deployment** démarre tout seul après la fusion. Le rond jaune tourne, puis passe au vert ✓ en une ou deux minutes. Ouvre alors ton site en ligne et recharge-le : ton prénom y est.
+
+### 7. Remets ton Codespace à jour
+
+`git switch main`, `git pull`, puis `git branch -d` suivi du nom de ta branche.
+
 @@ hints
 - `moi.json` est un fichier JSON : des guillemets doubles autour des clés et des valeurs de texte, et pas de virgule après le dernier élément.
 - Pour tester en local, lance un serveur web Python à la **racine** du fork (pas dans `site/`), puis ouvre le port dans l'onglet Ports et ajoute `/site/` à l'adresse.
@@ -54,14 +98,30 @@ Personnalise ton site et suis son déploiement de bout en bout. Le site lit un p
 
 @@ solution
 ~~~bash
+# 1. Partir de main à jour, sur une nouvelle branche
 git switch main && git pull
 git switch -c module-00/moi
-# site/moi.json : { "prenom": "Ton prénom" }
-python3 -m http.server 8000      # puis onglet Ports, globe du port 8000, et ajoute /site/ ; Ctrl + C pour arrêter
+
+# 2. Écrire site/moi.json dans l'éditeur ; son contenu complet :
+#    { "prenom": "Ton prénom" }
+code site/moi.json
+
+# 3. Tester en local : serveur web à la RACINE du fork
+python3 -m http.server 8000
+#    Onglet Ports, globe du port 8000, ajouter /site/ à l'adresse.
+#    Ctrl + C pour arrêter le serveur quand c'est vérifié.
+
+# 4. Enregistrer et publier la branche
 git add site/moi.json
 git commit -m "feat: le site affiche mon prénom"
 git push -u origin module-00/moi
-# PR dans ton fork, fusion, puis onglet Actions : pages build and deployment
+
+# 5-6. Sur GitHub : PR dans ton fork, Merge, Delete branch,
+#      puis onglet Actions : « pages build and deployment » jusqu'au vert
+
+# 7. Remettre le Codespace à jour
+git switch main && git pull
+git branch -d module-00/moi
 ~~~
 
 @@ verify

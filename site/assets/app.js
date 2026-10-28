@@ -465,7 +465,7 @@
     const box = $("#today");
     if (!box) return;
     if (!cur) {
-      box.innerHTML = `<div class="today-h"><span class="eyebrow">Tout ce qui est prêt est fait</span><h2>Bravo.</h2><p>Les modules suivants sont en préparation. Dis-moi dans ton projet Claude que tu es prêt pour la suite.</p></div>`;
+      box.innerHTML = `<div class="today-h"><span class="eyebrow">Tout ce qui est prêt est fait</span><h2>Bravo.</h2><p>Les modules suivants n'ont pas encore leurs exercices guidés, mais leur cours officiel est déjà lisible, avec les vidéos.</p></div>`;
       return;
     }
     const mod = modOf(cur);
@@ -693,7 +693,7 @@
     </div></section>
     <section class="gut" style="padding-block:36px 120px"><div class="max modbody">
       ${archBlock(m)}
-      ${m.bonus ? `<div class="chal"><span class="lab">Bonus facultatif</span><p>${esc(m.intro)}</p></div><div id="plan"></div>` : s === "soon" ? `<div class="chal"><span class="lab">En préparation</span><p>Je construis ce module (${m.planned} leçons) avec la même méthode quand tu approches de la fin du module précédent. Préviens-moi dans ton projet Claude.</p></div><div id="plan"></div>` : ""}
+      ${m.bonus ? `<div class="chal"><span class="lab">Bonus facultatif</span><p>${esc(m.intro)}</p></div><div id="plan"></div>` : s === "soon" ? `<div class="chal"><span class="lab">En préparation</span><p>Les exercices guidés de ce module (${m.planned} leçons) arrivent plus tard. Tu peux déjà le suivre avec le cours officiel ci-dessous : le texte et les vidéos de chaque leçon.</p></div><div id="plan"></div>` : ""}
       ${m.items.length ? `<div class="modmeta"><span><b>${doneCount(m.items)} / ${m.items.length}</b> étapes faites</span>${remaining(m.items) ? `<span>Reste environ <b>${esc(fmtMin(remaining(m.items)))}</b></span>` : ""}<span>Pour valider : ${esc(m.gate)}</span><span class="help">Niveau d'aide ${[1, 2, 3].map(k => `<i class="${k <= m.help ? "on" : ""}"></i>`).join("")}</span></div>
       <ol class="mlist">${rows}</ol>` : ""}
     </div></section>`;
@@ -946,7 +946,7 @@
       return t;
     }
 
-    // Bloqué ? Un message tout prêt pour Claude, avec l'objectif et ton essai. Il demande un indice, pas la solution.
+    // Bloqué ? Les étapes pour se débloquer seul, puis un message tout prêt (Slack, forum, IA) avec l'objectif et ton essai.
     function stuckBox(stepName, objective, getAttempt) {
       const d = doc.createElement("details");
       d.className = "stuck";
@@ -1171,11 +1171,11 @@
           ${remaining(mod.items) ? `<div><strong>${esc(fmtMin(remaining(mod.items)))}</strong><span>environ, pour finir le module</span></div>` : ""}
         </div>
         ${st.explain ? `<p class="small">Ton explication :</p><blockquote>${esc(st.explain)}</blockquote>
-        <div class="row"><button class="btn ghost sm" id="copy-exp">Copier mon explication pour l'envoyer à Claude</button></div>` : ""}
+        <div class="row"><button class="btn ghost sm" id="copy-exp">Copier mon explication, pour la partager ou la faire relire</button></div>` : ""}
         ${all % 5 === 0 && fresh ? `<div class="tip"><b>Sauvegarde</b><span>${all} étapes faites : c'est le bon moment pour <a href="#/progression">exporter ta progression</a> dans un fichier. Elle n'est gardée que dans ce navigateur.</span></div>` : ""}
         ${next ? `<p>${next.min ? `La suite prend ${esc(dur(next))}. ` : ""}Tu peux enchaîner, ou t'arrêter ici : le bouton Continuer, en haut, te ramènera au bon endroit.</p>
           <div><a class="btn" href="#/l/${next.id}">${nextLabel} : ${esc(next.title)} <span class="arr">→</span></a></div>`
-          : `<p>C'est la dernière étape disponible pour l'instant. Dis-moi dans ton projet Claude que tu es prêt pour la suite.</p>`}
+          : `<p>C'est la dernière étape guidée pour l'instant. Les modules suivants sont déjà lisibles : leur cours officiel, avec les vidéos, est sur la page de chaque module.</p>`}
         <p class="small">Tu peux revenir sur chaque étape avec la barre du haut.</p>`);
       box.appendChild(c);
       const cp = $("#copy-exp", c);

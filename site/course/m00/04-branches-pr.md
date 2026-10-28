@@ -55,7 +55,7 @@ Pour résoudre : tu modifies le fichier pour garder la bonne version (ou un mél
 
 ## La revue de code
 
-Quand tu m'envoies le lien d'une PR, je la relis comme un collègue : commentaires sur des lignes précises, questions, demandes de changement. Tu réponds aux commentaires, tu pousses des corrections sur la même branche, et la PR se met à jour toute seule.
+Quelqu'un relit ta PR comme un collègue : commentaires sur des lignes précises, questions, demandes de changement. Tu réponds aux commentaires, tu pousses des corrections sur la même branche, et la PR se met à jour toute seule.
 
 @@ predict
 Tu es sur une branche `essai`. Tu crées un fichier `essai.txt`, tu le commites. Puis tu reviens sur `main` avec `git switch main`. Le fichier `essai.txt` est-il encore dans ton dossier ?
@@ -73,6 +73,83 @@ Fais le cycle complet d'une tâche, comme en entreprise, **dans ton fork**.
 - Une pull request **dans ton fork** (base : `gitabdelhub/data-engineering-zoomcamp`, `main`), avec une description en trois parties : Quoi, Pourquoi, Comment vérifier
 - La PR est fusionnée, ton `main` local est à jour, et la branche est supprimée en local et sur GitHub
 
+@@ guide
+### 1. Pars de main à jour
+
+Une nouvelle tâche part toujours de la dernière version de `main`. Dans le terminal, à la racine du fork :
+
+~~~bash
+git switch main
+git pull
+~~~
+
+`git switch` change de branche, `git pull` récupère ce qui est arrivé sur GitHub.
+
+### 2. Crée ta branche
+
+`git switch -c` crée une branche et se place dessus (`-c` pour *create*). Exemple : `git switch -c module-00/essai`. Toi, ta branche s'appelle `module-00/presentation`.
+
+Vérifie avec `git branch` : la branche marquée d'une étoile `*` est celle où tu es.
+
+### 3. Écris ta présentation
+
+Ouvre le fichier dans l'éditeur : `code mon-travail/module-00/presentation.md` (il est créé s'il n'existe pas). Écris pour l'instant **qui tu es**, en quelques lignes, puis enregistre avec Ctrl + S.
+
+### 4. Premier commit
+
+Même geste qu'à la leçon 3 : `git add` du fichier, `git status` pour vérifier qu'il est en vert, puis `git commit -m "…"` avec un message clair.
+
+### 5. Complète, deuxième commit
+
+Ajoute maintenant ton PFE et ce que tu veux savoir faire à la fin du cours. Enregistre, puis refais `git add` et `git commit` avec un autre message. Une branche contient souvent plusieurs commits : un par petite étape.
+
+### 6. Envoie ta branche sur GitHub
+
+La première fois, GitHub ne connaît pas ta branche. Il faut lui dire où l'envoyer :
+
+~~~bash
+git push -u origin module-00/presentation
+~~~
+
+`origin` est ton fork sur GitHub, et `-u` retient ce lien : les fois suivantes, un simple `git push` suffira.
+
+### 7. Ouvre la pull request
+
+Ouvre ton fork sur github.com. Un bandeau jaune propose **Compare & pull request** : clique dessus.
+
+En haut de la page, **vérifie la ligne « base repository »**. Elle doit dire `gitabdelhub/data-engineering-zoomcamp`, branche `main`. Si tu vois `DataTalksClub/…`, clique dessus et choisis ton fork. Sinon ta PR partirait chez les auteurs du cours.
+
+Donne un titre clair. Dans la description, écris trois petites parties, sur ce modèle :
+
+~~~text
+## Quoi
+Ajoute ma présentation dans mon-travail/module-00.
+
+## Pourquoi
+Pour fixer mes objectifs au début du cours.
+
+## Comment vérifier
+Ouvrir mon-travail/module-00/presentation.md.
+~~~
+
+Clique sur **Create pull request**.
+
+### 8. Fusionne
+
+Sur la page de la PR, onglet **Files changed** : relis ce que tu proposes, comme le ferait un collègue. Puis, dans l'onglet **Conversation** : **Merge pull request**, **Confirm merge**, et enfin **Delete branch** pour supprimer la branche sur GitHub.
+
+### 9. Remets ton Codespace à jour
+
+Ta branche est maintenant dans `main` sur GitHub, mais pas encore dans ton Codespace :
+
+~~~bash
+git switch main
+git pull
+git branch -d module-00/presentation
+~~~
+
+`git branch -d` supprime la branche locale. Git accepte parce qu'elle est fusionnée : rien ne se perd.
+
 @@ hints
 - `git switch -c <nom>` crée la branche et se place dessus. Le premier `git push` d'une nouvelle branche a besoin de `-u origin <nom>`.
 - Sur la page de création de la PR, vérifie la ligne « base repository » : par défaut, GitHub propose le repo de DataTalksClub.
@@ -80,17 +157,29 @@ Fais le cycle complet d'une tâche, comme en entreprise, **dans ton fork**.
 
 @@ solution
 ~~~bash
+# 1. Partir de main à jour
 git switch main
 git pull
+
+# 2. Créer la branche de la tâche et se placer dessus
 git switch -c module-00/presentation
-# écrire mon-travail/module-00/presentation.md
+
+# 3-4. Écrire qui je suis dans l'éditeur, puis un premier commit
+code mon-travail/module-00/presentation.md
 git add mon-travail/module-00/presentation.md
 git commit -m "docs: ma présentation"
-# compléter le fichier
+
+# 5. Compléter (PFE, objectifs), puis un deuxième commit
+#    -a prépare tous les fichiers déjà suivis par Git : ici, ce fichier
 git commit -am "docs: ajoute mes objectifs"
+
+# 6. Publier la branche ; -u retient le lien avec origin
 git push -u origin module-00/presentation
-# GitHub : Compare & pull request, base = gitabdelhub/data-engineering-zoomcamp main
-# après la fusion :
+
+# 7-8. Sur GitHub : Compare & pull request, base = gitabdelhub/data-engineering-zoomcamp main,
+#      description Quoi / Pourquoi / Comment vérifier, puis Merge, Confirm merge, Delete branch
+
+# 9. Remettre le Codespace à jour et supprimer la branche locale
 git switch main
 git pull
 git branch -d module-00/presentation
@@ -100,7 +189,7 @@ git branch -d module-00/presentation
 mergedPR
 
 @@ team
-Avant de fusionner, envoie-moi le lien de ta pull request dans ton projet Claude. Je fais une vraie revue : des commentaires sur des lignes précises, et peut-être une demande de changement. Tu y réponds et tu pousses tes corrections sur la même branche, comme avec un collègue.
+Avant de fusionner, fais relire ta pull request : envoie son lien à un camarade de ta promo, ou à Claude si tu l'as. Le relecteur laisse des commentaires sur des lignes précises dans l'onglet Files changed. Tu y réponds, et tu pousses tes corrections sur la même branche : la PR se met à jour toute seule. Pas de relecteur sous la main ? Relis-toi toi-même dans Files changed, ligne par ligne, avant de fusionner.
 
 @@ selfcheck
 - Dans l'onglet Pull requests de mon fork, ma PR est « Merged »

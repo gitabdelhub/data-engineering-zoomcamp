@@ -68,6 +68,55 @@ Enregistre ton espace de travail dans l'historique de ton fork, proprement.
 - **Deux commits séparés** : un pour le README, un pour le `.gitignore`, chacun avec un message clair
 - Les deux commits sont poussés sur GitHub, et visibles dans ton fork
 
+@@ guide
+### 1. Récupère ce qui est sur GitHub
+
+Dans le terminal, place-toi à la racine du fork, puis lance `git pull`. Cette commande télécharge les commits arrivés sur GitHub depuis ta dernière séance (la synchro avec le cours officiel, par exemple) et les applique chez toi.
+
+~~~bash
+cd /workspaces/data-engineering-zoomcamp
+git pull
+~~~
+
+S'il n'y a rien de nouveau, Git répond `Already up to date.`
+
+### 2. Colle ton contrat dans le README
+
+Ton contrat d'apprentissage, tu l'as écrit dans l'étape Pratiquer de la leçon 1, sur ce site. Retourne le copier.
+
+Ouvre ensuite `mon-travail/README.md` dans l'éditeur. Deux façons : clique dessus dans l'explorateur de fichiers à gauche, ou tape `code mon-travail/README.md` dans le terminal. Colle ton contrat **sous** la ligne de titre, puis enregistre avec **Ctrl + S**. Un point blanc à côté du nom de l'onglet veut dire « pas enregistré ».
+
+### 3. Regarde ce que Git voit
+
+Lance `git status`. Git liste `mon-travail/` en rouge sous `Untracked files` : des fichiers qu'il ne suit pas encore. Rouge veut dire « pas encore préparé pour le commit ».
+
+### 4. Premier commit : le README seul
+
+Prépare **un seul fichier** avec `git add` suivi de son chemin, puis relance `git status` : le fichier passe en vert, sous `Changes to be committed`. Ensuite, crée le commit avec un message qui dit ce qu'il fait. Exemple de forme, pour un autre fichier :
+
+~~~bash
+git add notes/idees.md
+git commit -m "docs: mes idées de projet"
+~~~
+
+Fais la même chose avec `mon-travail/README.md` et ton propre message.
+
+### 5. Crée le .gitignore
+
+Un `.gitignore` est un simple fichier texte : **une règle par ligne**. Une étoile veut dire « n'importe quel nom » : `*.log` ignore tous les fichiers qui finissent par `.log`. Un nom suivi de `/` ignore un dossier entier : `cache/` ignore le dossier `cache`.
+
+Crée `mon-travail/.gitignore` avec l'éditeur (`code mon-travail/.gitignore`). Écris une ligne pour chacune des cinq choses à ignorer de la consigne, puis enregistre.
+
+Attention : le nom commence par un point. Sous Linux, les fichiers qui commencent par un point sont cachés : `ls -a` les montre.
+
+### 6. Deuxième commit : le .gitignore seul
+
+Même geste qu'à l'étape 4, avec ce fichier et un autre message. Puis vérifie avec `git log --oneline -3` : tes deux commits doivent apparaître en haut, le plus récent en premier.
+
+### 7. Envoie sur GitHub
+
+`git push` envoie tes commits sur ton fork. Ouvre ensuite ton fork sur github.com : le dossier `mon-travail` y est, avec tes deux fichiers. Si Git refuse avec `rejected` et `fetch first`, fais `git pull`, puis de nouveau `git push`.
+
 @@ hints
 - Pour faire deux commits séparés, ne fais pas `git add .` : prépare un seul fichier à la fois, et vérifie avec `git status` avant chaque commit.
 - Dans un `.gitignore`, une ligne = une règle. `*.parquet` ignore tous les fichiers qui finissent par `.parquet`, et `keys/` ignore un dossier.
@@ -75,12 +124,19 @@ Enregistre ton espace de travail dans l'historique de ton fork, proprement.
 
 @@ solution
 ~~~bash
+# 1. Se placer à la racine du fork et récupérer les nouveautés de GitHub
 cd /workspaces/data-engineering-zoomcamp
 git pull
-# écrire le contrat dans mon-travail/README.md avec l'éditeur, puis :
+
+# 2. Coller le contrat sous le titre de mon-travail/README.md, dans l'éditeur, puis Ctrl + S
+
+# 3-4. Préparer UNIQUEMENT le README, vérifier, puis le commiter
 git add mon-travail/README.md
+git status                         # README.md en vert, rien d'autre
 git commit -m "docs: mon contrat d'apprentissage"
 
+# 5. Le .gitignore, une règle par ligne (ici écrit sans éditeur : tout ce qui
+#    est entre les deux FIN part dans le fichier)
 cat > mon-travail/.gitignore <<'FIN'
 .venv/
 *.parquet
@@ -88,12 +144,17 @@ cat > mon-travail/.gitignore <<'FIN'
 .env
 keys/
 FIN
+
+# 6. Deuxième commit, avec ce seul fichier
 git add mon-travail/.gitignore
 git commit -m "chore: ignorer les fichiers lourds et les secrets"
+git log --oneline -3               # tes deux commits en haut
 
-git log --oneline -3
+# 7. Envoyer sur GitHub
 git push
 ~~~
+
+Écrire le `.gitignore` dans l'éditeur, comme dans le pas à pas, donne exactement le même fichier.
 
 @@ verify
 gitignore
