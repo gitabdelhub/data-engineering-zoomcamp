@@ -18,6 +18,8 @@ Une leçon se fait toujours en 5 étapes, dans cet ordre :
 
 À la fin de chaque module : le **homework** officiel du Zoomcamp, puis un **défi sans guide** sur d'autres données, vérifié par un script.
 
+Le cours avance en spirale. Le module 0 annonce ce qui viendra (« Tu le reverras »), et les modules suivants y renvoient (« Ah, c'est donc ça ! »). Git, lui, s'apprend en route, au moment précis où un exercice en a besoin (« Git en situation »).
+
 ## Les indices
 
 Les indices sont de plus en plus précis. Demande-les seulement après avoir vraiment cherché : relire l'erreur, relire la leçon, chercher dans la [FAQ du cours](https://datatalks.club/faq/data-engineering-zoomcamp.html). Au fil des modules, il y a moins d'indices : c'est voulu, comme au travail.

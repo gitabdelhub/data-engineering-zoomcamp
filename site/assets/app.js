@@ -88,6 +88,8 @@
     const lessons = mod.items.filter(x => x.type === "lesson");
     return { pos: lessons.indexOf(it) + 1, total: lessons.length };
   }
+  // Le nom d'un module tel qu'on l'écrit dans une phrase.
+  function modName(m) { return m.id === "P" ? "Projet final" : m.id === "W1" ? "Workshop" : "Module " + Number(m.id); }
   function itemLabel(it) {
     if (it.type === "homework") return "Homework";
     if (it.type === "defi") return "Défi";
@@ -905,11 +907,28 @@
       return d;
     }
 
+    // Un pont entre deux moments du cours. « [01-12] texte » vise une leçon, « [02] texte » un module :
+    // le lien s'affiche quand la cible est ouverte, sinon seulement son nom.
+    function bridgeCard(cls, label, src) {
+      const m = /^\[([\w-]+)\]\s*/.exec(src);
+      const target = m && (byId(m[1]) || C.modules.find(x => x.id === m[1]));
+      let link = "";
+      if (target && target.type) {
+        const where = `${modName(modOf(target))} · ${itemLabel(target)} : ${target.title}`;
+        link = isUnlocked(target.id) ? `<a class="bridge" href="#/l/${target.id}">${esc(where)} →</a>` : `<span class="bridge small">🔒 ${esc(where)}</span>`;
+      } else if (target) {
+        const nm = modName(target) === target.title ? target.title : modName(target) + " · " + target.title;
+        link = `<span class="bridge small">🔒 ${esc(nm)}</span>`;
+      }
+      return card(cls, `<span class="lab">${label}</span><p>${mdInline(m ? src.slice(m[0].length) : src)}</p>${link}`);
+    }
+
     async function stepDiscover(box) {
       const rev = await revisionCard(it);
       if (token !== routeToken) return;
       if (rev) box.appendChild(rev);
       if (ov.brief) mdCard(box, "chal brief", "L'essentiel en français", ov.brief);
+      listItems(ov.declic).forEach(t => box.appendChild(bridgeCard("chal declic", "Ah, c'est donc ça !", t)));
       const vids = it.videos || [];
       vids.filter(v => !v.optional).forEach(v => { const vb = card("video", ""); box.appendChild(vb); mountVideo(vb, v); });
       listItems(ov.codespaces).forEach(t => box.appendChild(card("tip", `<b>Codespaces</b><span>${mdInline(t)}</span>`)));
@@ -920,6 +939,7 @@
         box.appendChild(c);
         renderMermaid(c);
       }
+      listItems(ov.teaser).forEach(t => box.appendChild(bridgeCard("chal teaser", "Tu le reverras", t)));
       vids.filter(v => v.optional).forEach(v => {
         const d = doc.createElement("details");
         d.className = "optvideo";
@@ -968,6 +988,12 @@
       reveal.textContent = "J'ai essayé : comparer avec la solution";
       c.appendChild(reveal);
       c.insertAdjacentHTML("beforeend", `<p class="small">La solution s'affiche quand tu as écrit ton essai, ou demandé tous les indices.</p>`);
+      // Un geste Git appris au moment où l'exercice en a besoin.
+      if (ov.git) {
+        const g = mdCard(box, "chal gitsit", "Git en situation", ov.git);
+        st.githints = st.githints || 0;
+        g.appendChild(hintBox(listItems(ov["git-hints"]), "githints", "Un indice"));
+      }
 
       const sol = doc.createElement("div");
       sol.className = "solwrap";
@@ -1387,7 +1413,7 @@
             <div class="pr-c"><b>3. Pratiquer</b><span>Un objectif et des contraintes, différents de la leçon. La solution s'affiche après ton essai.</span></div>
             <div class="pr-c"><b>4. Casser et réparer</b><span>Une vraie erreur à provoquer et à comprendre. Plusieurs viennent de vrais défauts du cours.</span></div>
             <div class="pr-c"><b>5. Expliquer</b><span>Quelques lignes avec tes mots. Envoie-les-moi : je te questionne jusqu'à ce que ce soit solide.</span></div>
-            <div class="pr-c"><b>Révisions et défis</b><span>D'anciennes questions reviennent. À la fin de chaque module, un défi sans guide sur d'autres données, vérifié par un script.</span></div>
+            <div class="pr-c"><b>Révisions et défis</b><span>D'anciennes questions reviennent, et des encadrés « Ah, c'est donc ça ! » relient une leçon à ce que tu as vu avant. À la fin de chaque module, un défi sans guide sur d'autres données, vérifié par un script.</span></div>
           </div>
           <div class="fade"><b>Le niveau d'aide au fil du cours</b><div class="bar"></div><div class="lbls"><span>Modules 0 à 2 : indices partout</span><span>Modules 3 à 5 : objectifs et indices sur demande</span><span>6, 7, projet : objectifs seulement</span></div></div>
         </div>

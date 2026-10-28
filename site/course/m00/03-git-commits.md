@@ -121,3 +121,7 @@ Ton `.gitignore` ignorait déjà les `.env` : c'est le `-f` qui l'a forcé, et c
 
 @@ explain
 Explique la différence entre `git add`, `git commit` et `git push`, comme si tu l'expliquais à un camarade de ta promo.
+
+@@ teaser
+- [01-02] Ces règles travailleront pour de vrai au module 1 : ton `.venv` de plusieurs centaines de Mo et tes fichiers Parquet n'apparaîtront jamais dans `git status`.
+- [01-13] Le faux mot de passe de l'exercice « Casser et réparer » deviendra une vraie clé Google Cloud.
