@@ -485,7 +485,7 @@
     } else if (cur.type === "homework") {
       rows = [{ state: "now", label: "Répondre aux questions", hint: "Une réponse et ton raisonnement pour chaque question" }, { state: "lock", label: "Terminer le homework", hint: "Quand toutes les questions sont faites" }];
     } else {
-      rows = [{ state: "now", label: "Construire sans guide", hint: "Docker Compose, ingestion et vérification" }, { state: "lock", label: "Entrer ton code de réussite", hint: "Donné par le script quand tout est vert" }];
+      rows = [{ state: "now", label: "Construire sans guide", hint: cur.seq || "Docker Compose, ingestion et vérification" }, { state: "lock", label: "Entrer ton code de réussite", hint: "Donné par le script quand tout est vert" }];
     }
     if (token !== routeToken) return;
     $("#seq").innerHTML = rows.map((r, i) => `<li class="${r.state}"><span class="st">${r.state === "ok" ? "✓" : i + 1}</span><div><b>${esc(r.label)}</b><small>${esc(r.hint)}</small></div>${r.state === "now" ? `<a class="btn sm" href="#/l/${cur.id}">Ouvrir</a>` : ""}</li>`).join("");
@@ -1208,7 +1208,7 @@
     const changed = h.slice(0, 8) !== it.hash;
     if (changed !== !!S.maj[it.id]) { if (changed) S.maj[it.id] = true; else delete S.maj[it.id]; save(); }
     if (changed && token === routeToken) {
-      $("#majbox").innerHTML = `<div class="upd"><b>Leçon modifiée</b><span>Le cours officiel a changé cette leçon depuis que j'ai écrit ses exercices. Le texte affiché est la nouvelle version, mais les exercices peuvent ne plus correspondre exactement. Dis-le-moi dans ton projet Claude et je les mets à jour.</span></div>`;
+      $("#majbox").innerHTML = `<div class="upd"><b>Leçon modifiée</b><span>Le cours officiel a changé cette leçon depuis que j'ai écrit ses exercices. Le texte affiché est la nouvelle version, mais les exercices peuvent ne plus correspondre exactement. En cas de doute, suis le texte du cours : c'est la version à jour.</span></div>`;
     }
   }
 
@@ -1285,12 +1285,15 @@
       <div class="hw"><article class="q" id="qcard"><p class="small">Chargement…</p></article><aside><div class="qlist" id="qlist"></div><div id="hwend"></div></aside></div>
       <div class="lnav" id="lnav">${itemNav(it)}</div>
     </div></section>`;
-    let ov, hw, base = ROOT + it.src;
+    // Sans src, les questions sont dans l'overlay lui-même (homework adapté à un autre outil que le cours officiel).
+    let ov, hw, base = it.src ? ROOT + it.src : new URL(it.overlay, location.href).href;
     try {
       ov = parseOverlay(await getText(it.overlay));
-      const rawText = await getText(base);
-      hw = parseHomework(frontMatter(rawText).body);
-      checkHash(it, rawText, token);
+      if (it.src) {
+        const rawText = await getText(base);
+        hw = parseHomework(frontMatter(rawText).body);
+        checkHash(it, rawText, token);
+      } else hw = parseHomework(ov.body);
     } catch (e) {
       if (token === routeToken) $("#qcard").innerHTML = `<div class="upd"><b>Erreur</b><span>Je n'arrive pas à charger le homework (${esc(e.message)}).</span></div>`;
       return;

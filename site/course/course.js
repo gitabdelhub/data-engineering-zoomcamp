@@ -25,7 +25,7 @@ window.COURSE = {
       id: "02", title: "Orchestration avec Airflow", chips: ["Airflow 3", "GCS"],
       cover: ["#4aa8ff", "#0b3f8a"], logo: ["apacheairflow", "#017CEE"],
       sats: [["googlecloud", "#4285F4"], ["postgresql", "#4169E1"]], help: 3,
-      planned: 10, gate: "Homework 2", items: []
+      gate: "Homework 2 et défi des VTC", items: []
     },
     {
       id: "W1", docs: [["Le workshop dlt : présentation", "cohorts/2026/workshops/dlt.md"], ["Le workshop dlt : pas à pas", "cohorts/2026/workshops/dlt/README.md"]], title: "Workshop ingestion", chips: ["dlt", "API"],

@@ -216,4 +216,4 @@ Si Postgres de la leçon 9 tourne encore, il occupe le port 5432 : arrête-le d'
 - Tu as déjà vu ce piège à la leçon 5, avec la zone 265.
 
 @@ team
-Comme en entreprise : fais le défi sur une branche, ouvre une pull request dans ton fork, et colle la sortie du script de vérification dans la description. Envoie-moi le lien : je relis ton code avant que tu fusionnes. Une fois la PR fusionnée, marque ce moment par un **tag annoté** `module-01` sur `main`, et pousse-le : c'est ainsi que les équipes numérotent les versions d'un projet (cherche `git tag -a`). Il apparaîtra dans l'onglet Tags de ton fork.
+Comme en entreprise : fais le défi sur une branche, ouvre une pull request dans ton fork, et colle la sortie du script de vérification dans la description. Fais relire ton code par un camarade, ou relis-toi dans Files changed, ligne par ligne, avant de fusionner. Une fois la PR fusionnée, marque ce moment par un **tag annoté** `module-01` sur `main`, et pousse-le : c'est ainsi que les équipes numérotent les versions d'un projet (cherche `git tag -a`). Il apparaîtra dans l'onglet Tags de ton fork.
