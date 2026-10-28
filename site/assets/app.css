@@ -19,7 +19,7 @@
   --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px rgba(0,0,0,.45); color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
 h1,h2,h3,h4{margin:0;line-height:1.05;letter-spacing:-.035em;font-weight:700;text-wrap:balance}
 p{margin:0}
@@ -235,6 +235,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--bg-2);border:1px s
 .checks li{display:flex;gap:10px;align-items:center;font-size:15px}
 .checks li{align-items:flex-start}
 .checks li::before{content:"";width:8px;height:8px;margin-top:8px;background:var(--blue);border-radius:2px;flex:none}
+.checks li>span{min-width:0}
 .small{font-size:13.5px;color:var(--muted)}
 .help{display:inline-flex;gap:3px;align-items:center}
 .help i{width:7px;height:7px;border-radius:2px;background:var(--line)}
@@ -456,3 +457,46 @@ pre.mermaid svg{max-width:100%;height:auto}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 .qlist .s{white-space:nowrap}
+
+/* Première visite : trois gestes pour démarrer */
+.welcome{display:grid;gap:22px;border:1px solid var(--line);border-radius:16px;padding:32px;box-shadow:var(--shadow)}
+.welcome .wh{display:grid;gap:10px}
+.welcome h2{font-size:clamp(30px,3.4vw,44px)}
+.welcome .wh p{color:var(--muted);font-size:16.5px;max-width:52ch}
+.wsteps{list-style:none;counter-reset:w;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.wsteps li{counter-increment:w;display:grid;gap:6px;align-content:start;padding:18px;border-radius:12px;background:var(--bg-2);font-size:14.5px;color:var(--muted)}
+.wsteps li::before{content:counter(w);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;font-family:var(--mono);font-weight:600;font-size:13px;margin-bottom:4px}
+.wsteps b{color:var(--ink);font-size:16px}
+@media (max-width:760px){.wsteps{grid-template-columns:1fr}.welcome{padding:20px}}
+
+/* « Enregistré » : la sauvegarde automatique se voit */
+.savetoast{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;padding:9px 14px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:13.5px;font-weight:600;opacity:0;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease;pointer-events:none;max-width:calc(100vw - 32px)}
+.savetoast.on{opacity:1;transform:none}
+.savetoast.ko{background:var(--warn);color:#fff}
+
+/* Fin de leçon */
+.confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
+.donestats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.donestats div{padding:14px 16px 14px 0;display:grid;gap:4px}
+.donestats div+div{padding-left:16px;border-left:1px solid var(--line)}
+.donestats strong{font-size:clamp(24px,2.6vw,32px);letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1}
+.donestats strong small{font-size:.5em;color:var(--muted);font-weight:600}
+.donestats span{color:var(--muted);font-size:13px}
+@media (max-width:640px){.donestats{grid-template-columns:1fr}.donestats div+div{padding-left:0;border-left:0;border-top:1px solid var(--line)}}
+
+/* Bloqué ? */
+.stuck{border-top:1px dashed var(--line);padding-top:12px}
+.stuck summary{cursor:pointer;font-weight:600;font-size:14.5px;color:var(--muted)}
+.stuck summary:hover{color:var(--blue)}
+.stuck-in{display:grid;gap:10px;margin-top:10px}
+.chal textarea.stuckmsg{min-height:200px;font-size:13px}
+
+/* Vidéo facultative, repliée */
+.optvideo{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.optvideo summary{cursor:pointer;font-weight:600;font-size:14.5px}
+.optvideo .video{margin-top:12px}
+
+/* Sur téléphone, un long mot (URL, chemin, code) passe à la ligne au lieu d'élargir la page */
+.md,.chal,.lmain,.md ul,.md ol{grid-template-columns:minmax(0,1fr)}
+.md li{min-width:0}
+code,.md a{overflow-wrap:anywhere}

@@ -36,9 +36,26 @@
     catch (e) { return blank(); }
   }
   let S = load();
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* navigation privée */ } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch (e) { return false; /* navigation privée */ } }
   let saveTimer = 0;
-  function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(save, 300); }
+  // Ce que tu tapes est enregistré tout seul : un petit « Enregistré » le confirme.
+  function saveSoon(quiet) { clearTimeout(saveTimer); saveTimer = setTimeout(() => { const ok = save(); if (!quiet || !ok) savedToast(ok); }, 400); }
+  let toastTimer = 0;
+  function savedToast(ok) {
+    let t = $("#savetoast");
+    if (!t) {
+      t = doc.createElement("div");
+      t.id = "savetoast";
+      t.className = "savetoast";
+      t.setAttribute("role", "status");
+      doc.body.appendChild(t);
+    }
+    t.textContent = ok ? "✓ Enregistré" : "Ce navigateur refuse d'enregistrer (navigation privée ?)";
+    t.classList.toggle("ko", !ok);
+    t.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("on"), ok ? 1400 : 5000);
+  }
 
   const ITEMS = [];
   C.modules.forEach(m => m.items.forEach(it => ITEMS.push(it)));
@@ -76,6 +93,15 @@
     if (it.type === "defi") return "Défi";
     return "Leçon " + itemNumber(it).pos;
   }
+  // Durée indicative : pour savoir si une étape tient dans ta séance.
+  function fmtMin(min) {
+    if (!min) return "";
+    if (min < 60) return min + " min";
+    const h = Math.floor(min / 60), m = min % 60;
+    return h + " h" + (m ? " " + String(m).padStart(2, "0") : "");
+  }
+  const dur = it => it.min ? "environ " + fmtMin(it.min) : "";
+  const remaining = list => list.filter(i => !isDone(i.id)).reduce((a, i) => a + (i.min || 0), 0);
 
   /* ---------- fichiers et markdown ---------- */
 
@@ -236,7 +262,7 @@
       <div class="vmeta"><b>${esc(v.label)}</b><span class="small" data-pos>${pos > 5 ? "Reprise à " + fmtTime(pos) : ""}</span></div>
       ${v.shared ? `<p class="small">${esc(v.shared)}</p>` : ""}`;
     let timer = 0, player = null;
-    const store = () => { try { S.video[v.yt] = player.getCurrentTime(); saveSoon(); } catch (e) { /* lecteur pas prêt */ } };
+    const store = () => { try { S.video[v.yt] = player.getCurrentTime(); saveSoon(true); } catch (e) { /* lecteur pas prêt */ } };
     loadYT().then(YT => {
       if (!box.isConnected) return;
       player = new YT.Player($(".yt", box), {
@@ -294,7 +320,8 @@
     },
     async mergedPR() {
       const prs = await api(`repos/${REPO.owner}/${REPO.name}/pulls?state=closed&per_page=50`) || [];
-      const merged = prs.filter(p => p.merged_at);
+      // Les branches mon-zoomcamp/… sont celles où j'envoie les mises à jour du site : elles ne comptent pas.
+      const merged = prs.filter(p => p.merged_at && !/^mon-zoomcamp\//.test(p.head && p.head.ref || ""));
       return { checks: [{ ok: merged.length > 0, text: merged.length ? `Une pull request fusionnée dans ton fork : « ${merged[0].title} »` : "Aucune pull request fusionnée dans ton fork pour l'instant" }] };
     },
     async moiJson() {
@@ -358,6 +385,11 @@
     routeToken++;
     const [r, a] = location.hash.replace(/^#\/?/, "").split("/");
     setNav(r === "l" ? "seance" : r || "home");
+    // Le titre de l'onglet suit la page : utile avec plusieurs onglets ou dans l'historique.
+    const it = r === "l" && byId(a), mod = r === "m" && C.modules.find(m => m.id === a);
+    const names = { methode: "Comment ça marche", progression: "Ma progression" };
+    const page = it ? it.title : mod ? "Module " + mod.id + " · " + mod.title : names[r];
+    doc.title = page ? page + " · " + C.title : C.title;
     window.scrollTo(0, 0);
     if (r === "m") return viewModule(a);
     if (r === "l") return viewItem(a);
@@ -399,7 +431,7 @@
     </div></section>
 
     <section class="section gut"><div class="max">
-      <div class="today" id="today"></div>
+      ${welcome() || '<div class="today" id="today"></div>'}
 
       <div class="sh" style="margin-top:64px"><div><span class="eyebrow">À ton rythme, sans date limite</span><h2>Ton programme</h2></div></div>
       ${programList()}
@@ -414,17 +446,34 @@
     cleanups.push(startGlobe(), startMosaic());
   }
 
+  // Avant la toute première leçon : comment s'installer, en trois gestes.
+  function welcome() {
+    if (doneCount() || Object.keys(S.les).length) return "";
+    const first = ITEMS[0];
+    return `<div class="welcome">
+      <div class="wh"><span class="eyebrow">Avant ta première séance</span><h2>${ME.prenom ? "Bienvenue, " + esc(ME.prenom) + "." : "Bienvenue."}</h2>
+        <p>Trois gestes, et c'est parti. Ta progression s'enregistre toute seule dans ce navigateur.</p></div>
+      <ol class="wsteps">
+        <li><b>Ouvre ton Codespace</b><span>Dans VS Code : Remote Explorer, puis GitHub Codespaces, puis ton Codespace.</span></li>
+        <li><b>Mets ce site à côté</b><span>Le site d'un côté pour la leçon, VS Code de l'autre pour taper le code.</span></li>
+        <li><b>Fais la leçon 1</b><span>${esc(first.title)} : ${esc(dur(first))}, rien à installer.</span></li>
+      </ol>
+      <div><a class="btn" href="#/l/${first.id}">Commencer la leçon 1 <span class="arr">→</span></a></div>
+    </div>`;
+  }
+
   async function renderToday(cur) {
     const box = $("#today");
+    if (!box) return;
     if (!cur) {
       box.innerHTML = `<div class="today-h"><span class="eyebrow">Tout ce qui est prêt est fait</span><h2>Bravo.</h2><p>Les modules suivants sont en préparation. Dis-moi dans ton projet Claude que tu es prêt pour la suite.</p></div>`;
       return;
     }
     const mod = modOf(cur);
     box.innerHTML = `<div class="today-h">
-        <span class="eyebrow">Module ${mod.id} · ${esc(mod.title)} · ${itemLabel(cur)}</span>
+        <span class="eyebrow">Module ${mod.id} · ${esc(mod.title)} · ${itemLabel(cur)}${cur.min ? " · " + esc(dur(cur)) : ""}</span>
         <h2>Ta séance du jour</h2>
-        <p>${esc(cur.title)}. Les étapes se font dans l'ordre : la suivante s'ouvre quand la précédente est faite.</p>
+        <p>${esc(cur.title)}. Les étapes se font dans l'ordre : la suivante s'ouvre quand la précédente est faite. Tu peux t'arrêter entre deux étapes, tout est enregistré.</p>
         <div><a class="btn" href="#/l/${cur.id}">Continuer <span class="arr">→</span></a></div>
       </div><ol class="seq" id="seq"><li><span class="st">…</span><div><b>Chargement</b></div></li></ol>`;
     const token = routeToken;
@@ -448,7 +497,8 @@
       const s = modStatus(m);
       const cls = s === "done" ? "ok" : s === "progress" || s === "open" ? "now" : "";
       const n = m.items.length;
-      const content = n ? `${m.items.filter(i => i.type === "lesson").length} leçons${m.items.some(i => i.type === "homework") ? ", homework" : ""}${m.items.some(i => i.type === "defi") ? ", défi" : ""}` : `${m.planned} leçons, en préparation`;
+      const total = m.items.reduce((a, i) => a + (i.min || 0), 0);
+      const content = n ? `${m.items.filter(i => i.type === "lesson").length} leçons${m.items.some(i => i.type === "homework") ? ", homework" : ""}${m.items.some(i => i.type === "defi") ? ", défi" : ""}${total ? " · environ " + fmtMin(total) : ""}` : `${m.planned} leçons, en préparation`;
       const gate = s === "done" ? "✓ Validé" : s === "soon" ? "Bientôt" : "Pour valider : " + m.gate;
       return `<li class="${cls}"><span class="wk">${m.id}</span><div><b>${m.id === "P" ? "" : m.id === "W1" ? "Workshop · " : "Module " + Number(m.id) + " · "}${esc(m.title)}</b><small>${content}${m.team || m.items.some(i => i.team) ? ' · <i class="team">Équipe</i>' : ""}</small></div><span class="gate">${esc(gate)}</span></li>`;
     }).join("")}</ol>`;
@@ -479,7 +529,8 @@
       : s === "soon" ? '<span class="lockb">🔒 Bientôt</span>' : '<span class="lockb">🔒 Verrouillé</span>';
     const open = s !== "locked" && s !== "soon";
     const tag = open ? "a" : "div";
-    const count = n ? `${d} / ${n} étapes` : `${m.planned} leçons`;
+    const total = m.items.reduce((a, i) => a + (i.min || 0), 0);
+    const count = n ? `${d} / ${n} étapes${total ? " · " + fmtMin(total) : ""}` : `${m.planned} leçons`;
     return `<${tag} class="mod${open ? "" : " locked"}" ${open ? `href="#/m/${m.id}"` : 'aria-disabled="true" title="Se débloque quand le module précédent est validé"'}>
       <div class="cover" style="--c1:${m.cover[0]};--c2:${m.cover[1]}"><span class="ring">${sats}</span><span class="logo-main${m.wide ? " wide" : ""}">${icon(m.logo[0], m.logo[1])}</span><span class="num">${m.id}</span>${badge}<span class="big">${m.id}</span></div>
       <div class="b"><h3>${esc(m.title)}</h3><div class="chips">${m.chips.map(c => `<span class="chip">${esc(c)}</span>`).join("")}</div>
@@ -616,7 +667,7 @@
       return `<li class="${done ? "done" : now ? "cur" : "lockd"}">
         <span class="c">${done ? "✓" : open ? "" : "🔒"}</span>
         <div>${open ? `<a href="#/l/${it.id}">${esc(it.title)}</a>` : esc(it.title)}${S.maj[it.id] ? '<span class="maj">MAJ</span>' : ""}${it.team ? ' <i class="team">Équipe</i>' : ""}
-        <small>${itemLabel(it)}${it.verify ? " · vérifié sur ton fork" : ""}</small></div>
+        <small>${itemLabel(it)}${it.min ? " · " + esc(fmtMin(it.min)) : ""}${it.verify ? " · vérifié sur ton fork" : ""}</small></div>
         ${now ? `<a class="btn sm" href="#/l/${it.id}">${S.les[it.id] && S.les[it.id].step ? "Reprendre" : "Commencer"}</a>` : ""}</li>`;
     }).join("");
     app.innerHTML = `
@@ -629,7 +680,7 @@
     <section class="gut" style="padding-block:36px 120px"><div class="max modbody">
       ${s === "soon" ? `<div class="chal"><span class="lab">En préparation</span><p>Je construis ce module (${m.planned} leçons) avec la même méthode quand tu approches de la fin du module précédent. Préviens-moi dans ton projet Claude.</p></div>` : ""}
       ${s === "locked" ? `<div class="upd"><b>Verrouillé</b><span>Ce module s'ouvre quand le précédent est validé.</span></div>` : ""}
-      ${m.items.length ? `<div class="modmeta"><span><b>${doneCount(m.items)} / ${m.items.length}</b> étapes faites</span><span>Pour valider : ${esc(m.gate)}</span><span class="help">Niveau d'aide ${[1, 2, 3].map(k => `<i class="${k <= m.help ? "on" : ""}"></i>`).join("")}</span></div>
+      ${m.items.length ? `<div class="modmeta"><span><b>${doneCount(m.items)} / ${m.items.length}</b> étapes faites</span>${remaining(m.items) ? `<span>Reste environ <b>${esc(fmtMin(remaining(m.items)))}</b></span>` : ""}<span>Pour valider : ${esc(m.gate)}</span><span class="help">Niveau d'aide ${[1, 2, 3].map(k => `<i class="${k <= m.help ? "on" : ""}"></i>`).join("")}</span></div>
       <ol class="mlist">${rows}</ol>` : ""}
     </div></section>`;
   }
@@ -659,7 +710,7 @@
     const rows = mod.items.map(it => {
       const done = isDone(it.id), open = isUnlocked(it.id);
       const cls = it === active ? "cur" : done ? "done" : "";
-      const inner = `<span class="c">${done ? "✓" : open ? "" : "🔒"}</span><span>${esc(it.title)}${S.maj[it.id] ? '<span class="maj">MAJ</span>' : ""}<small>${itemLabel(it)}${it.team ? " · Équipe" : ""}</small></span>`;
+      const inner = `<span class="c">${done ? "✓" : open ? "" : "🔒"}</span><span>${esc(it.title)}${S.maj[it.id] ? '<span class="maj">MAJ</span>' : ""}<small>${itemLabel(it)}${it.min ? " · " + esc(fmtMin(it.min)) : ""}${it.team ? " · Équipe" : ""}</small></span>`;
       return `<li class="${cls}${open ? "" : " lockd"}">${open ? `<a href="#/l/${it.id}">${inner}</a>` : `<div>${inner}</div>`}</li>`;
     }).join("");
     const pct = Math.round(doneCount(mod.items) / mod.items.length * 100);
@@ -683,6 +734,7 @@
     breakfix: "Une erreur à provoquer, comprendre et réparer",
     explain: "Quelques lignes avec tes mots"
   };
+  const EXPLAIN_MIN = 100;
   function stepsOf(ov) { return ["discover", "predict", "practice", "breakfix", "explain"].filter(k => k === "discover" || ov[k]); }
 
   // Une ancienne prédiction revient de temps en temps : c'est la révision espacée.
@@ -712,7 +764,7 @@
     app.innerHTML = `<section class="gut"><div class="max lesson">
       <div class="lmain">
         <nav class="crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/m/${mod.id}">Module ${mod.id} · ${esc(mod.title)}</a><span>/</span><span>Leçon ${n.pos}</span></nav>
-        <div class="ltitle"><div><span class="eyebrow">Module ${mod.id} · Leçon ${n.pos} sur ${n.total}</span><h1>${esc(it.title)}</h1></div></div>
+        <div class="ltitle"><div><span class="eyebrow">Module ${mod.id} · Leçon ${n.pos} sur ${n.total}${it.min ? " · " + esc(dur(it)) : ""}</span><h1>${esc(it.title)}</h1></div></div>
         <div id="majbox"></div>
         <ol class="fsteps" id="fsteps" aria-label="Déroulé de la leçon"></ol>
         <div class="tabs" role="tablist">
@@ -831,12 +883,35 @@
       return t;
     }
 
+    // Bloqué ? Un message tout prêt pour Claude, avec l'objectif et ton essai. Il demande un indice, pas la solution.
+    function stuckBox(stepName, objective, getAttempt) {
+      const d = doc.createElement("details");
+      d.className = "stuck";
+      d.innerHTML = `<summary>Bloqué depuis plus de 20 minutes ?</summary>
+        <div class="stuck-in">
+          <p class="small">D'abord, relis l'erreur en entier et cherche-la dans la <a href="${C.faq}" target="_blank" rel="noopener">FAQ du cours</a>. Toujours bloqué : prépare un message, colle-le dans ton projet Claude et ajoute l'erreur exacte.</p>
+          <div class="row"><button class="btn ghost sm" type="button">Préparer mon message pour Claude</button></div>
+          <textarea class="mono stuckmsg" readonly hidden aria-label="Ton message pour Claude"></textarea>
+        </div>`;
+      const b = $("button", d), out = $("textarea", d);
+      b.addEventListener("click", async () => {
+        const tried = (getAttempt() || "").trim() || "(rien encore)";
+        const text = `Je suis bloqué au module ${mod.id}, leçon « ${it.title} », étape « ${stepName} ».\n\nL'objectif :\n${(objective || "").trim()}\n\nCe que j'ai essayé :\n${tried}\n\nL'erreur exacte que je vois :\n(colle-la ici)\n\nNe me donne pas la solution : un indice ou une question pour me débloquer.`;
+        out.value = text;
+        out.hidden = false;
+        try { await navigator.clipboard.writeText(text); flash(b, "Copié ✓ Colle-le dans ton projet Claude"); }
+        catch (e) { out.focus(); out.select(); flash(b, "Texte sélectionné : copie-le avec Ctrl + C"); }
+      });
+      return d;
+    }
+
     async function stepDiscover(box) {
       const rev = await revisionCard(it);
       if (token !== routeToken) return;
       if (rev) box.appendChild(rev);
-      (it.videos || []).forEach(v => { const vb = card("video", ""); box.appendChild(vb); mountVideo(vb, v); });
       if (ov.brief) mdCard(box, "chal brief", "L'essentiel en français", ov.brief);
+      const vids = it.videos || [];
+      vids.filter(v => !v.optional).forEach(v => { const vb = card("video", ""); box.appendChild(vb); mountVideo(vb, v); });
       listItems(ov.codespaces).forEach(t => box.appendChild(card("tip", `<b>Codespaces</b><span>${mdInline(t)}</span>`)));
       listItems(ov.verified).forEach(t => box.appendChild(card("upd", `<b>Vérifié</b><span>${mdInline(t)}</span>`)));
       if (course) {
@@ -845,6 +920,13 @@
         box.appendChild(c);
         renderMermaid(c);
       }
+      vids.filter(v => v.optional).forEach(v => {
+        const d = doc.createElement("details");
+        d.className = "optvideo";
+        d.innerHTML = `<summary>Pour aller plus loin, si tu as le temps : ${esc(v.label)}</summary><div class="video"></div>`;
+        box.appendChild(d);
+        d.addEventListener("toggle", () => { if (d.open && !$(".player", d)) mountVideo($(".video", d), v); });
+      });
       box.appendChild(nextBtn(steps.length > 1 ? "J'ai regardé et lu, je passe à la suite" : "Terminer", 0));
     }
 
@@ -873,12 +955,14 @@
     function stepPractice(box) {
       const c = mdCard(box, "chal", "À toi de jouer", ov.practice);
       const cons = listItems(ov.constraints);
-      if (cons.length) c.insertAdjacentHTML("beforeend", `<p class="small">Ton résultat doit respecter :</p><ul class="checks">${cons.map(x => `<li>${mdInline(x)}</li>`).join("")}</ul>`);
+      if (cons.length) c.insertAdjacentHTML("beforeend", `<p class="small">Ton résultat doit respecter :</p><ul class="checks">${cons.map(x => `<li><span>${mdInline(x)}</span></li>`).join("")}</ul>`);
       if (ov.team) box.appendChild(card("teamc", `<b>Travail en équipe</b><span>${mdInline(ov.team)}</span>`));
-      const t = area("attempt", "mono", "Ton essai : les commandes, le code ou le fichier que tu as écrits dans ton Codespace.", 25);
+      const t = it.prose ? area("attempt", "", "Ton texte, ici ou dans ton Codespace puis collé ici.", 25)
+        : area("attempt", "mono", "Ton essai : les commandes, le code ou le fichier que tu as écrits dans ton Codespace.", 25);
       c.appendChild(t);
       const hb = hintBox(listItems(ov.hints), "hints", "Un indice");
       c.appendChild(hb);
+      c.appendChild(stuckBox("Pratiquer", ov.practice, () => st.attempt));
       const reveal = doc.createElement("button");
       reveal.className = "btn";
       reveal.textContent = "J'ai essayé : comparer avec la solution";
@@ -939,6 +1023,7 @@
       c.appendChild(hintBox(listItems(ov["breakfix-hints"]), "bfHints", "Un indice"));
       const t = area("bf", "", "Ce qui s'est passé, la cause, et comment tu as réparé.", 40);
       c.appendChild(t);
+      c.appendChild(stuckBox("Casser et réparer", ov.breakfix, () => st.bf));
       const ok = doc.createElement("button");
       ok.className = "btn";
       ok.textContent = "Voir l'explication";
@@ -957,7 +1042,7 @@
 
     function stepExplain(box) {
       const c = mdCard(box, "chal", "Explique avec tes mots", ov.explain);
-      const t = area("explain", "big", "Sans relire le cours. Si tu bloques, c'est le signe qu'il faut revoir un passage.", 150);
+      const t = area("explain", "big", "Deux ou trois phrases, sans relire le cours. Si tu bloques, c'est le signe qu'il faut revoir un passage.", EXPLAIN_MIN);
       c.appendChild(t);
       const count = doc.createElement("p");
       count.className = "small";
@@ -966,26 +1051,43 @@
       fin.className = "btn";
       fin.textContent = "Terminer la leçon ✓";
       c.appendChild(fin);
-      const upd = () => { const n = (t.value || "").trim().length; count.textContent = `${n} caractères · au moins 150`; fin.disabled = n < 150; };
+      const upd = () => { const n = (t.value || "").trim().length; count.textContent = n >= EXPLAIN_MIN ? `${n} caractères · c'est bon` : `${n} caractères · encore ${EXPLAIN_MIN - n} pour terminer`; fin.disabled = n < EXPLAIN_MIN; };
       t.addEventListener("change-len", upd);
       upd();
       fin.addEventListener("click", () => {
         markDone(it.id);
         st.step = steps.length;
+        st.justDone = true;
         save();
         $("#lnav").innerHTML = itemNav(it);
         $(".curr").outerHTML = curriculum(mod, it);
         go(steps.length);
+        celebrate(doneCount(mod.items) === mod.items.length);
       });
     }
 
     function stepSummary(box) {
       const next = ITEMS[idx(it.id) + 1];
-      const c = card("donec", `<span class="lab">Leçon terminée</span><h2>Bien joué.</h2>
+      const md = doneCount(mod.items), all = doneCount();
+      const modDone = md === mod.items.length;
+      const fresh = st.justDone;
+      if (fresh) { delete st.justDone; save(); }
+      const nextLabel = next && next.type === "lesson" ? `${itemLabel(next)} suivante` : next ? `Ensuite, ${itemLabel(next).toLowerCase()}` : "";
+      const title = fresh && modDone ? `Module ${mod.id} validé.` : fresh ? "Bien joué." : "Leçon déjà terminée.";
+      const c = card("donec", `<span class="lab">Leçon terminée</span><h2>${title}</h2>
+        ${fresh && modDone && next ? `<p>Tout le module ${mod.id} est fait. Le module suivant vient de s'ouvrir.</p>` : ""}
+        <div class="donestats">
+          <div><strong>${md}<small> / ${mod.items.length}</small></strong><span>étapes du module ${mod.id}</span></div>
+          <div><strong>${Math.round(all / ITEMS.length * 100)}<small> %</small></strong><span>du cours prêt</span></div>
+          ${remaining(mod.items) ? `<div><strong>${esc(fmtMin(remaining(mod.items)))}</strong><span>environ, pour finir le module</span></div>` : ""}
+        </div>
         ${st.explain ? `<p class="small">Ton explication :</p><blockquote>${esc(st.explain)}</blockquote>
         <div class="row"><button class="btn ghost sm" id="copy-exp">Copier mon explication pour l'envoyer à Claude</button></div>` : ""}
-        <p>Tu peux revenir sur chaque étape avec la barre du haut.${next ? "" : " C'est la dernière étape disponible pour l'instant."}</p>
-        ${next ? `<a class="btn" href="#/l/${next.id}">${itemLabel(next)} suivante : ${esc(next.title)} <span class="arr">→</span></a>` : ""}`);
+        ${all % 5 === 0 && fresh ? `<div class="tip"><b>Sauvegarde</b><span>${all} étapes faites : c'est le bon moment pour <a href="#/progression">exporter ta progression</a> dans un fichier. Elle n'est gardée que dans ce navigateur.</span></div>` : ""}
+        ${next ? `<p>${next.min ? `La suite prend ${esc(dur(next))}. ` : ""}Tu peux enchaîner, ou t'arrêter ici : le bouton Continuer, en haut, te ramènera au bon endroit.</p>
+          <div><a class="btn" href="#/l/${next.id}">${nextLabel} : ${esc(next.title)} <span class="arr">→</span></a></div>`
+          : `<p>C'est la dernière étape disponible pour l'instant. Dis-moi dans ton projet Claude que tu es prêt pour la suite.</p>`}
+        <p class="small">Tu peux revenir sur chaque étape avec la barre du haut.</p>`);
       box.appendChild(c);
       const cp = $("#copy-exp", c);
       if (cp) cp.addEventListener("click", async () => {
@@ -1019,6 +1121,33 @@
     if (changed && token === routeToken) {
       $("#majbox").innerHTML = `<div class="upd"><b>Leçon modifiée</b><span>Le cours officiel a changé cette leçon depuis que j'ai écrit ses exercices. Le texte affiché est la nouvelle version, mais les exercices peuvent ne plus correspondre exactement. Dis-le-moi dans ton projet Claude et je les mets à jour.</span></div>`;
     }
+  }
+
+  // Une pluie de petits carrés aux couleurs du site, à la fin d'une leçon. Rien si tu as réduit les animations.
+  function celebrate(big) {
+    if (reduce) return;
+    const cv = doc.createElement("canvas");
+    cv.className = "confetti";
+    cv.setAttribute("aria-hidden", "true");
+    doc.body.appendChild(cv);
+    const d = devicePixelRatio || 1, W = innerWidth, H = innerHeight;
+    cv.width = W * d; cv.height = H * d;
+    const x = cv.getContext("2d");
+    x.scale(d, d);
+    const COLS = ["#146ef5", "#ff6b2c", "#ee4fb6", "#c6f432", "#1fae5b"];
+    const ps = Array.from({ length: big ? 170 : 90 }, () => ({
+      x: W / 2 + (Math.random() - .5) * W * .35, y: H * .4,
+      vx: (Math.random() - .5) * 13, vy: -Math.random() * 13 - 5,
+      s: 5 + Math.random() * 6, c: COLS[Math.floor(Math.random() * COLS.length)]
+    }));
+    const t0 = performance.now(), LIFE = big ? 2.4 : 1.7;
+    (function frame(t) {
+      const k = (t - t0) / 1000;
+      x.clearRect(0, 0, W, H);
+      x.globalAlpha = Math.max(0, 1 - k / LIFE);
+      ps.forEach(p => { p.vy += .38; p.vx *= .99; p.x += p.vx; p.y += p.vy; x.fillStyle = p.c; x.fillRect(p.x, p.y, p.s, p.s); });
+      if (k < LIFE) requestAnimationFrame(frame); else cv.remove();
+    })(t0);
   }
 
   function flash(btn, msg) {
@@ -1093,7 +1222,7 @@
         renderMd($("#hwsubmit"), ov.submit || "", base);
       } else {
         end.innerHTML = `<button class="btn" id="hwdone" ${all ? "" : "disabled"}>Terminer le homework ✓</button><p class="small">${all ? "Toutes les questions sont faites." : "Chaque question a besoin d'une réponse et de ton raisonnement."}</p>`;
-        $("#hwdone").addEventListener("click", () => { markDone(it.id); $("#lnav").innerHTML = itemNav(it); renderList(); renderOutro(); });
+        $("#hwdone").addEventListener("click", () => { markDone(it.id); $("#lnav").innerHTML = itemNav(it); renderList(); renderOutro(); celebrate(false); });
       }
     }
     function shortTitle(t) { return t.replace(/^Understanding /i, "").replace(/ and docker-compose/i, ""); }
@@ -1204,6 +1333,7 @@
       if (h && h === it.codeHash) {
         markDone(it.id);
         viewDefi(it);
+        celebrate(doneCount(mod.items) === mod.items.length);
       } else {
         $("#codemsg").textContent = "Ce n'est pas le bon code. Relance le script : il n'affiche le code que quand les cinq vérifications sont vertes.";
       }

@@ -62,7 +62,7 @@ Le repo officiel corrige une faute dans la leçon `01-docker-terraform/04-postgr
 D'abord, synchronise ton fork **à la main** depuis ton Codespace pour comprendre le mécanisme. Ensuite, écris un workflow GitHub Actions qui le fait **tout seul**.
 
 @@ constraints
-- À la main : le remote `upstream` pointe vers le repo de DataTalksClub, et tu as vu combien de commits ton fork avait de retard avant de fusionner
+- À la main : le remote `upstream` pointe vers le repo de DataTalksClub, et tu as vu combien de commits ton fork avait de retard avant de fusionner (zéro, c'est possible : le badge « Fork à jour » en haut du site te le dit)
 - Le workflow est dans `.github/workflows/sync-fork.yml` et s'appelle « Synchroniser le fork »
 - Il se lance tout seul chaque nuit **et** il a un bouton pour le lancer à la main
 - Il déclare seulement les permissions dont il a besoin
@@ -70,7 +70,7 @@ D'abord, synchronise ton fork **à la main** depuis ton Codespace pour comprendr
 - Tu l'as lancé à la main depuis l'onglet Actions, et il est vert
 
 @@ hints
-- À la main : `git remote add upstream <url>`, puis `git fetch upstream`. Pour compter le retard : `git log --oneline main..upstream/main`.
+- À la main : `git remote add upstream <url>`, puis `git fetch upstream`. Pour compter le retard : `git log --oneline main..upstream/main`. Avant de fusionner, fais un `git pull` pour partir de ton fork à jour.
 - Dans le workflow : la commande `gh repo sync` sait synchroniser un fork. Elle a besoin d'un jeton dans la variable d'environnement `GH_TOKEN`, et le nom de ton repo est disponible dans `github.repository`.
 - Pour Pages : l'API REST a une route `POST /repos/{owner}/{repo}/pages/builds`, que `gh api` peut appeler. Les permissions à déclarer sont `contents` (écriture) et `pages` (écriture).
 - Si l'onglet Actions de ton fork affiche un message disant que les workflows sont désactivés sur ce fork, clique sur le bouton pour les activer.
@@ -79,10 +79,11 @@ D'abord, synchronise ton fork **à la main** depuis ton Codespace pour comprendr
 À la main :
 ~~~bash
 git remote add upstream https://github.com/DataTalksClub/data-engineering-zoomcamp.git
+git switch main
+git pull                                  # d'abord, ce qui est déjà sur ton fork
 git fetch upstream
 git log --oneline main..upstream/main     # les commits qui te manquent
-git switch main
-git merge upstream/main
+git merge --no-edit upstream/main         # --no-edit : message de fusion automatique
 git push
 ~~~
 
