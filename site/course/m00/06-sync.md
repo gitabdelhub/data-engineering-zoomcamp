@@ -69,6 +69,72 @@ D'abord, synchronise ton fork **à la main** depuis ton Codespace pour comprendr
 - Après la synchro, il demande à GitHub Pages de reconstruire le site
 - Tu l'as lancé à la main depuis l'onglet Actions, et il est vert
 
+@@ guide
+### 1. Ajoute le remote upstream
+
+Regarde d'abord les remotes que ton Codespace connaît : `git remote -v`. Tu ne vois que `origin`, ton fork. Ajoute le repo officiel sous le nom `upstream` :
+
+~~~bash
+git remote add upstream https://github.com/DataTalksClub/data-engineering-zoomcamp.git
+~~~
+
+Relance `git remote -v` : les deux apparaissent maintenant.
+
+### 2. Compte ton retard
+
+Pars de ton fork à jour (`git switch main` puis `git pull`). Ensuite, `git fetch upstream` télécharge les nouveautés du repo officiel **sans toucher à tes fichiers**. Pour voir les commits que le repo officiel a et que ton `main` n'a pas :
+
+~~~bash
+git log --oneline main..upstream/main
+~~~
+
+Lis `main..upstream/main` comme « ce qui est dans `upstream/main` mais pas dans `main` ». Une ligne par commit qui te manque. Rien du tout : ton fork est à jour, c'est possible.
+
+### 3. Fusionne et pousse
+
+`git merge` suivi du nom de la branche à fusionner, ici `upstream/main`. Ajoute `--no-edit` pour garder le message de fusion automatique, sinon Git ouvre un éditeur de texte dans le terminal. Puis `git push` envoie le résultat sur ton fork.
+
+### 4. Comprends un workflow sur un exemple
+
+Voici un autre workflow, qui n'a rien à voir avec la synchro. Il dit bonjour tous les lundis à 8 h UTC, et il a un bouton pour le lancer à la main :
+
+~~~yaml
+name: Dire bonjour
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"     # tous les lundis à 8 h UTC
+  workflow_dispatch:         # le bouton « Run workflow »
+
+permissions:
+  contents: read             # il lit le repo, rien de plus
+
+jobs:
+  bonjour:
+    runs-on: ubuntu-latest   # une machine Linux fournie par GitHub
+    steps:
+      - name: Afficher un message
+        run: echo "Bonjour $REPO"
+        env:
+          REPO: ${{ github.repository }}
+~~~
+
+En YAML, **l'indentation compte** : deux espaces par niveau, jamais de tabulation. Une ligne mal décalée et GitHub refuse le fichier.
+
+### 5. Écris le tien
+
+Crée `.github/workflows/sync-fork.yml` à la racine du fork (`code .github/workflows/sync-fork.yml`). Pars de la structure de l'exemple, puis change :
+
+- le `name` : « Synchroniser le fork » ;
+- le planning : chaque nuit, à l'heure de ton choix ;
+- les permissions : écrire dans le repo (`contents`) et reconstruire le site (`pages`) ;
+- un premier step qui lance `gh repo sync` sur ton repo, branche `main`. `gh` a besoin d'un jeton : passe-lui `${{ secrets.GITHUB_TOKEN }}` dans la variable d'environnement `GH_TOKEN` ;
+- un deuxième step qui appelle l'API de Pages avec `gh api` (la route est dans les indices).
+
+### 6. Pousse et lance-le à la main
+
+Commite et pousse le fichier, par une branche et une PR comme d'habitude, ou directement sur `main`. Puis, sur GitHub : onglet **Actions**, ton workflow dans la liste de gauche, bouton **Run workflow**. Clique sur l'exécution qui démarre pour voir chaque step. Au vert ✓, c'est gagné. Au rouge ✗, ouvre le step en échec : la dernière ligne dit ce qui ne va pas.
+
 @@ hints
 - À la main : `git remote add upstream <url>`, puis `git fetch upstream`. Pour compter le retard : `git log --oneline main..upstream/main`. Avant de fusionner, fais un `git pull` pour partir de ton fork à jour.
 - Dans le workflow : la commande `gh repo sync` sait synchroniser un fork. Elle a besoin d'un jeton dans la variable d'environnement `GH_TOKEN`, et le nom de ton repo est disponible dans `github.repository`.
@@ -78,13 +144,14 @@ D'abord, synchronise ton fork **à la main** depuis ton Codespace pour comprendr
 @@ solution
 À la main :
 ~~~bash
+# Faire connaître le repo officiel à Git, sous le nom upstream
 git remote add upstream https://github.com/DataTalksClub/data-engineering-zoomcamp.git
 git switch main
 git pull                                  # d'abord, ce qui est déjà sur ton fork
-git fetch upstream
+git fetch upstream                        # télécharger les nouveautés, sans toucher aux fichiers
 git log --oneline main..upstream/main     # les commits qui te manquent
-git merge --no-edit upstream/main         # --no-edit : message de fusion automatique
-git push
+git merge --no-edit upstream/main         # les fusionner ; --no-edit : message automatique
+git push                                  # envoyer le résultat sur ton fork
 ~~~
 
 Le workflow `.github/workflows/sync-fork.yml` :
@@ -105,11 +172,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Récupérer les nouveautés du repo officiel
+        # gh repo sync met ton fork au niveau du repo dont il est issu
         run: gh repo sync "$REPO" --branch main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
       - name: Reconstruire le site
+        # un push fait par GITHUB_TOKEN ne relance pas Pages : on le demande à l'API
         run: gh api -X POST "repos/$REPO/pages/builds"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
