@@ -565,7 +565,7 @@
   function startGlobe() {
     const stage = $("#stage"), gc = $("#globe"), orbitEl = $("#orbit");
     if (!stage) return () => {};
-    const ORB = [["docker", "#2496ED", "Docker"], ["kestra", "", "Kestra"], ["googlebigquery", "#4285F4", "BigQuery"], ["dbt", "#FF694B", "dbt"], ["bruin", "", "Bruin"], ["apachespark", "#E25A1C", "Spark"], ["apachekafka", "#231F20", "Kafka"], ["terraform", "#844FBA", "Terraform"]];
+    const ORB = [["docker", "#2496ED", "Docker"], ["apacheairflow", "#017CEE", "Airflow"], ["googlebigquery", "#4285F4", "BigQuery"], ["dbt", "#FF694B", "dbt"], ["bruin", "", "Bruin"], ["apachespark", "#E25A1C", "Spark"], ["apachekafka", "#231F20", "Kafka"], ["terraform", "#844FBA", "Terraform"]];
     const chips = ORB.map(o => { const s = doc.createElement("span"); s.innerHTML = `<i class="oi">${icon(o[0], o[1])}</i>${o[2]}`; orbitEl.appendChild(s); return s; });
     const N = 520, pts = [], ACC = ["#ff6b2c", "#ee4fb6", "#c6f432", "#14c3c3"];
     for (let i = 0; i < N; i++) {
