@@ -37,7 +37,7 @@ Quand une commande occupe le terminal (un serveur, une base de données), ouvre 
 
 ## L'onglet Ports
 
-Quand un programme écoute sur un port (pgAdmin sur 8085, Kestra sur 8080…), VS Code le détecte et l'affiche dans l'onglet **Ports**, à côté du terminal.
+Quand un programme écoute sur un port (pgAdmin sur 8085, Airflow sur 8080…), VS Code le détecte et l'affiche dans l'onglet **Ports**, à côté du terminal.
 
 Comme tu utilises VS Code installé sur ton PC, VS Code fait un **tunnel** : le port du Codespace est aussi ouvert sur ton PC. Les adresses `http://localhost:8085` des leçons marchent donc telles quelles dans le navigateur de ton PC. La colonne **Forwarded Address** de l'onglet Ports te donne l'adresse exacte, et l'icône globe l'ouvre.
 

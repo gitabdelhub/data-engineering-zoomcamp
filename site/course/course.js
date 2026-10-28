@@ -21,10 +21,10 @@ window.COURSE = {
       gate: "Homework 1 et défi des aéroports", items: []
     },
     {
-      id: "02", title: "Orchestration", chips: ["Kestra", "GCS"],
-      cover: ["#a950ff", "#2c0059"], logo: ["kestra"],
+      id: "02", title: "Orchestration avec Airflow", chips: ["Airflow 3", "GCS"],
+      cover: ["#4aa8ff", "#0b3f8a"], logo: ["apacheairflow", "#017CEE"],
       sats: [["googlecloud", "#4285F4"], ["postgresql", "#4169E1"]], help: 3,
-      planned: 18, gate: "Homework 2", items: []
+      planned: 10, gate: "Homework 2", items: []
     },
     {
       id: "W1", title: "Workshop ingestion", chips: ["dlt", "API"],
