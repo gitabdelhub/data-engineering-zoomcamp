@@ -108,15 +108,15 @@ Avant de fusionner, envoie-moi le lien de ta pull request dans ton projet Claude
 - La PR a été ouverte dans mon fork, pas dans le repo de DataTalksClub
 
 @@ breakfix
-Provoque un **conflit** et résous-le. Depuis `main`, crée deux branches `conflit-a` et `conflit-b`. Dans chacune, modifie **la même ligne** du titre de `mon-travail/README.md` de deux façons différentes, et commite. Fusionne `conflit-a` dans `main`, puis essaie de fusionner `conflit-b` dans `main`.
+Provoque un **conflit** et résous-le, sans toucher à `main`. Depuis `main` à jour, crée une branche `conflit-a` : change le titre de `mon-travail/README.md` et commite. Reviens sur `main`, crée une branche `conflit-b` : change **la même ligne** autrement, et commite. Toujours sur `conflit-b`, fusionne `conflit-a`.
 
 @@ breakfix-hints
-- Pour fusionner en local : place-toi sur `main`, puis `git merge conflit-a`. La deuxième fusion va s'arrêter sur un conflit.
+- Pour fusionner une branche dans celle où tu es : `git merge conflit-a`. La fusion va s'arrêter sur un conflit.
 - Ouvre le fichier : Git a mis les deux versions entre des marqueurs `<<<<<<<`, `=======` et `>>>>>>>`. Garde la version que tu veux et supprime les marqueurs.
-- Un conflit résolu se termine comme un commit normal : `git add` du fichier, puis `git commit`. Ensuite, supprime les deux branches.
+- Un conflit résolu se termine comme un commit normal : `git add` du fichier, puis `git commit --no-edit`. Ensuite, reviens sur `main` et supprime les deux branches avec `git branch -D`.
 
 @@ breakfix-answer
-La deuxième fusion s'arrête avec `CONFLICT (content): Merge conflict in mon-travail/README.md`. Tu choisis la bonne version dans le fichier, tu enlèves les marqueurs, puis `git add mon-travail/README.md` et `git commit`. En équipe, un conflit n'est pas une erreur : c'est Git qui te demande de décider, parce que deux personnes ont changé la même chose.
+La fusion s'arrête avec `CONFLICT (content): Merge conflict in mon-travail/README.md`. Tu choisis la bonne version dans le fichier, tu enlèves les marqueurs, puis `git add mon-travail/README.md` et `git commit --no-edit`. Pour finir : `git switch main` puis `git branch -D conflit-a conflit-b` (`-D` force la suppression de branches qui n'ont pas été fusionnées dans `main`). En équipe, un conflit n'est pas une erreur : c'est Git qui te demande de décider, parce que deux personnes ont changé la même chose.
 
 @@ explain
 Pourquoi les équipes ne poussent-elles jamais directement sur `main` ? Donne deux raisons concrètes.

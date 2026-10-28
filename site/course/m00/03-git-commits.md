@@ -46,6 +46,12 @@ On les liste dans un fichier `.gitignore` : Git fait alors comme s'ils n'existai
 
 Dans un Codespace, ton nom et ton e-mail GitHub sont déjà configurés. Vérifie avec `git config user.name` et `git config user.email`.
 
+## Toujours commencer par `git pull`
+
+Ton fork sur GitHub peut recevoir des commits sans passer par ton Codespace : la synchronisation avec le repo officiel, les mises à jour de ce site… Avant de travailler, récupère-les avec `git pull`. Sinon, ton `git push` sera refusé avec un message `rejected` et `fetch first`.
+
+Si un jour `git pull` répond `You have divergent branches`, c'est que GitHub et ton Codespace ont chacun des commits que l'autre n'a pas. Lance une fois `git config --global pull.rebase false`, puis `git pull --no-edit` : Git fusionne les deux historiques avec un message de fusion automatique.
+
 @@ predict
 Tu modifies `README.md`, puis tu lances `git add README.md`. Ensuite, tu modifies **encore** `README.md`, et tu lances `git commit -m "..."`. Quelle version du fichier est enregistrée dans le commit ?
 
@@ -56,6 +62,7 @@ La version **du moment du `git add`**. La deuxième modification n'est pas prép
 Enregistre ton espace de travail dans l'historique de ton fork, proprement.
 
 @@ constraints
+- Tu as commencé par récupérer ce qui est sur GitHub avec `git pull`
 - `mon-travail/README.md` contient ton contrat d'apprentissage de la leçon 1, sous le titre
 - Un fichier `mon-travail/.gitignore` ignore au minimum : `.venv/`, les fichiers `.parquet`, les fichiers `.csv.gz`, les fichiers `.env` et un dossier `keys/`
 - **Deux commits séparés** : un pour le README, un pour le `.gitignore`, chacun avec un message clair
@@ -64,11 +71,12 @@ Enregistre ton espace de travail dans l'historique de ton fork, proprement.
 @@ hints
 - Pour faire deux commits séparés, ne fais pas `git add .` : prépare un seul fichier à la fois, et vérifie avec `git status` avant chaque commit.
 - Dans un `.gitignore`, une ligne = une règle. `*.parquet` ignore tous les fichiers qui finissent par `.parquet`, et `keys/` ignore un dossier.
-- Ta branche s'appelle `main`. Pour pousser : `git push`. Si Git te demande une « upstream branch », lis bien le message : il te donne la commande exacte.
+- Ta branche s'appelle `main`. Pour pousser : `git push`. Si le push est refusé avec `fetch first`, fais `git pull` puis repousse. Lis toujours le message de Git en entier : il donne souvent la commande exacte.
 
 @@ solution
 ~~~bash
 cd /workspaces/data-engineering-zoomcamp
+git pull
 # écrire le contrat dans mon-travail/README.md avec l'éditeur, puis :
 git add mon-travail/README.md
 git commit -m "docs: mon contrat d'apprentissage"
@@ -95,20 +103,21 @@ gitignore
 - Sur la page GitHub de mon fork, le dossier `mon-travail` apparaît avec les deux fichiers
 
 @@ breakfix
-Crée `mon-travail/secret.env` avec la ligne `PASSWORD=test`. Force-le dans un commit avec `git add -f mon-travail/secret.env` puis `git commit -m "oups"`, **sans pousser**. Un secret est maintenant dans ton historique. Retire-le du dernier commit sans supprimer le fichier de ton disque.
+Ajoute une ligne à `mon-travail/README.md`. Crée aussi `mon-travail/.env` avec la ligne `PASSWORD=test` : c'est un « secret ». Ton `.gitignore` l'ignore, alors force-le : `git add mon-travail/README.md`, puis `git add -f mon-travail/.env`, puis `git commit -m "Complète le README"`. **Ne pousse pas.** Le secret est maintenant dans ton dernier commit. Retire-le de ce commit, en gardant le changement du README et sans supprimer le fichier de ton disque.
 
 @@ breakfix-hints
 - Il existe une option de `git rm` qui retire un fichier de Git sans le supprimer du disque.
-- Un commit qui n'a pas encore été poussé peut être modifié : regarde l'option `--amend` de `git commit`.
-- Vérifie le résultat avec `git show --stat HEAD` : le fichier ne doit plus apparaître dans le commit.
+- Un commit qui n'a pas encore été poussé peut être refait : regarde l'option `--amend` de `git commit`. Avec `--no-edit`, il garde le même message.
+- Vérifie le résultat avec `git show --stat HEAD` : seul `README.md` doit apparaître dans le commit.
 
 @@ breakfix-answer
 ~~~bash
-git rm --cached mon-travail/secret.env
-git commit --amend -m "..."     # ou annuler le commit avec : git reset HEAD~1
-git show --stat HEAD
+git rm --cached mon-travail/.env
+git commit --amend --no-edit
+git show --stat HEAD      # seul README.md reste dans le commit
+ls mon-travail/.env       # le fichier est toujours sur ton disque, et Git l'ignore de nouveau
 ~~~
-Ici, ton `.gitignore` ignorait déjà les `.env` : c'est le `-f` qui l'a forcé, et c'est pour ça que la règle existe. **Si un secret a déjà été poussé**, le retirer de Git ne suffit pas : il faut considérer qu'il est public et le changer (nouveau mot de passe, nouvelle clé).
+Ton `.gitignore` ignorait déjà les `.env` : c'est le `-f` qui l'a forcé, et c'est pour ça que la règle existe. Tu peux maintenant pousser ton commit. **Si un secret a déjà été poussé**, le retirer de Git ne suffit pas : il faut considérer qu'il est public et le changer (nouveau mot de passe, nouvelle clé).
 
 @@ explain
 Explique la différence entre `git add`, `git commit` et `git push`, comme si tu l'expliquais à un camarade de ta promo.
