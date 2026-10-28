@@ -4,7 +4,63 @@ Le homework officiel de la cohorte 2026, question par question. Ici, jamais de r
 Ton code et tes requêtes vont dans `mon-travail/module-01/homework/`, avec un `README.md` qui reprend tes réponses et tes requêtes SQL, comme le demande l'énoncé.
 
 @@ submit
-La cohorte 2026 est terminée : le formulaire officiel n'accepte sans doute plus de réponses. Ton rendu, c'est ton dossier `mon-travail/module-01/homework/` poussé sur ton fork. Envoie-moi le lien dans ton projet Claude : je vérifie ton raisonnement question par question, sans te donner les réponses, et je te dis où creuser.
+La cohorte 2026 est terminée : le formulaire officiel n'accepte sans doute plus de réponses. Ton rendu, c'est ton dossier `mon-travail/module-01/homework/` poussé sur ton fork, avec ton `README.md`. Pour vérifier tes réponses sans les recevoir toutes faites : compare-les avec celles d'autres étudiants sur le Slack de DataTalksClub (canal `#course-data-engineering`), ou cherche « de zoomcamp 2026 homework 1 » sur GitHub, où beaucoup publient leur rendu. Si tu as Claude, il peut relire ton raisonnement question par question.
+
+@@ guide
+Ici, rien que la préparation : les réponses, c'est toi qui les trouves, avec les indices de chaque question.
+
+### 1. Le dossier du homework
+
+~~~bash
+mkdir -p /workspaces/data-engineering-zoomcamp/mon-travail/module-01/homework
+cd /workspaces/data-engineering-zoomcamp/mon-travail/module-01/homework
+~~~
+
+Ajoute `*.parquet` et `*.csv` au `.gitignore` de ce dossier : les données ne se commitent pas.
+
+### 2. Démarre ta base
+
+Dans ton dossier `compose` de la leçon 9 : `docker compose up -d pgdatabase pgadmin`. Le `-d` les lance en arrière-plan, et nommer les services évite de relancer l'ingestion.
+
+### 3. Télécharge les données
+
+`wget` télécharge un fichier depuis une adresse web. Les deux adresses sont dans la partie « Prepare the Data » de l'énoncé : les trajets verts de novembre 2025 (en **Parquet**) et la table des zones (en CSV). Lance `wget` suivi de chaque adresse, puis `ls -lh` pour voir les fichiers et leur taille.
+
+### 4. Charge-les dans Postgres
+
+Ton script de la leçon 6 lit des CSV par morceaux. Ici, le fichier est un Parquet assez petit pour être lu d'un coup : un petit script suffit. Crée `load_homework.py` :
+
+~~~python
+import pandas as pd
+from sqlalchemy import create_engine
+
+engine = create_engine("postgresql+psycopg://root:root@localhost:5432/ny_taxi")
+
+# Le Parquet garde les types : les dates sont déjà des dates
+trips = pd.read_parquet("green_tripdata_2025-11.parquet")
+trips.to_sql(name="green_trips_2025_11", con=engine, if_exists="replace", index=False)
+print(len(trips), "trajets chargés")
+
+zones = pd.read_csv("taxi_zone_lookup.csv")
+zones.to_sql(name="zones", con=engine, if_exists="replace", index=False)
+print(len(zones), "zones chargées")
+~~~
+
+Lance-le avec l'environnement de ton projet `pipeline`, qui a déjà pandas, pyarrow et sqlalchemy :
+
+~~~bash
+uv run --project ../pipeline python load_homework.py
+~~~
+
+Adapte `root:root` si ton `.env` de la leçon 9 utilise d'autres identifiants.
+
+### 5. Réponds question par question
+
+Ouvre pgAdmin (Query Tool) ou pgcli, et lance tes requêtes sur `green_trips_2025_11` et `zones`. Dans ton `README.md`, note pour chaque question ta réponse **et** la requête ou la commande qui t'y a mené. Les leçons 6 et 10 contiennent toutes les formes de SQL dont tu as besoin : `WHERE`, `GROUP BY`, `JOIN`, `ORDER BY`, `LIMIT`.
+
+### 6. Pousse ton rendu
+
+`git add`, `git commit`, `git push` du dossier `homework` (sans les données, grâce au `.gitignore`).
 
 @@ q1
 - L'option `--entrypoint` de `docker run` remplace le programme lancé au démarrage du conteneur. Tu l'as utilisée à la leçon 1.

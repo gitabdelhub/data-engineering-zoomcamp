@@ -564,3 +564,7 @@ code,.md a{overflow-wrap:anywhere}
 .guide .md h3{font-size:17px;letter-spacing:-.02em;margin:18px 0 6px;padding-top:14px;border-top:1px solid var(--line)}
 .guide .md h3:first-child{margin-top:4px;padding-top:0;border-top:0}
 .stucksteps{margin:0;padding-left:20px;display:grid;gap:6px}
+.guidebox{border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:12px;padding:14px 18px;background:var(--bg);margin-top:14px}
+.guidebox summary{cursor:pointer;font-weight:700;color:var(--blue)}
+.guidebox[open] summary{margin-bottom:10px}
+.guidebox .md h3{font-size:17px;margin:16px 0 6px}
