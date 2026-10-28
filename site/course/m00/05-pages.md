@@ -88,3 +88,6 @@ Explique ce qu'est le déploiement continu (CD), en prenant l'exemple de ton sit
 @@ resources
 - [Documentation GitHub Pages](https://docs.github.com/fr/pages/getting-started-with-github-pages/about-github-pages)
 - [Configurer la source de publication](https://docs.github.com/fr/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+
+@@ teaser
+- [P] Au projet final, ce n'est plus un site que tu déploieras automatiquement, mais ton infrastructure cloud, avec Terraform.

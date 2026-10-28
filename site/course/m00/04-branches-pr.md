@@ -125,3 +125,6 @@ Pourquoi les équipes ne poussent-elles jamais directement sur `main` ? Donne de
 - [Le guide GitHub sur les pull requests](https://docs.github.com/fr/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
 - [Résoudre un conflit de fusion](https://docs.github.com/fr/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-using-the-command-line)
 - [Learn Git Branching, un jeu pour s'entraîner](https://learngitbranching.js.org/?locale=fr_FR)
+
+@@ teaser
+- [01-03] Ta première issue fermée toute seule par une pull request.

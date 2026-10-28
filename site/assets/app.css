@@ -500,3 +500,12 @@ pre.mermaid svg{max-width:100%;height:auto}
 .md,.chal,.lmain,.md ul,.md ol{grid-template-columns:minmax(0,1fr)}
 .md li{min-width:0}
 code,.md a{overflow-wrap:anywhere}
+
+/* Les ponts entre les moments du cours, et le Git appris en situation */
+.chal.declic{background:color-mix(in srgb,var(--blue) 7%,transparent);border-color:color-mix(in srgb,var(--blue) 40%,transparent)}
+.chal.teaser{border-style:dashed}
+.chal.teaser .lab{color:var(--muted)}
+.chal .bridge{font-weight:600;font-size:14.5px;justify-self:start}
+.chal span.bridge{color:var(--muted);font-weight:500}
+.chal.gitsit{border-left:4px solid #f05032}
+.chal.gitsit .lab{color:#e2401f}

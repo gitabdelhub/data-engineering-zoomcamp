@@ -107,3 +107,6 @@ Explique pourquoi on décrit son environnement dans un fichier plutôt que d'ins
 - [Introduction aux devcontainers dans Codespaces](https://docs.github.com/fr/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers)
 - [La référence de devcontainer.json](https://containers.dev/implementors/json_reference/)
 - [Le catalogue des features](https://containers.dev/features)
+
+@@ teaser
+- [01-03] Ton premier Dockerfile : la même idée qu'ici, une image de base plus tes outils.

@@ -143,3 +143,7 @@ Explique ce que fait ton workflow, étape par étape : quand il se lance, avec q
 - [Les permissions du GITHUB_TOKEN](https://docs.github.com/fr/actions/security-for-github-actions/security-guides/automatic-token-authentication)
 - [La commande gh repo sync](https://cli.github.com/manual/gh_repo_sync)
 - [Synchroniser un fork (documentation GitHub)](https://docs.github.com/fr/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)
+
+@@ teaser
+- [02] L'orchestrateur Kestra déclenche ses flux avec la même syntaxe `cron` que ta synchro de nuit.
+- [04] Le même GitHub Actions lancera les tests de tes modèles dbt à chaque pull request : ta première vraie CI.
