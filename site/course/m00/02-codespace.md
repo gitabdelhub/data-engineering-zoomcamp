@@ -98,7 +98,11 @@ La commande `mkdir` (*make directory*) crée un dossier. L'option `-p` crée aus
 mkdir -p photos/vacances
 ~~~
 
-Toi, tu veux **deux** dossiers, `module-00` et `module-01`, tous les deux dans `mon-travail`. Écris ta commande : `mkdir -p`, puis les deux chemins séparés par un espace. Si la commande ne répond rien, c'est que tout s'est bien passé : sous Linux, pas de message veut dire pas d'erreur.
+Toi, tu veux **deux** dossiers, `module-00` et `module-01`, rangés **dans** `mon-travail`. Leurs chemins complets commencent donc par `mon-travail/`, comme `photos/vacances` dans l'exemple. Écris ta commande : `mkdir -p`, puis les deux chemins complets séparés par un espace.
+
+Piège classique : `mkdir -p module-00 module-01`, sans `mon-travail/` devant, crée les deux dossiers à la racine du fork. L'étape suivante échoue alors avec `No such file or directory`, parce que `mon-travail` n'existe pas. Si ça t'arrive, supprime-les avec `rmdir module-00 module-01` (`rmdir` supprime un dossier vide) et recommence.
+
+Vérifie avec `ls mon-travail` : tu dois voir `module-00` et `module-01`. Si la commande ne répond rien, c'est que tout s'est bien passé : sous Linux, pas de message veut dire pas d'erreur.
 
 ### 3. Écris le titre dans le README en une seule commande
 
