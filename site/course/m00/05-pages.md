@@ -57,7 +57,7 @@ Personnalise ton site et suis son déploiement de bout en bout. Le site lit un p
 git switch main && git pull
 git switch -c module-00/moi
 # site/moi.json : { "prenom": "Ton prénom" }
-python3 -m http.server 8000      # puis http://localhost:8000/site/ ; Ctrl + C pour arrêter
+python3 -m http.server 8000      # puis onglet Ports, globe du port 8000, et ajoute /site/ ; Ctrl + C pour arrêter
 git add site/moi.json
 git commit -m "feat: le site affiche mon prénom"
 git push -u origin module-00/moi

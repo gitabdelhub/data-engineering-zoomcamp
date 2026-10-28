@@ -1,6 +1,6 @@
 # Ton Codespace et le terminal
 
-Un **Codespace** est un ordinateur Linux qui tourne chez GitHub. VS Code, sur ton PC, ne fait que l'afficher : c'est la machine de GitHub qui fait tourner Docker, Python et tes pipelines. C'est pour ça qu'un PC peu puissant suffit.
+Un **Codespace** est un ordinateur Linux qui tourne chez GitHub. Ton navigateur ou VS Code, sur ton PC, ne fait que l'afficher : c'est la machine de GitHub qui fait tourner Docker, Python et tes pipelines. C'est pour ça qu'un PC peu puissant suffit.
 
 ## Ce qu'il faut savoir sur ton Codespace
 
@@ -9,7 +9,21 @@ Un **Codespace** est un ordinateur Linux qui tourne chez GitHub. VS Code, sur to
 - **Il consomme des heures gratuites.** Le compte GitHub gratuit donne environ 60 heures par mois sur une machine à 2 cœurs, et 15 Go de stockage. Vérifie ta consommation dans GitHub → Settings → Billing.
 - **Ce qui n'est pas poussé sur GitHub n'existe que dans ce Codespace.** Si tu le supprimes, tout ce qui n'est pas commité et poussé disparaît.
 
-## Ouvrir ton Codespace depuis VS Code
+## Ouvrir ton Codespace dans Chrome
+
+C'est le plus simple : tout se passe dans ton navigateur, rien à installer.
+
+1. Va sur la page de ton fork, `github.com/gitabdelhub/data-engineering-zoomcamp`.
+2. Bouton vert **Code**, onglet **Codespaces**.
+3. Clique sur ton Codespace (ou sur **Create codespace on main** la première fois).
+
+Il s'ouvre dans un nouvel onglet : c'est le même VS Code, avec le même terminal et les mêmes extensions. Garde ce cours dans un onglet et ton Codespace dans l'onglet d'à côté, et passe de l'un à l'autre avec **Ctrl + Tab**. Retrouve tous tes Codespaces sur [github.com/codespaces](https://github.com/codespaces).
+
+Deux pièges du navigateur :
+- **Ctrl + W ferme l'onglet** au lieu d'agir dans VS Code. Si tu le fais par erreur, rouvre le Codespace : rien n'est perdu, il tourne toujours.
+- **Copier-coller dans le terminal** : Chrome demande la permission d'accéder au presse-papiers la première fois. Accepte-la.
+
+## Ou bien depuis VS Code, sur ton PC
 
 1. Dans VS Code, installe l'extension **GitHub Codespaces** si ce n'est pas déjà fait.
 2. Clique sur l'icône **Remote Explorer** dans la barre de gauche.
@@ -39,9 +53,12 @@ Quand une commande occupe le terminal (un serveur, une base de données), ouvre 
 
 Quand un programme écoute sur un port (pgAdmin sur 8085, Airflow sur 8080…), VS Code le détecte et l'affiche dans l'onglet **Ports**, à côté du terminal.
 
-Comme tu utilises VS Code installé sur ton PC, VS Code fait un **tunnel** : le port du Codespace est aussi ouvert sur ton PC. Les adresses `http://localhost:8085` des leçons marchent donc telles quelles dans le navigateur de ton PC. La colonne **Forwarded Address** de l'onglet Ports te donne l'adresse exacte, et l'icône globe l'ouvre.
+Ce que tu tapes dans Chrome dépend de la façon dont tu as ouvert ton Codespace :
 
-Si tu ouvres un jour ton Codespace dans le navigateur (sur github.com), l'adresse devient du type `https://<nom>-8085.app.github.dev`.
+- **Codespace dans un onglet Chrome** : l'adresse est du type `https://<nom>-8085.app.github.dev`. Quand une leçon dit `http://localhost:8085`, utilise cette adresse à la place.
+- **VS Code installé sur ton PC** : VS Code fait un **tunnel**, le port du Codespace est aussi ouvert sur ton PC. Les adresses `http://localhost:8085` des leçons marchent telles quelles.
+
+Dans les deux cas, pas besoin de retenir l'adresse : la colonne **Forwarded Address** de l'onglet Ports te la donne, et l'icône globe l'ouvre.
 
 @@ predict
 Tu crées un fichier dans ton Codespace. Tu ne fais ni commit ni push. Tu arrêtes le Codespace et tu le rouvres le lendemain : le fichier est-il encore là ? Et si, au lieu de l'arrêter, tu le **supprimes** ?
@@ -83,7 +100,7 @@ Attention à la différence entre `>` et `>>` : `>` remplace tout le contenu du 
 - J'ai noté la version de Docker et celle de Python de mon Codespace
 
 @@ breakfix
-Lance un petit serveur web avec `python3 -m http.server 8000`. Ton terminal ne répond plus à tes commandes. Sans fermer VS Code : ouvre la page servie dans le navigateur de ton PC, puis reprends la main sur ce terminal.
+Lance un petit serveur web avec `python3 -m http.server 8000`. Ton terminal ne répond plus à tes commandes. Sans fermer ton Codespace : ouvre la page servie dans un onglet de ton navigateur, puis reprends la main sur ce terminal.
 
 @@ breakfix-hints
 - Le serveur tourne **au premier plan** : le terminal attend qu'il se termine. Tu peux en ouvrir un second avec le bouton `+`.
@@ -91,12 +108,13 @@ Lance un petit serveur web avec `python3 -m http.server 8000`. Ton terminal ne r
 - Pour arrêter un programme au premier plan, il y a un raccourci clavier universel sous Linux.
 
 @@ breakfix-answer
-Le serveur occupe le terminal tant qu'il tourne. L'onglet **Ports** montre le port 8000, ouvrable sur ton PC à `http://localhost:8000`. **Ctrl + C** arrête le programme au premier plan et te rend la main. Tu reverras ce réflexe partout : Postgres, pgAdmin, Kestra, Spark…
+Le serveur occupe le terminal tant qu'il tourne. L'onglet **Ports** montre le port 8000, avec son adresse dans la colonne Forwarded Address (`https://<nom>-8000.app.github.dev` dans Chrome, `http://localhost:8000` avec VS Code sur ton PC). **Ctrl + C** arrête le programme au premier plan et te rend la main. Tu reverras ce réflexe partout : Postgres, pgAdmin, Airflow, Spark…
 
 @@ explain
-Explique à quelqu'un qui ne connaît pas : quand tu travailles dans VS Code sur ton PC avec un Codespace, **où tourne** Docker, et où sont tes fichiers ? Pourquoi faut-il arrêter son Codespace à la fin d'une séance ?
+Explique à quelqu'un qui ne connaît pas : quand tu travailles dans un Codespace (dans Chrome ou dans VS Code), **où tourne** Docker, et où sont tes fichiers ? Pourquoi faut-il arrêter son Codespace à la fin d'une séance ?
 
 @@ resources
 - [Documentation GitHub Codespaces](https://docs.github.com/fr/codespaces/overview)
+- [Codespaces dans le navigateur](https://docs.github.com/fr/codespaces/developing-in-a-codespace/developing-in-a-codespace)
 - [Codespaces dans VS Code](https://docs.github.com/fr/codespaces/developing-in-a-codespace/using-github-codespaces-in-visual-studio-code)
 - [Les heures gratuites de Codespaces](https://docs.github.com/fr/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces)
