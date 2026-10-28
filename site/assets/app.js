@@ -657,6 +657,21 @@
 
   /* ---------- page d'un module ---------- */
 
+  // « Ce que tu construis » : le schéma d'architecture du module (arch dans course.js).
+  // Un nœud = [logo, couleur, nom, détail, texte de la flèche qui y mène].
+  function archBlock(m) {
+    const a = m.arch;
+    if (!a) return "";
+    const node = n => `<div class="anode"><span class="alogo">${icon(n[0], n[1])}</span><span class="atxt"><b>${esc(n[2])}</b>${n[3] ? `<small>${esc(n[3])}</small>` : ""}</span></div>`;
+    const edge = t => `<span class="aedge"><i>${esc(t || "")}</i></span>`;
+    const rows = a.rows.map((r, k) => `${k && r.link ? `<div class="alink"><i>${esc(r.link)}</i></div>` : ""}<div class="arow">${r.zone ? `<span class="azone">${esc(r.zone)}</span>` : ""}<div class="aflow">${r.nodes.map((n, j) => (j ? edge(n[4]) : "") + node(n)).join("")}</div></div>`).join("");
+    const off = a.official ? (() => {
+      const src = (window.EMBED_IMG && EMBED_IMG[a.official[0]]) || ROOT + a.official[0];
+      return `<details class="aoff"><summary>Le schéma du cours officiel</summary><img src="${esc(src)}" alt="${esc(a.official[1])}" loading="lazy"><small>${esc(a.official[1])}</small></details>`;
+    })() : "";
+    return `<section class="arch"><span class="lab">Ce que tu construis</span>${a.intro ? `<p>${esc(a.intro)}</p>` : ""}<div class="arows">${rows}</div>${off}</section>`;
+  }
+
   function viewModule(id) {
     const m = C.modules.find(x => x.id === id);
     if (!m) return viewHome();
@@ -677,6 +692,7 @@
       <div class="chips">${m.chips.map(c => `<span class="chip light">${esc(c)}</span>`).join("")}</div>
     </div></section>
     <section class="gut" style="padding-block:36px 120px"><div class="max modbody">
+      ${archBlock(m)}
       ${m.bonus ? `<div class="chal"><span class="lab">Bonus facultatif</span><p>${esc(m.intro)}</p></div><div id="plan"></div>` : s === "soon" ? `<div class="chal"><span class="lab">En préparation</span><p>Je construis ce module (${m.planned} leçons) avec la même méthode quand tu approches de la fin du module précédent. Préviens-moi dans ton projet Claude.</p></div><div id="plan"></div>` : ""}
       ${m.items.length ? `<div class="modmeta"><span><b>${doneCount(m.items)} / ${m.items.length}</b> étapes faites</span>${remaining(m.items) ? `<span>Reste environ <b>${esc(fmtMin(remaining(m.items)))}</b></span>` : ""}<span>Pour valider : ${esc(m.gate)}</span><span class="help">Niveau d'aide ${[1, 2, 3].map(k => `<i class="${k <= m.help ? "on" : ""}"></i>`).join("")}</span></div>
       <ol class="mlist">${rows}</ol>` : ""}
