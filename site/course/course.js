@@ -58,10 +58,10 @@ window.COURSE = {
       gate: "Homework 6, défi des heures de pointe et ta CI Spark au vert", team: true, items: []
     },
     {
-      id: "07", dir: "07-streaming", title: "Streaming", chips: ["Kafka", "Flink"],
+      id: "07", title: "Streaming", chips: ["Kafka", "Flink"],
       cover: ["#4a4a4a", "#0a0a0a"], logo: ["apachekafka", "#231F20"],
       sats: [["apacheflink", "#E6526F"], ["postgresql", "#4169E1"]], help: 1,
-      planned: 14, gate: "Homework 7", items: []
+      gate: "Homework 7, défi des pourboires en direct et ta CI au vert", team: true, items: []
     },
     {
       id: "P", docs: [["L'énoncé officiel du projet final", "cohorts/2026/project.md"]], title: "Projet final", chips: ["Ton dataset", "Terraform en CD", "Dashboard"],

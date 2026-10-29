@@ -140,7 +140,12 @@
           ["python", "#3776AB", "Producteur Python", "des trajets en temps réel"],
           ["apachekafka", "#231F20", "Redpanda", "un topic compatible Kafka", "messages"],
           ["apacheflink", "#E6526F", "Job Flink", "fenêtres et agrégats", "lecture continue"],
-          ["postgresql", "#4169E1", "PostgreSQL", "les résultats, mis à jour", "écriture"]
+          ["postgresql", "#4169E1", "PostgreSQL", "les résultats, par fenêtre", "écriture"]
+        ] },
+        { zone: "Travail en équipe", link: "chaque changement passe par", nodes: [
+          ["git", "#F05032", "Ta branche", "un job à la fois"],
+          ["github", "#181717", "Pull request", "avec les commandes flink run", "git push"],
+          ["githubactions", "#2088FF", "CI streaming", "Compose et Python vérifiés", "déclenche"]
         ] }
       ],
       official: ["07-streaming/theory/images/07-stream-processing-two-topic-flow.png", "Des producteurs écrivent dans des topics, des consommateurs les lisent en temps réel."]
