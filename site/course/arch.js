@@ -78,18 +78,18 @@
       official: ["03-data-warehouse/images/01-data-warehouse-and-bigquery-02-data-warehouse-diagram.png", "Le trajet classique des données jusqu'à un entrepôt."]
     },
     "04": {
-      intro: "Tu transformes les données brutes en tables prêtes pour un tableau de bord, avec dbt, des tests, et une CI qui vérifie chaque pull request.",
+      intro: "Tu transformes les données brutes en tables prêtes pour l'analyse, avec dbt, des tests, de la documentation, et une CI qui vérifie chaque pull request.",
       rows: [
-        { zone: "Ton entrepôt : DuckDB en local ou BigQuery", nodes: [
-          ["googlebigquery", "#4285F4", "Données brutes", "green et yellow taxis"],
+        { zone: "Ton entrepôt : DuckDB, dans ton Codespace", nodes: [
+          ["duckdb", "#000000", "Données brutes", "taxis verts et jaunes"],
           ["dbt", "#FF694B", "Staging", "nettoyer, renommer, typer", "sources"],
           ["dbt", "#FF694B", "Marts", "fct_trips, dim_zones", "ref()"],
-          ["looker", "#4285F4", "Tableau de bord", "Looker Studio", "lecture"]
+          ["dbt", "#FF694B", "Rapports", "par zone, par aéroport", "ref()"]
         ] },
         { zone: "Travail en équipe", link: "chaque changement passe par", nodes: [
           ["git", "#F05032", "Ta branche", "un modèle à la fois"],
           ["github", "#181717", "Pull request", "relue par un collègue", "git push"],
-          ["githubactions", "#2088FF", "CI dbt", "dbt build et tests", "déclenche"]
+          ["githubactions", "#2088FF", "CI dbt", "dbt parse, seeds et tests", "déclenche"]
         ] }
       ],
       official: ["04-analytics-engineering/images/analytics-engineering-toolchain.png", "Les étapes de l'analytics engineering et les outils de chacune."]

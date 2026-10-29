@@ -40,10 +40,10 @@ window.COURSE = {
       gate: "Homework 3 et défi des bases VTC", items: []
     },
     {
-      id: "04", dir: "04-analytics-engineering", title: "Analytics engineering", chips: ["dbt", "DuckDB"],
+      id: "04", title: "Analytics engineering", chips: ["dbt", "DuckDB"],
       cover: ["#ff9a7f", "#d93f1f"], logo: ["dbt", "#FF694B"],
       sats: [["duckdb", "#000000"], ["googlebigquery", "#4285F4"]], help: 2,
-      planned: 11, gate: "Homework 4 et ta CI dbt au vert", team: true, items: []
+      gate: "Homework 4, défi des aéroports et ta CI dbt au vert", team: true, items: []
     },
     {
       id: "05", dir: "05-data-platforms", title: "Data platforms", chips: ["Bruin"],
