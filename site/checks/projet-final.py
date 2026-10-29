@@ -1,7 +1,7 @@
 """Relecture automatique de ton projet final, avant la relecture par tes pairs.
 
-Usage, depuis n'importe où :
-    python3 site/checks/projet-final.py /chemin/vers/ton-projet
+Usage, depuis la racine de ton projet (son Codespace n'a pas ton fork du cours) :
+    curl -sL https://raw.githubusercontent.com/gitabdelhub/data-engineering-zoomcamp/main/site/checks/projet-final.py | python3 - .
 
 Le script lit ton dépôt et demande à Git ce qu'il suit. Il ne juge pas la qualité de ton travail :
 il vérifie que chaque critère de la grille officielle a de quoi être noté, et que rien de dangereux
@@ -35,6 +35,8 @@ def main():
     readme = read(repo, "README.md")
     code = {p: read(repo, p) for p in files if p.endswith((".py", ".sql", ".tf", ".yml", ".yaml", ".toml", ".json"))}
     alltext = "\n".join(code.values()).lower()
+    # row_number() over (partition by ...) est une fonction de fenêtre, pas une table partitionnée
+    nowindow = re.sub(r"over\s*\(\s*partition\s+by", "over (", alltext)
 
     checks = []
 
@@ -45,8 +47,10 @@ def main():
     check("Le README décrit le projet (300 mots, au moins 5 titres)",
           len(readme.split()) >= 300 and len(headings) >= 5,
           "Le problème, les données, l'architecture, comment lancer, le tableau de bord : un titre pour chacun.")
-    check("Le README ne parle pas des taxis de New York",
-          "taxi" not in readme.lower(),
+    # Les fichiers des taxis, pas le mot : « contrairement aux taxis de New York » reste permis
+    taxi = re.compile(r"tripdata|nyc-tlc|tlc[ _-]trip")
+    check("Le projet n'utilise pas les données des taxis de New York",
+          not taxi.search(readme.lower()) and not taxi.search(alltext) and not any(taxi.search(p.lower()) for p in files),
           "Le jeu de données des taxis est interdit pour le projet : choisis-en un autre.")
     check("L'infrastructure est en code (Terraform)",
           any(p.endswith(".tf") for p in files),
@@ -62,10 +66,11 @@ def main():
           any(p.endswith("dbt_project.yml") for p in files) or "pyspark" in alltext,
           "Un projet dbt (avec ses tests) ou un job Spark.")
     check("Les tables sont partitionnées et clusterisées",
-          re.search(r"partition_by|partition by|time_partitioning", alltext) and re.search(r"cluster_by|cluster by|clustering", alltext),
+          re.search(r"partition_by|partition\s+by|time_partitioning", nowindow) and re.search(r"cluster_by|cluster\s+by|clustering", alltext),
           "Partitionne sur la date que filtrent tes requêtes, clusterise sur ce que tu groupes, et explique pourquoi dans le README.")
     secrets = [p for p in files if re.search(r"(^|/)\.env$|key.*\.json$|credentials.*\.json$|\.tfstate", p)]
-    secrets += [p for p, t in code.items() if "private_key" in t or "BEGIN PRIVATE KEY" in t]
+    # une clé de compte de service se reconnaît à son contenu, quel que soit son nom
+    secrets += [p for p, t in code.items() if re.search(r'"type"\s*:\s*"service_account"|"private_key"|BEGIN PRIVATE KEY', t)]
     check("Aucune clé, aucun .env et aucun état Terraform n'est commité",
           not secrets,
           "À retirer de Git (et à remplacer, une clé publiée est compromise) : " + ", ".join(sorted(set(secrets))[:5]))

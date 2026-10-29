@@ -44,7 +44,7 @@ Ces données ne sont pas celles du cours, et je ne les ai pas téléchargées : 
 - Si la plus longue durée est absurde (des jours), regarde si tu as bien soustrait dans le bon sens et avec les bonnes colonnes.
 
 @@ q5
-- Ta leçon 2 te l'a fait ouvrir dans l'onglet Ports.
+- Il s'agit de l'interface d'une **application** (une session Spark), pas de celle du master. Lance une session et retrouve-la dans l'onglet Ports, ou demande à Spark lui-même : `spark.sparkContext.uiWebUrl`.
 - Attention, une autre proposition est le port de l'interface du **master**, à la leçon 10 : ce n'est pas la même interface.
 
 @@ q6

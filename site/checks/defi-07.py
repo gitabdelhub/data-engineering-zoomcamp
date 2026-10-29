@@ -76,7 +76,7 @@ def flink_ok():
 def git_ok():
     """Rien de suivi sous data/, et un nouveau fichier y serait ignoré."""
     tracked = subprocess.run(["git", "ls-files", DATA], capture_output=True, text=True).stdout.strip()
-    ignored = subprocess.run(["git", "check-ignore", "-q", f"{DATA}/test.csv.gz"]).returncode == 0
+    ignored = subprocess.run(["git", "check-ignore", "-q", f"{DATA}/test.txt"]).returncode == 0
     return tracked == "" and ignored
 
 
@@ -94,7 +94,7 @@ def checks(cur, job):
         topic_state,
         sql("SELECT COUNT(*) FROM tips_hourly"),
         sql("SELECT SUM(num_trips) FROM tips_hourly"),
-        sql("SELECT window_start::text || '|' || total_tip::text FROM tips_hourly ORDER BY total_tip DESC LIMIT 1"),
+        sql("SELECT window_start::text || '|' || round(total_tip::numeric, 2)::text FROM tips_hourly ORDER BY total_tip DESC LIMIT 1"),
         sql("SELECT MAX(window_start) = TIMESTAMP '2021-01-31 22:00:00' FROM tips_hourly"),
         flink_ok,
         lambda: "WATERMARK" in code.upper() and "TUMBLE" in code.upper()
