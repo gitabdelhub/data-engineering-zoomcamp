@@ -46,10 +46,10 @@ window.COURSE = {
       gate: "Homework 4, défi des aéroports et ta CI dbt au vert", team: true, items: []
     },
     {
-      id: "05", dir: "05-data-platforms", title: "Data platforms", chips: ["Bruin"],
+      id: "05", title: "Data platforms", chips: ["Bruin", "DuckDB"],
       cover: ["#ff8a96", "#c42a3f"], logo: ["bruin"],
-      sats: [["googlebigquery", "#4285F4"]], help: 2,
-      planned: 10, gate: "Homework 5", items: []
+      sats: [["duckdb", "#000000"], ["githubactions", "#2088FF"]], help: 2,
+      gate: "Homework 5, défi des pourboires et ta CI Bruin au vert", team: true, items: []
     },
     {
       id: "06", dir: "06-batch", title: "Batch processing", chips: ["Spark", "Dataproc"],

@@ -95,14 +95,19 @@
       official: ["04-analytics-engineering/images/analytics-engineering-toolchain.png", "Les étapes de l'analytics engineering et les outils de chacune."]
     },
     "05": {
-      intro: "Une seule plateforme pour ingérer, transformer et contrôler : tu refais le pipeline des taxis avec Bruin, en trois couches.",
+      intro: "Une seule plateforme pour ingérer, transformer et contrôler : tu refais le pipeline des taxis avec Bruin, en trois couches, et une CI valide chaque pull request.",
       rows: [
         { zone: "Ton Codespace", nodes: [
           ["file", BLUE, "Données des taxis", "source"],
           ["bruin", "", "Ingestion", "les données brutes", "assets Python"],
-          ["bruin", "", "Staging", "nettoyer, joindre les zones", "SQL"],
+          ["bruin", "", "Staging", "dédoublonner, joindre les paiements", "SQL"],
           ["bruin", "", "Reports", "les agrégats pour l'analyse", "SQL"],
           ["duckdb", "#000000", "DuckDB", "avec contrôles qualité", "matérialisé dans"]
+        ] },
+        { zone: "Travail en équipe", link: "chaque changement passe par", nodes: [
+          ["git", "#F05032", "Ta branche", "un pipeline à la fois"],
+          ["github", "#181717", "Pull request", "relue par un collègue", "git push"],
+          ["githubactions", "#2088FF", "CI Bruin", "bruin validate", "déclenche"]
         ] }
       ],
       official: ["05-data-platforms/images/bruin-pipeline-lineage.png", "Les couches d'un pipeline Bruin, de l'ingestion aux rapports."]
