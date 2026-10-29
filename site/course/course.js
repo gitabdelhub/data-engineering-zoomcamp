@@ -28,10 +28,10 @@ window.COURSE = {
       gate: "Homework 2 et défi des VTC", items: []
     },
     {
-      id: "W1", docs: [["Le workshop dlt : présentation", "cohorts/2026/workshops/dlt.md"], ["Le workshop dlt : pas à pas", "cohorts/2026/workshops/dlt/README.md"]], title: "Workshop ingestion", chips: ["dlt", "API"],
+      id: "W1", title: "Workshop ingestion", chips: ["dlt", "API"],
       cover: ["#59c1d5", "#0e3f4a"], logo: ["dlt"], wide: true,
       sats: [["duckdb", "#000000"]], help: 2,
-      planned: 2, gate: "Homework du workshop", items: []
+      gate: "Homework du workshop et défi des zones", items: []
     },
     {
       id: "03", title: "Data warehouse", chips: ["BigQuery", "BigQuery ML"],

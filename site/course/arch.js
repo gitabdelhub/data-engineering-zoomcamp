@@ -51,7 +51,7 @@
       ]
     },
     "W1": {
-      intro: "Avec l'aide de l'IA, tu écris un pipeline dlt qui va chercher des données dans une API et les range en tables propres.",
+      intro: "Tu écris toi-même un pipeline dlt qui va chercher des données dans une API, page par page, et les range en tables propres dans DuckDB.",
       rows: [
         { zone: "Ton Codespace", nodes: [
           ["api", BLUE, "API Open Library", "JSON, page par page"],

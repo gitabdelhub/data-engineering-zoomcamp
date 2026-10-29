@@ -1,0 +1,424 @@
+{
+ "page": 1,
+ "pages": 2,
+ "zones": [
+  {
+   "id": 7,
+   "arrondissement": "Queens",
+   "nom": "Astoria",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-02-01T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 26038,
+     "pourboire_moyen": 0.71
+    },
+    {
+     "mois": "2019-02",
+     "departs": 23000,
+     "pourboire_moyen": 0.74
+    },
+    {
+     "mois": "2019-03",
+     "departs": 23932,
+     "pourboire_moyen": 0.78
+    },
+    {
+     "mois": "2019-04",
+     "departs": 22425,
+     "pourboire_moyen": 0.8
+    },
+    {
+     "mois": "2019-05",
+     "departs": 22267,
+     "pourboire_moyen": 0.82
+    },
+    {
+     "mois": "2019-06",
+     "departs": 21285,
+     "pourboire_moyen": 0.83
+    },
+    {
+     "mois": "2019-07",
+     "departs": 20041,
+     "pourboire_moyen": 0.81
+    },
+    {
+     "mois": "2019-08",
+     "departs": 17760,
+     "pourboire_moyen": 0.79
+    },
+    {
+     "mois": "2019-09",
+     "departs": 18264,
+     "pourboire_moyen": 0.83
+    },
+    {
+     "mois": "2019-10",
+     "departs": 18931,
+     "pourboire_moyen": 0.84
+    },
+    {
+     "mois": "2019-11",
+     "departs": 17672,
+     "pourboire_moyen": 0.84
+    },
+    {
+     "mois": "2019-12",
+     "departs": 17345,
+     "pourboire_moyen": 0.81
+    }
+   ],
+   "remarque": "Nom corrigé."
+  },
+  {
+   "id": 25,
+   "arrondissement": "Brooklyn",
+   "nom": "Boerum Hill",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-02-01T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 12351,
+     "pourboire_moyen": 1.12
+    },
+    {
+     "mois": "2019-02",
+     "departs": 10758,
+     "pourboire_moyen": 1.17
+    },
+    {
+     "mois": "2019-03",
+     "departs": 11290,
+     "pourboire_moyen": 1.16
+    },
+    {
+     "mois": "2019-04",
+     "departs": 11486,
+     "pourboire_moyen": 1.28
+    },
+    {
+     "mois": "2019-05",
+     "departs": 10631,
+     "pourboire_moyen": 1.3
+    },
+    {
+     "mois": "2019-06",
+     "departs": 8941,
+     "pourboire_moyen": 1.29
+    },
+    {
+     "mois": "2019-07",
+     "departs": 8735,
+     "pourboire_moyen": 1.13
+    },
+    {
+     "mois": "2019-08",
+     "departs": 7813,
+     "pourboire_moyen": 1.11
+    },
+    {
+     "mois": "2019-09",
+     "departs": 7518,
+     "pourboire_moyen": 1.16
+    },
+    {
+     "mois": "2019-10",
+     "departs": 8093,
+     "pourboire_moyen": 1.24
+    },
+    {
+     "mois": "2019-11",
+     "departs": 8021,
+     "pourboire_moyen": 1.28
+    },
+    {
+     "mois": "2019-12",
+     "departs": 8146,
+     "pourboire_moyen": 1.16
+    }
+   ]
+  },
+  {
+   "id": 41,
+   "arrondissement": "Manhattan",
+   "nom": "Central Harlem",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-02-01T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 33487,
+     "pourboire_moyen": 0.86
+    },
+    {
+     "mois": "2019-02",
+     "departs": 31540,
+     "pourboire_moyen": 0.86
+    },
+    {
+     "mois": "2019-03",
+     "departs": 34085,
+     "pourboire_moyen": 0.84
+    },
+    {
+     "mois": "2019-04",
+     "departs": 30894,
+     "pourboire_moyen": 0.89
+    },
+    {
+     "mois": "2019-05",
+     "departs": 29105,
+     "pourboire_moyen": 0.91
+    },
+    {
+     "mois": "2019-06",
+     "departs": 28476,
+     "pourboire_moyen": 0.88
+    },
+    {
+     "mois": "2019-07",
+     "departs": 26837,
+     "pourboire_moyen": 0.87
+    },
+    {
+     "mois": "2019-08",
+     "departs": 24823,
+     "pourboire_moyen": 0.85
+    },
+    {
+     "mois": "2019-09",
+     "departs": 23047,
+     "pourboire_moyen": 0.92
+    },
+    {
+     "mois": "2019-10",
+     "departs": 25363,
+     "pourboire_moyen": 0.91
+    },
+    {
+     "mois": "2019-11",
+     "departs": 25838,
+     "pourboire_moyen": 0.97
+    },
+    {
+     "mois": "2019-12",
+     "departs": 25838,
+     "pourboire_moyen": 0.93
+    }
+   ],
+   "remarque": "Un mois apparaissait deux fois."
+  },
+  {
+   "id": 42,
+   "arrondissement": "Manhattan",
+   "nom": "Central Harlem North",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-02-01T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 20606,
+     "pourboire_moyen": 0.59
+    },
+    {
+     "mois": "2019-02",
+     "departs": 19058,
+     "pourboire_moyen": 0.62
+    },
+    {
+     "mois": "2019-03",
+     "departs": 21496,
+     "pourboire_moyen": 0.6
+    },
+    {
+     "mois": "2019-04",
+     "departs": 18245,
+     "pourboire_moyen": 0.69
+    },
+    {
+     "mois": "2019-05",
+     "departs": 17388,
+     "pourboire_moyen": 0.67
+    },
+    {
+     "mois": "2019-06",
+     "departs": 17089,
+     "pourboire_moyen": 0.64
+    },
+    {
+     "mois": "2019-07",
+     "departs": 16115,
+     "pourboire_moyen": 0.6
+    },
+    {
+     "mois": "2019-08",
+     "departs": 15536,
+     "pourboire_moyen": 0.63
+    },
+    {
+     "mois": "2019-09",
+     "departs": 14737,
+     "pourboire_moyen": 0.63
+    },
+    {
+     "mois": "2019-10",
+     "departs": 15570,
+     "pourboire_moyen": 0.62
+    },
+    {
+     "mois": "2019-11",
+     "departs": 15165,
+     "pourboire_moyen": 0.63
+    },
+    {
+     "mois": "2019-12",
+     "departs": 15456,
+     "pourboire_moyen": 0.65
+    }
+   ]
+  },
+  {
+   "id": 74,
+   "arrondissement": "Manhattan",
+   "nom": "East Harlem North",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-02-01T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 42965,
+     "pourboire_moyen": 1.06
+    },
+    {
+     "mois": "2019-02",
+     "departs": 38721,
+     "pourboire_moyen": 1.11
+    },
+    {
+     "mois": "2019-03",
+     "departs": 42049,
+     "pourboire_moyen": 1.12
+    },
+    {
+     "mois": "2019-04",
+     "departs": 39902,
+     "pourboire_moyen": 1.21
+    },
+    {
+     "mois": "2019-05",
+     "departs": 40274,
+     "pourboire_moyen": 1.26
+    },
+    {
+     "mois": "2019-06",
+     "departs": 39178,
+     "pourboire_moyen": 1.27
+    },
+    {
+     "mois": "2019-07",
+     "departs": 39201,
+     "pourboire_moyen": 1.24
+    },
+    {
+     "mois": "2019-08",
+     "departs": 36860,
+     "pourboire_moyen": 1.21
+    },
+    {
+     "mois": "2019-09",
+     "departs": 37358,
+     "pourboire_moyen": 1.31
+    },
+    {
+     "mois": "2019-10",
+     "departs": 37372,
+     "pourboire_moyen": 1.31
+    },
+    {
+     "mois": "2019-11",
+     "departs": 35295,
+     "pourboire_moyen": 1.26
+    },
+    {
+     "mois": "2019-12",
+     "departs": 36464,
+     "pourboire_moyen": 1.28
+    }
+   ],
+   "remarque": "Mars 2019 recompté : les trajets étaient comptés deux fois."
+  },
+  {
+   "id": 75,
+   "arrondissement": "Manhattan",
+   "nom": "East Harlem South",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-02-01T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 40105,
+     "pourboire_moyen": 1.06
+    },
+    {
+     "mois": "2019-02",
+     "departs": 34532,
+     "pourboire_moyen": 1.16
+    },
+    {
+     "mois": "2019-03",
+     "departs": 35158,
+     "pourboire_moyen": 1.14
+    },
+    {
+     "mois": "2019-04",
+     "departs": 33046,
+     "pourboire_moyen": 1.23
+    },
+    {
+     "mois": "2019-05",
+     "departs": 33422,
+     "pourboire_moyen": 1.24
+    },
+    {
+     "mois": "2019-06",
+     "departs": 30492,
+     "pourboire_moyen": 1.2
+    },
+    {
+     "mois": "2019-07",
+     "departs": 29306,
+     "pourboire_moyen": 1.17
+    },
+    {
+     "mois": "2019-08",
+     "departs": 27367,
+     "pourboire_moyen": 1.14
+    },
+    {
+     "mois": "2019-09",
+     "departs": 27232,
+     "pourboire_moyen": 1.18
+    },
+    {
+     "mois": "2019-10",
+     "departs": 29632,
+     "pourboire_moyen": 1.25
+    },
+    {
+     "mois": "2019-11",
+     "departs": 27093,
+     "pourboire_moyen": 1.22
+    },
+    {
+     "mois": "2019-12",
+     "departs": 26822,
+     "pourboire_moyen": 1.22
+    }
+   ]
+  }
+ ],
+ "suivant": "page-2.json"
+}

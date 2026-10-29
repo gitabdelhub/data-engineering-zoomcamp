@@ -1,0 +1,3402 @@
+{
+ "page": 5,
+ "pages": 6,
+ "zones": [
+  {
+   "id": 201,
+   "arrondissement": "Queens",
+   "nom": "Rockaway Park",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 50,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-02",
+     "departs": 55,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-03",
+     "departs": 99,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-04",
+     "departs": 50,
+     "pourboire_moyen": 0.27
+    },
+    {
+     "mois": "2019-05",
+     "departs": 47,
+     "pourboire_moyen": 0.32
+    },
+    {
+     "mois": "2019-06",
+     "departs": 43,
+     "pourboire_moyen": 0.22
+    },
+    {
+     "mois": "2019-07",
+     "departs": 107,
+     "pourboire_moyen": 0.18
+    },
+    {
+     "mois": "2019-08",
+     "departs": 114,
+     "pourboire_moyen": 0.06
+    },
+    {
+     "mois": "2019-09",
+     "departs": 140,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 156,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 103,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-12",
+     "departs": 144,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 202,
+   "arrondissement": "Manhattan",
+   "nom": "Roosevelt Island",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 77,
+     "pourboire_moyen": 0.6
+    },
+    {
+     "mois": "2019-02",
+     "departs": 69,
+     "pourboire_moyen": 0.58
+    },
+    {
+     "mois": "2019-03",
+     "departs": 68,
+     "pourboire_moyen": 0.35
+    },
+    {
+     "mois": "2019-04",
+     "departs": 59,
+     "pourboire_moyen": 1.43
+    },
+    {
+     "mois": "2019-05",
+     "departs": 64,
+     "pourboire_moyen": 0.9
+    },
+    {
+     "mois": "2019-06",
+     "departs": 66,
+     "pourboire_moyen": 1.33
+    },
+    {
+     "mois": "2019-07",
+     "departs": 81,
+     "pourboire_moyen": 1.05
+    },
+    {
+     "mois": "2019-08",
+     "departs": 88,
+     "pourboire_moyen": 0.64
+    },
+    {
+     "mois": "2019-09",
+     "departs": 76,
+     "pourboire_moyen": 0.5
+    },
+    {
+     "mois": "2019-10",
+     "departs": 95,
+     "pourboire_moyen": 0.6
+    },
+    {
+     "mois": "2019-11",
+     "departs": 84,
+     "pourboire_moyen": 1.27
+    },
+    {
+     "mois": "2019-12",
+     "departs": 70,
+     "pourboire_moyen": 0.31
+    }
+   ]
+  },
+  {
+   "id": 203,
+   "arrondissement": "Queens",
+   "nom": "Rosedale",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 358,
+     "pourboire_moyen": 0.03
+    },
+    {
+     "mois": "2019-02",
+     "departs": 392,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-03",
+     "departs": 356,
+     "pourboire_moyen": 0.04
+    },
+    {
+     "mois": "2019-04",
+     "departs": 175,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-05",
+     "departs": 200,
+     "pourboire_moyen": 0.14
+    },
+    {
+     "mois": "2019-06",
+     "departs": 150,
+     "pourboire_moyen": 0.12
+    },
+    {
+     "mois": "2019-07",
+     "departs": 289,
+     "pourboire_moyen": 0.03
+    },
+    {
+     "mois": "2019-08",
+     "departs": 305,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 289,
+     "pourboire_moyen": 0.06
+    },
+    {
+     "mois": "2019-10",
+     "departs": 388,
+     "pourboire_moyen": 0.08
+    },
+    {
+     "mois": "2019-11",
+     "departs": 358,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 368,
+     "pourboire_moyen": 0.05
+    }
+   ]
+  },
+  {
+   "id": 204,
+   "arrondissement": "Staten Island",
+   "nom": "Rossville/Woodrow",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-02",
+     "departs": 1,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-03",
+     "departs": 2,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-05",
+     "departs": 1,
+     "pourboire_moyen": 6.0
+    },
+    {
+     "mois": "2019-06",
+     "departs": 1,
+     "pourboire_moyen": 16.51
+    },
+    {
+     "mois": "2019-10",
+     "departs": 2,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 2,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 205,
+   "arrondissement": "Queens",
+   "nom": "Saint Albans",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1477,
+     "pourboire_moyen": 0.08
+    },
+    {
+     "mois": "2019-02",
+     "departs": 1342,
+     "pourboire_moyen": 0.03
+    },
+    {
+     "mois": "2019-03",
+     "departs": 1559,
+     "pourboire_moyen": 0.02
+    },
+    {
+     "mois": "2019-04",
+     "departs": 824,
+     "pourboire_moyen": 0.06
+    },
+    {
+     "mois": "2019-05",
+     "departs": 832,
+     "pourboire_moyen": 0.09
+    },
+    {
+     "mois": "2019-06",
+     "departs": 645,
+     "pourboire_moyen": 0.08
+    },
+    {
+     "mois": "2019-07",
+     "departs": 948,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-08",
+     "departs": 1040,
+     "pourboire_moyen": 0.04
+    },
+    {
+     "mois": "2019-09",
+     "departs": 1004,
+     "pourboire_moyen": 0.02
+    },
+    {
+     "mois": "2019-10",
+     "departs": 1245,
+     "pourboire_moyen": 0.02
+    },
+    {
+     "mois": "2019-11",
+     "departs": 1146,
+     "pourboire_moyen": 0.02
+    },
+    {
+     "mois": "2019-12",
+     "departs": 1106,
+     "pourboire_moyen": 0.03
+    }
+   ]
+  },
+  {
+   "id": 206,
+   "arrondissement": "Staten Island",
+   "nom": "Saint George/New Brighton",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 42,
+     "pourboire_moyen": 0.81
+    },
+    {
+     "mois": "2019-02",
+     "departs": 64,
+     "pourboire_moyen": 0.38
+    },
+    {
+     "mois": "2019-03",
+     "departs": 75,
+     "pourboire_moyen": 1.12
+    },
+    {
+     "mois": "2019-04",
+     "departs": 60,
+     "pourboire_moyen": 1.08
+    },
+    {
+     "mois": "2019-05",
+     "departs": 32,
+     "pourboire_moyen": 1.48
+    },
+    {
+     "mois": "2019-06",
+     "departs": 45,
+     "pourboire_moyen": 2.15
+    },
+    {
+     "mois": "2019-07",
+     "departs": 52,
+     "pourboire_moyen": 2.22
+    },
+    {
+     "mois": "2019-08",
+     "departs": 29,
+     "pourboire_moyen": 0.28
+    },
+    {
+     "mois": "2019-09",
+     "departs": 17,
+     "pourboire_moyen": 0.35
+    },
+    {
+     "mois": "2019-10",
+     "departs": 20,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 14,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 11,
+     "pourboire_moyen": 0.54
+    }
+   ]
+  },
+  {
+   "id": 207,
+   "arrondissement": "Queens",
+   "nom": "Saint Michaels Cemetery/Woodside",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 65,
+     "pourboire_moyen": 0.06
+    },
+    {
+     "mois": "2019-02",
+     "departs": 58,
+     "pourboire_moyen": 0.08
+    },
+    {
+     "mois": "2019-03",
+     "departs": 82,
+     "pourboire_moyen": 0.06
+    },
+    {
+     "mois": "2019-04",
+     "departs": 81,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-05",
+     "departs": 64,
+     "pourboire_moyen": 0.04
+    },
+    {
+     "mois": "2019-06",
+     "departs": 55,
+     "pourboire_moyen": 0.17
+    },
+    {
+     "mois": "2019-07",
+     "departs": 66,
+     "pourboire_moyen": 0.17
+    },
+    {
+     "mois": "2019-08",
+     "departs": 55,
+     "pourboire_moyen": 0.18
+    },
+    {
+     "mois": "2019-09",
+     "departs": 56,
+     "pourboire_moyen": 0.18
+    },
+    {
+     "mois": "2019-10",
+     "departs": 53,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 64,
+     "pourboire_moyen": 0.3
+    },
+    {
+     "mois": "2019-12",
+     "departs": 55,
+     "pourboire_moyen": 0.09
+    }
+   ]
+  },
+  {
+   "id": 208,
+   "arrondissement": "Bronx",
+   "nom": "Schuylerville/Edgewater Park",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 659,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-02",
+     "departs": 694,
+     "pourboire_moyen": 0.16
+    },
+    {
+     "mois": "2019-03",
+     "departs": 737,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-04",
+     "departs": 423,
+     "pourboire_moyen": 0.21
+    },
+    {
+     "mois": "2019-05",
+     "departs": 405,
+     "pourboire_moyen": 0.22
+    },
+    {
+     "mois": "2019-06",
+     "departs": 365,
+     "pourboire_moyen": 0.38
+    },
+    {
+     "mois": "2019-07",
+     "departs": 517,
+     "pourboire_moyen": 0.37
+    },
+    {
+     "mois": "2019-08",
+     "departs": 492,
+     "pourboire_moyen": 0.38
+    },
+    {
+     "mois": "2019-09",
+     "departs": 527,
+     "pourboire_moyen": 0.33
+    },
+    {
+     "mois": "2019-10",
+     "departs": 640,
+     "pourboire_moyen": 0.09
+    },
+    {
+     "mois": "2019-11",
+     "departs": 561,
+     "pourboire_moyen": 0.21
+    },
+    {
+     "mois": "2019-12",
+     "departs": 610,
+     "pourboire_moyen": 0.6
+    }
+   ]
+  },
+  {
+   "id": 209,
+   "arrondissement": "Manhattan",
+   "nom": "Seaport",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-02",
+     "departs": 2,
+     "pourboire_moyen": 1.0
+    },
+    {
+     "mois": "2019-03",
+     "departs": 2,
+     "pourboire_moyen": 2.88
+    },
+    {
+     "mois": "2019-04",
+     "departs": 7,
+     "pourboire_moyen": 1.0
+    },
+    {
+     "mois": "2019-05",
+     "departs": 5,
+     "pourboire_moyen": 2.42
+    },
+    {
+     "mois": "2019-06",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-07",
+     "departs": 4,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 1,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 68,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 147,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 129,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 137,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 210,
+   "arrondissement": "Brooklyn",
+   "nom": "Sheepshead Bay",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 3242,
+     "pourboire_moyen": 0.63
+    },
+    {
+     "mois": "2019-02",
+     "departs": 2874,
+     "pourboire_moyen": 0.55
+    },
+    {
+     "mois": "2019-03",
+     "departs": 2834,
+     "pourboire_moyen": 0.58
+    },
+    {
+     "mois": "2019-04",
+     "departs": 2252,
+     "pourboire_moyen": 0.79
+    },
+    {
+     "mois": "2019-05",
+     "departs": 2219,
+     "pourboire_moyen": 0.83
+    },
+    {
+     "mois": "2019-06",
+     "departs": 1858,
+     "pourboire_moyen": 0.69
+    },
+    {
+     "mois": "2019-07",
+     "departs": 2136,
+     "pourboire_moyen": 0.65
+    },
+    {
+     "mois": "2019-08",
+     "departs": 1916,
+     "pourboire_moyen": 0.63
+    },
+    {
+     "mois": "2019-09",
+     "departs": 2147,
+     "pourboire_moyen": 0.78
+    },
+    {
+     "mois": "2019-10",
+     "departs": 2349,
+     "pourboire_moyen": 0.66
+    },
+    {
+     "mois": "2019-11",
+     "departs": 2111,
+     "pourboire_moyen": 0.65
+    },
+    {
+     "mois": "2019-12",
+     "departs": 2241,
+     "pourboire_moyen": 0.72
+    }
+   ]
+  },
+  {
+   "id": 211,
+   "arrondissement": "Manhattan",
+   "nom": "SoHo",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 6,
+     "pourboire_moyen": 1.3
+    },
+    {
+     "mois": "2019-02",
+     "departs": 8,
+     "pourboire_moyen": 1.53
+    },
+    {
+     "mois": "2019-03",
+     "departs": 10,
+     "pourboire_moyen": 2.32
+    },
+    {
+     "mois": "2019-04",
+     "departs": 3,
+     "pourboire_moyen": 1.39
+    },
+    {
+     "mois": "2019-05",
+     "departs": 2,
+     "pourboire_moyen": 0.6
+    },
+    {
+     "mois": "2019-06",
+     "departs": 1,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 10,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 14,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 16,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 212,
+   "arrondissement": "Bronx",
+   "nom": "Soundview/Bruckner",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1516,
+     "pourboire_moyen": 0.37
+    },
+    {
+     "mois": "2019-02",
+     "departs": 1515,
+     "pourboire_moyen": 0.26
+    },
+    {
+     "mois": "2019-03",
+     "departs": 1568,
+     "pourboire_moyen": 0.32
+    },
+    {
+     "mois": "2019-04",
+     "departs": 1068,
+     "pourboire_moyen": 0.43
+    },
+    {
+     "mois": "2019-05",
+     "departs": 1002,
+     "pourboire_moyen": 0.49
+    },
+    {
+     "mois": "2019-06",
+     "departs": 917,
+     "pourboire_moyen": 0.46
+    },
+    {
+     "mois": "2019-07",
+     "departs": 1053,
+     "pourboire_moyen": 0.51
+    },
+    {
+     "mois": "2019-08",
+     "departs": 1034,
+     "pourboire_moyen": 0.74
+    },
+    {
+     "mois": "2019-09",
+     "departs": 1009,
+     "pourboire_moyen": 1.43
+    },
+    {
+     "mois": "2019-10",
+     "departs": 1121,
+     "pourboire_moyen": 0.42
+    },
+    {
+     "mois": "2019-11",
+     "departs": 1023,
+     "pourboire_moyen": 0.38
+    },
+    {
+     "mois": "2019-12",
+     "departs": 1012,
+     "pourboire_moyen": 0.3
+    }
+   ]
+  },
+  {
+   "id": 213,
+   "arrondissement": "Bronx",
+   "nom": "Soundview/Castle Hill",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 2075,
+     "pourboire_moyen": 0.07
+    },
+    {
+     "mois": "2019-02",
+     "departs": 2114,
+     "pourboire_moyen": 0.07
+    },
+    {
+     "mois": "2019-03",
+     "departs": 2044,
+     "pourboire_moyen": 0.08
+    },
+    {
+     "mois": "2019-04",
+     "departs": 1080,
+     "pourboire_moyen": 0.17
+    },
+    {
+     "mois": "2019-05",
+     "departs": 959,
+     "pourboire_moyen": 0.18
+    },
+    {
+     "mois": "2019-06",
+     "departs": 881,
+     "pourboire_moyen": 0.18
+    },
+    {
+     "mois": "2019-07",
+     "departs": 1412,
+     "pourboire_moyen": 0.06
+    },
+    {
+     "mois": "2019-08",
+     "departs": 1392,
+     "pourboire_moyen": 0.08
+    },
+    {
+     "mois": "2019-09",
+     "departs": 1453,
+     "pourboire_moyen": 0.07
+    },
+    {
+     "mois": "2019-10",
+     "departs": 1706,
+     "pourboire_moyen": 0.09
+    },
+    {
+     "mois": "2019-11",
+     "departs": 1582,
+     "pourboire_moyen": 0.07
+    },
+    {
+     "mois": "2019-12",
+     "departs": 1628,
+     "pourboire_moyen": 0.06
+    }
+   ]
+  },
+  {
+   "id": 214,
+   "arrondissement": "Staten Island",
+   "nom": "South Beach/Dongan Hills",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 13,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-02",
+     "departs": 25,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-03",
+     "departs": 16,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-04",
+     "departs": 8,
+     "pourboire_moyen": 0.43
+    },
+    {
+     "mois": "2019-05",
+     "departs": 3,
+     "pourboire_moyen": 1.9
+    },
+    {
+     "mois": "2019-06",
+     "departs": 2,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-07",
+     "departs": 3,
+     "pourboire_moyen": 1.33
+    },
+    {
+     "mois": "2019-08",
+     "departs": 8,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 3,
+     "pourboire_moyen": 0.67
+    },
+    {
+     "mois": "2019-10",
+     "departs": 2,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 6,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 2,
+     "pourboire_moyen": 6.46
+    }
+   ]
+  },
+  {
+   "id": 215,
+   "arrondissement": "Queens",
+   "nom": "South Jamaica",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1135,
+     "pourboire_moyen": 0.07
+    },
+    {
+     "mois": "2019-02",
+     "departs": 979,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-03",
+     "departs": 1142,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-04",
+     "departs": 628,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-05",
+     "departs": 601,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-06",
+     "departs": 459,
+     "pourboire_moyen": 0.15
+    },
+    {
+     "mois": "2019-07",
+     "departs": 636,
+     "pourboire_moyen": 0.06
+    },
+    {
+     "mois": "2019-08",
+     "departs": 712,
+     "pourboire_moyen": 0.04
+    },
+    {
+     "mois": "2019-09",
+     "departs": 720,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-10",
+     "departs": 854,
+     "pourboire_moyen": 0.09
+    },
+    {
+     "mois": "2019-11",
+     "departs": 829,
+     "pourboire_moyen": 0.03
+    },
+    {
+     "mois": "2019-12",
+     "departs": 857,
+     "pourboire_moyen": 0.06
+    }
+   ]
+  },
+  {
+   "id": 216,
+   "arrondissement": "Queens",
+   "nom": "South Ozone Park",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1126,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-02",
+     "departs": 967,
+     "pourboire_moyen": 0.11
+    },
+    {
+     "mois": "2019-03",
+     "departs": 1037,
+     "pourboire_moyen": 0.08
+    },
+    {
+     "mois": "2019-04",
+     "departs": 643,
+     "pourboire_moyen": 0.29
+    },
+    {
+     "mois": "2019-05",
+     "departs": 648,
+     "pourboire_moyen": 0.49
+    },
+    {
+     "mois": "2019-06",
+     "departs": 503,
+     "pourboire_moyen": 0.25
+    },
+    {
+     "mois": "2019-07",
+     "departs": 662,
+     "pourboire_moyen": 0.14
+    },
+    {
+     "mois": "2019-08",
+     "departs": 744,
+     "pourboire_moyen": 0.12
+    },
+    {
+     "mois": "2019-09",
+     "departs": 776,
+     "pourboire_moyen": 0.2
+    },
+    {
+     "mois": "2019-10",
+     "departs": 832,
+     "pourboire_moyen": 0.26
+    },
+    {
+     "mois": "2019-11",
+     "departs": 771,
+     "pourboire_moyen": 0.19
+    },
+    {
+     "mois": "2019-12",
+     "departs": 726,
+     "pourboire_moyen": 0.1
+    }
+   ]
+  },
+  {
+   "id": 217,
+   "arrondissement": "Brooklyn",
+   "nom": "South Williamsburg",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 683,
+     "pourboire_moyen": 0.24
+    },
+    {
+     "mois": "2019-02",
+     "departs": 560,
+     "pourboire_moyen": 0.31
+    },
+    {
+     "mois": "2019-03",
+     "departs": 544,
+     "pourboire_moyen": 0.31
+    },
+    {
+     "mois": "2019-04",
+     "departs": 348,
+     "pourboire_moyen": 0.63
+    },
+    {
+     "mois": "2019-05",
+     "departs": 300,
+     "pourboire_moyen": 0.54
+    },
+    {
+     "mois": "2019-06",
+     "departs": 288,
+     "pourboire_moyen": 0.45
+    },
+    {
+     "mois": "2019-07",
+     "departs": 235,
+     "pourboire_moyen": 0.54
+    },
+    {
+     "mois": "2019-08",
+     "departs": 259,
+     "pourboire_moyen": 0.46
+    },
+    {
+     "mois": "2019-09",
+     "departs": 328,
+     "pourboire_moyen": 0.39
+    },
+    {
+     "mois": "2019-10",
+     "departs": 224,
+     "pourboire_moyen": 0.27
+    },
+    {
+     "mois": "2019-11",
+     "departs": 300,
+     "pourboire_moyen": 0.31
+    },
+    {
+     "mois": "2019-12",
+     "departs": 307,
+     "pourboire_moyen": 0.47
+    }
+   ]
+  },
+  {
+   "id": 218,
+   "arrondissement": "Queens",
+   "nom": "Springfield Gardens North",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 862,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-02",
+     "departs": 718,
+     "pourboire_moyen": 0.04
+    },
+    {
+     "mois": "2019-03",
+     "departs": 787,
+     "pourboire_moyen": 0.02
+    },
+    {
+     "mois": "2019-04",
+     "departs": 401,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-05",
+     "departs": 410,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-06",
+     "departs": 297,
+     "pourboire_moyen": 0.02
+    },
+    {
+     "mois": "2019-07",
+     "departs": 523,
+     "pourboire_moyen": 0.06
+    },
+    {
+     "mois": "2019-08",
+     "departs": 582,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-09",
+     "departs": 548,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-10",
+     "departs": 715,
+     "pourboire_moyen": 0.02
+    },
+    {
+     "mois": "2019-11",
+     "departs": 643,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-12",
+     "departs": 636,
+     "pourboire_moyen": 0.06
+    }
+   ]
+  },
+  {
+   "id": 219,
+   "arrondissement": "Queens",
+   "nom": "Springfield Gardens South",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 310,
+     "pourboire_moyen": 0.08
+    },
+    {
+     "mois": "2019-02",
+     "departs": 289,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-03",
+     "departs": 293,
+     "pourboire_moyen": 0.26
+    },
+    {
+     "mois": "2019-04",
+     "departs": 131,
+     "pourboire_moyen": 0.24
+    },
+    {
+     "mois": "2019-05",
+     "departs": 118,
+     "pourboire_moyen": 0.23
+    },
+    {
+     "mois": "2019-06",
+     "departs": 108,
+     "pourboire_moyen": 0.29
+    },
+    {
+     "mois": "2019-07",
+     "departs": 211,
+     "pourboire_moyen": 0.14
+    },
+    {
+     "mois": "2019-08",
+     "departs": 244,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-09",
+     "departs": 248,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-10",
+     "departs": 270,
+     "pourboire_moyen": 0.18
+    },
+    {
+     "mois": "2019-11",
+     "departs": 255,
+     "pourboire_moyen": 0.16
+    },
+    {
+     "mois": "2019-12",
+     "departs": 271,
+     "pourboire_moyen": 0.03
+    }
+   ]
+  },
+  {
+   "id": 220,
+   "arrondissement": "Bronx",
+   "nom": "Spuyten Duyvil/Kingsbridge",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1402,
+     "pourboire_moyen": 0.2
+    },
+    {
+     "mois": "2019-02",
+     "departs": 1306,
+     "pourboire_moyen": 0.25
+    },
+    {
+     "mois": "2019-03",
+     "departs": 1270,
+     "pourboire_moyen": 0.19
+    },
+    {
+     "mois": "2019-04",
+     "departs": 795,
+     "pourboire_moyen": 0.28
+    },
+    {
+     "mois": "2019-05",
+     "departs": 689,
+     "pourboire_moyen": 0.46
+    },
+    {
+     "mois": "2019-06",
+     "departs": 632,
+     "pourboire_moyen": 0.62
+    },
+    {
+     "mois": "2019-07",
+     "departs": 850,
+     "pourboire_moyen": 0.28
+    },
+    {
+     "mois": "2019-08",
+     "departs": 854,
+     "pourboire_moyen": 0.23
+    },
+    {
+     "mois": "2019-09",
+     "departs": 805,
+     "pourboire_moyen": 0.55
+    },
+    {
+     "mois": "2019-10",
+     "departs": 952,
+     "pourboire_moyen": 0.43
+    },
+    {
+     "mois": "2019-11",
+     "departs": 798,
+     "pourboire_moyen": 0.39
+    },
+    {
+     "mois": "2019-12",
+     "departs": 733,
+     "pourboire_moyen": 0.35
+    }
+   ]
+  },
+  {
+   "id": 221,
+   "arrondissement": "Staten Island",
+   "nom": "Stapleton",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 31,
+     "pourboire_moyen": 0.22
+    },
+    {
+     "mois": "2019-02",
+     "departs": 26,
+     "pourboire_moyen": 0.3
+    },
+    {
+     "mois": "2019-03",
+     "departs": 19,
+     "pourboire_moyen": 0.3
+    },
+    {
+     "mois": "2019-04",
+     "departs": 13,
+     "pourboire_moyen": 0.15
+    },
+    {
+     "mois": "2019-05",
+     "departs": 18,
+     "pourboire_moyen": 1.41
+    },
+    {
+     "mois": "2019-06",
+     "departs": 10,
+     "pourboire_moyen": 0.2
+    },
+    {
+     "mois": "2019-07",
+     "departs": 16,
+     "pourboire_moyen": 0.13
+    },
+    {
+     "mois": "2019-08",
+     "departs": 15,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 14,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 23,
+     "pourboire_moyen": 0.63
+    },
+    {
+     "mois": "2019-11",
+     "departs": 21,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 13,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 222,
+   "arrondissement": "Brooklyn",
+   "nom": "Starrett City",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1102,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-02",
+     "departs": 1077,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-03",
+     "departs": 1057,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-04",
+     "departs": 489,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-05",
+     "departs": 436,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-06",
+     "departs": 426,
+     "pourboire_moyen": 0.03
+    },
+    {
+     "mois": "2019-07",
+     "departs": 709,
+     "pourboire_moyen": 0.02
+    },
+    {
+     "mois": "2019-08",
+     "departs": 707,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-09",
+     "departs": 682,
+     "pourboire_moyen": 0.01
+    },
+    {
+     "mois": "2019-10",
+     "departs": 783,
+     "pourboire_moyen": 0.04
+    },
+    {
+     "mois": "2019-11",
+     "departs": 754,
+     "pourboire_moyen": 0.02
+    },
+    {
+     "mois": "2019-12",
+     "departs": 765,
+     "pourboire_moyen": 0.03
+    }
+   ]
+  },
+  {
+   "id": 223,
+   "arrondissement": "Queens",
+   "nom": "Steinway",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 10262,
+     "pourboire_moyen": 1.05
+    },
+    {
+     "mois": "2019-02",
+     "departs": 9088,
+     "pourboire_moyen": 1.13
+    },
+    {
+     "mois": "2019-03",
+     "departs": 8856,
+     "pourboire_moyen": 1.06
+    },
+    {
+     "mois": "2019-04",
+     "departs": 7442,
+     "pourboire_moyen": 1.14
+    },
+    {
+     "mois": "2019-05",
+     "departs": 7197,
+     "pourboire_moyen": 1.12
+    },
+    {
+     "mois": "2019-06",
+     "departs": 6205,
+     "pourboire_moyen": 1.15
+    },
+    {
+     "mois": "2019-07",
+     "departs": 5268,
+     "pourboire_moyen": 1.13
+    },
+    {
+     "mois": "2019-08",
+     "departs": 4785,
+     "pourboire_moyen": 1.14
+    },
+    {
+     "mois": "2019-09",
+     "departs": 5339,
+     "pourboire_moyen": 1.17
+    },
+    {
+     "mois": "2019-10",
+     "departs": 6237,
+     "pourboire_moyen": 1.21
+    },
+    {
+     "mois": "2019-11",
+     "departs": 5738,
+     "pourboire_moyen": 1.15
+    },
+    {
+     "mois": "2019-12",
+     "departs": 6482,
+     "pourboire_moyen": 1.19
+    }
+   ]
+  },
+  {
+   "id": 224,
+   "arrondissement": "Manhattan",
+   "nom": "Stuy Town/Peter Cooper Village",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1,
+     "pourboire_moyen": 1.56
+    },
+    {
+     "mois": "2019-03",
+     "departs": 6,
+     "pourboire_moyen": 0.34
+    },
+    {
+     "mois": "2019-04",
+     "departs": 2,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-05",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-06",
+     "departs": 5,
+     "pourboire_moyen": 0.8
+    },
+    {
+     "mois": "2019-07",
+     "departs": 7,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 7,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 47,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 62,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 47,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 43,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 225,
+   "arrondissement": "Brooklyn",
+   "nom": "Stuyvesant Heights",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 3455,
+     "pourboire_moyen": 0.26
+    },
+    {
+     "mois": "2019-02",
+     "departs": 3265,
+     "pourboire_moyen": 0.21
+    },
+    {
+     "mois": "2019-03",
+     "departs": 3132,
+     "pourboire_moyen": 0.24
+    },
+    {
+     "mois": "2019-04",
+     "departs": 1966,
+     "pourboire_moyen": 0.45
+    },
+    {
+     "mois": "2019-05",
+     "departs": 1762,
+     "pourboire_moyen": 0.35
+    },
+    {
+     "mois": "2019-06",
+     "departs": 1734,
+     "pourboire_moyen": 0.35
+    },
+    {
+     "mois": "2019-07",
+     "departs": 2094,
+     "pourboire_moyen": 0.25
+    },
+    {
+     "mois": "2019-08",
+     "departs": 2182,
+     "pourboire_moyen": 0.2
+    },
+    {
+     "mois": "2019-09",
+     "departs": 2081,
+     "pourboire_moyen": 0.19
+    },
+    {
+     "mois": "2019-10",
+     "departs": 2201,
+     "pourboire_moyen": 0.19
+    },
+    {
+     "mois": "2019-11",
+     "departs": 2093,
+     "pourboire_moyen": 0.19
+    },
+    {
+     "mois": "2019-12",
+     "departs": 2169,
+     "pourboire_moyen": 0.21
+    }
+   ]
+  },
+  {
+   "id": 226,
+   "arrondissement": "Queens",
+   "nom": "Sunnyside",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 5019,
+     "pourboire_moyen": 0.75
+    },
+    {
+     "mois": "2019-02",
+     "departs": 4203,
+     "pourboire_moyen": 0.8
+    },
+    {
+     "mois": "2019-03",
+     "departs": 4409,
+     "pourboire_moyen": 0.76
+    },
+    {
+     "mois": "2019-04",
+     "departs": 3542,
+     "pourboire_moyen": 0.79
+    },
+    {
+     "mois": "2019-05",
+     "departs": 3683,
+     "pourboire_moyen": 0.85
+    },
+    {
+     "mois": "2019-06",
+     "departs": 3528,
+     "pourboire_moyen": 0.8
+    },
+    {
+     "mois": "2019-07",
+     "departs": 3316,
+     "pourboire_moyen": 0.77
+    },
+    {
+     "mois": "2019-08",
+     "departs": 3248,
+     "pourboire_moyen": 0.66
+    },
+    {
+     "mois": "2019-09",
+     "departs": 2947,
+     "pourboire_moyen": 0.72
+    },
+    {
+     "mois": "2019-10",
+     "departs": 3360,
+     "pourboire_moyen": 0.66
+    },
+    {
+     "mois": "2019-11",
+     "departs": 2936,
+     "pourboire_moyen": 0.66
+    },
+    {
+     "mois": "2019-12",
+     "departs": 2948,
+     "pourboire_moyen": 0.69
+    }
+   ]
+  },
+  {
+   "id": 227,
+   "arrondissement": "Brooklyn",
+   "nom": "Sunset Park East",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 750,
+     "pourboire_moyen": 0.11
+    },
+    {
+     "mois": "2019-02",
+     "departs": 651,
+     "pourboire_moyen": 0.11
+    },
+    {
+     "mois": "2019-03",
+     "departs": 633,
+     "pourboire_moyen": 0.22
+    },
+    {
+     "mois": "2019-04",
+     "departs": 321,
+     "pourboire_moyen": 0.33
+    },
+    {
+     "mois": "2019-05",
+     "departs": 308,
+     "pourboire_moyen": 0.29
+    },
+    {
+     "mois": "2019-06",
+     "departs": 289,
+     "pourboire_moyen": 0.4
+    },
+    {
+     "mois": "2019-07",
+     "departs": 438,
+     "pourboire_moyen": 0.14
+    },
+    {
+     "mois": "2019-08",
+     "departs": 384,
+     "pourboire_moyen": 0.14
+    },
+    {
+     "mois": "2019-09",
+     "departs": 394,
+     "pourboire_moyen": 0.15
+    },
+    {
+     "mois": "2019-10",
+     "departs": 521,
+     "pourboire_moyen": 0.17
+    },
+    {
+     "mois": "2019-11",
+     "departs": 487,
+     "pourboire_moyen": 0.13
+    },
+    {
+     "mois": "2019-12",
+     "departs": 466,
+     "pourboire_moyen": 0.08
+    }
+   ]
+  },
+  {
+   "id": 228,
+   "arrondissement": "Brooklyn",
+   "nom": "Sunset Park West",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1244,
+     "pourboire_moyen": 0.66
+    },
+    {
+     "mois": "2019-02",
+     "departs": 1158,
+     "pourboire_moyen": 0.74
+    },
+    {
+     "mois": "2019-03",
+     "departs": 1095,
+     "pourboire_moyen": 0.7
+    },
+    {
+     "mois": "2019-04",
+     "departs": 824,
+     "pourboire_moyen": 1.21
+    },
+    {
+     "mois": "2019-05",
+     "departs": 785,
+     "pourboire_moyen": 1.39
+    },
+    {
+     "mois": "2019-06",
+     "departs": 712,
+     "pourboire_moyen": 1.38
+    },
+    {
+     "mois": "2019-07",
+     "departs": 782,
+     "pourboire_moyen": 0.94
+    },
+    {
+     "mois": "2019-08",
+     "departs": 659,
+     "pourboire_moyen": 0.95
+    },
+    {
+     "mois": "2019-09",
+     "departs": 687,
+     "pourboire_moyen": 0.85
+    },
+    {
+     "mois": "2019-10",
+     "departs": 814,
+     "pourboire_moyen": 0.8
+    },
+    {
+     "mois": "2019-11",
+     "departs": 692,
+     "pourboire_moyen": 0.64
+    },
+    {
+     "mois": "2019-12",
+     "departs": 724,
+     "pourboire_moyen": 0.91
+    }
+   ]
+  },
+  {
+   "id": 229,
+   "arrondissement": "Manhattan",
+   "nom": "Sutton Place/Turtle Bay North",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 14,
+     "pourboire_moyen": 1.24
+    },
+    {
+     "mois": "2019-02",
+     "departs": 12,
+     "pourboire_moyen": 1.77
+    },
+    {
+     "mois": "2019-03",
+     "departs": 11,
+     "pourboire_moyen": 0.96
+    },
+    {
+     "mois": "2019-04",
+     "departs": 10,
+     "pourboire_moyen": 1.65
+    },
+    {
+     "mois": "2019-05",
+     "departs": 9,
+     "pourboire_moyen": 1.37
+    },
+    {
+     "mois": "2019-06",
+     "departs": 3,
+     "pourboire_moyen": 2.11
+    },
+    {
+     "mois": "2019-07",
+     "departs": 8,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 5,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 55,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 99,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 95,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 78,
+     "pourboire_moyen": 0.05
+    }
+   ]
+  },
+  {
+   "id": 230,
+   "arrondissement": "Manhattan",
+   "nom": "Times Sq/Theatre District",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 52,
+     "pourboire_moyen": 1.86
+    },
+    {
+     "mois": "2019-02",
+     "departs": 47,
+     "pourboire_moyen": 1.95
+    },
+    {
+     "mois": "2019-03",
+     "departs": 28,
+     "pourboire_moyen": 2.02
+    },
+    {
+     "mois": "2019-04",
+     "departs": 29,
+     "pourboire_moyen": 1.7
+    },
+    {
+     "mois": "2019-05",
+     "departs": 35,
+     "pourboire_moyen": 1.78
+    },
+    {
+     "mois": "2019-06",
+     "departs": 3,
+     "pourboire_moyen": 0.49
+    },
+    {
+     "mois": "2019-07",
+     "departs": 1,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 5,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 46,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 94,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 69,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 78,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 231,
+   "arrondissement": "Manhattan",
+   "nom": "TriBeCa/Civic Center",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 23,
+     "pourboire_moyen": 2.3
+    },
+    {
+     "mois": "2019-02",
+     "departs": 20,
+     "pourboire_moyen": 2.42
+    },
+    {
+     "mois": "2019-03",
+     "departs": 21,
+     "pourboire_moyen": 2.72
+    },
+    {
+     "mois": "2019-04",
+     "departs": 10,
+     "pourboire_moyen": 1.87
+    },
+    {
+     "mois": "2019-05",
+     "departs": 13,
+     "pourboire_moyen": 0.97
+    },
+    {
+     "mois": "2019-06",
+     "departs": 3,
+     "pourboire_moyen": 0.67
+    },
+    {
+     "mois": "2019-07",
+     "departs": 5,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 4,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 135,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 251,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 244,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 253,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 232,
+   "arrondissement": "Manhattan",
+   "nom": "Two Bridges/Seward Park",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 3,
+     "pourboire_moyen": 2.02
+    },
+    {
+     "mois": "2019-02",
+     "departs": 4,
+     "pourboire_moyen": 2.04
+    },
+    {
+     "mois": "2019-03",
+     "departs": 4,
+     "pourboire_moyen": 1.32
+    },
+    {
+     "mois": "2019-04",
+     "departs": 1,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-05",
+     "departs": 7,
+     "pourboire_moyen": 1.45
+    },
+    {
+     "mois": "2019-06",
+     "departs": 7,
+     "pourboire_moyen": 0.49
+    },
+    {
+     "mois": "2019-07",
+     "departs": 12,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 25,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-09",
+     "departs": 105,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 206,
+     "pourboire_moyen": 0.04
+    },
+    {
+     "mois": "2019-11",
+     "departs": 194,
+     "pourboire_moyen": 0.03
+    },
+    {
+     "mois": "2019-12",
+     "departs": 184,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 233,
+   "arrondissement": "Manhattan",
+   "nom": "UN/Turtle Bay South",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 4,
+     "pourboire_moyen": 1.67
+    },
+    {
+     "mois": "2019-02",
+     "departs": 13,
+     "pourboire_moyen": 1.64
+    },
+    {
+     "mois": "2019-03",
+     "departs": 15,
+     "pourboire_moyen": 1.72
+    },
+    {
+     "mois": "2019-04",
+     "departs": 4,
+     "pourboire_moyen": 0.49
+    },
+    {
+     "mois": "2019-05",
+     "departs": 7,
+     "pourboire_moyen": 1.1
+    },
+    {
+     "mois": "2019-06",
+     "departs": 2,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-07",
+     "departs": 13,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 6,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 48,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 101,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 81,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 80,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 234,
+   "arrondissement": "Manhattan",
+   "nom": "Union Sq",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 21,
+     "pourboire_moyen": 1.83
+    },
+    {
+     "mois": "2019-02",
+     "departs": 21,
+     "pourboire_moyen": 1.89
+    },
+    {
+     "mois": "2019-03",
+     "departs": 28,
+     "pourboire_moyen": 1.48
+    },
+    {
+     "mois": "2019-04",
+     "departs": 18,
+     "pourboire_moyen": 0.94
+    },
+    {
+     "mois": "2019-05",
+     "departs": 16,
+     "pourboire_moyen": 2.16
+    },
+    {
+     "mois": "2019-06",
+     "departs": 3,
+     "pourboire_moyen": 0.72
+    },
+    {
+     "mois": "2019-07",
+     "departs": 1,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 27,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 76,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 54,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 71,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 235,
+   "arrondissement": "Bronx",
+   "nom": "University Heights/Morris Heights",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1575,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-02",
+     "departs": 1502,
+     "pourboire_moyen": 0.06
+    },
+    {
+     "mois": "2019-03",
+     "departs": 1552,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-04",
+     "departs": 936,
+     "pourboire_moyen": 0.11
+    },
+    {
+     "mois": "2019-05",
+     "departs": 845,
+     "pourboire_moyen": 0.15
+    },
+    {
+     "mois": "2019-06",
+     "departs": 700,
+     "pourboire_moyen": 0.14
+    },
+    {
+     "mois": "2019-07",
+     "departs": 1015,
+     "pourboire_moyen": 0.08
+    },
+    {
+     "mois": "2019-08",
+     "departs": 985,
+     "pourboire_moyen": 0.04
+    },
+    {
+     "mois": "2019-09",
+     "departs": 1109,
+     "pourboire_moyen": 0.11
+    },
+    {
+     "mois": "2019-10",
+     "departs": 1185,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-11",
+     "departs": 1135,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-12",
+     "departs": 1058,
+     "pourboire_moyen": 0.09
+    }
+   ]
+  },
+  {
+   "id": 236,
+   "arrondissement": "Manhattan",
+   "nom": "Upper East Side North",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1382,
+     "pourboire_moyen": 1.54
+    },
+    {
+     "mois": "2019-02",
+     "departs": 1126,
+     "pourboire_moyen": 1.91
+    },
+    {
+     "mois": "2019-03",
+     "departs": 988,
+     "pourboire_moyen": 1.94
+    },
+    {
+     "mois": "2019-04",
+     "departs": 1109,
+     "pourboire_moyen": 1.97
+    },
+    {
+     "mois": "2019-05",
+     "departs": 1347,
+     "pourboire_moyen": 1.89
+    },
+    {
+     "mois": "2019-06",
+     "departs": 1124,
+     "pourboire_moyen": 1.96
+    },
+    {
+     "mois": "2019-07",
+     "departs": 938,
+     "pourboire_moyen": 1.86
+    },
+    {
+     "mois": "2019-08",
+     "departs": 861,
+     "pourboire_moyen": 1.77
+    },
+    {
+     "mois": "2019-09",
+     "departs": 1130,
+     "pourboire_moyen": 1.83
+    },
+    {
+     "mois": "2019-10",
+     "departs": 1239,
+     "pourboire_moyen": 1.59
+    },
+    {
+     "mois": "2019-11",
+     "departs": 1081,
+     "pourboire_moyen": 1.53
+    },
+    {
+     "mois": "2019-12",
+     "departs": 1128,
+     "pourboire_moyen": 1.6
+    }
+   ]
+  },
+  {
+   "id": 237,
+   "arrondissement": "Manhattan",
+   "nom": "Upper East Side South",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 12,
+     "pourboire_moyen": 0.76
+    },
+    {
+     "mois": "2019-02",
+     "departs": 27,
+     "pourboire_moyen": 2.15
+    },
+    {
+     "mois": "2019-03",
+     "departs": 16,
+     "pourboire_moyen": 2.27
+    },
+    {
+     "mois": "2019-04",
+     "departs": 14,
+     "pourboire_moyen": 2.12
+    },
+    {
+     "mois": "2019-05",
+     "departs": 16,
+     "pourboire_moyen": 1.8
+    },
+    {
+     "mois": "2019-06",
+     "departs": 3,
+     "pourboire_moyen": 3.02
+    },
+    {
+     "mois": "2019-07",
+     "departs": 6,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 1,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 67,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 152,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 136,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 107,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 238,
+   "arrondissement": "Manhattan",
+   "nom": "Upper West Side North",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 12,
+     "pourboire_moyen": 1.49
+    },
+    {
+     "mois": "2019-02",
+     "departs": 11,
+     "pourboire_moyen": 1.85
+    },
+    {
+     "mois": "2019-03",
+     "departs": 8,
+     "pourboire_moyen": 1.56
+    },
+    {
+     "mois": "2019-04",
+     "departs": 9,
+     "pourboire_moyen": 1.48
+    },
+    {
+     "mois": "2019-05",
+     "departs": 12,
+     "pourboire_moyen": 1.17
+    },
+    {
+     "mois": "2019-06",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-07",
+     "departs": 5,
+     "pourboire_moyen": 0.57
+    },
+    {
+     "mois": "2019-08",
+     "departs": 7,
+     "pourboire_moyen": 0.7
+    },
+    {
+     "mois": "2019-09",
+     "departs": 115,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-10",
+     "departs": 259,
+     "pourboire_moyen": 0.02
+    },
+    {
+     "mois": "2019-11",
+     "departs": 225,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 237,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 239,
+   "arrondissement": "Manhattan",
+   "nom": "Upper West Side South",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 37,
+     "pourboire_moyen": 1.79
+    },
+    {
+     "mois": "2019-02",
+     "departs": 45,
+     "pourboire_moyen": 1.63
+    },
+    {
+     "mois": "2019-03",
+     "departs": 33,
+     "pourboire_moyen": 1.9
+    },
+    {
+     "mois": "2019-04",
+     "departs": 17,
+     "pourboire_moyen": 2.27
+    },
+    {
+     "mois": "2019-05",
+     "departs": 20,
+     "pourboire_moyen": 0.98
+    },
+    {
+     "mois": "2019-06",
+     "departs": 2,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 7,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 38,
+     "pourboire_moyen": 0.09
+    },
+    {
+     "mois": "2019-10",
+     "departs": 94,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 71,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 87,
+     "pourboire_moyen": 0.09
+    }
+   ]
+  },
+  {
+   "id": 240,
+   "arrondissement": "Bronx",
+   "nom": "Van Cortlandt Park",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 113,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-02",
+     "departs": 144,
+     "pourboire_moyen": 0.11
+    },
+    {
+     "mois": "2019-03",
+     "departs": 122,
+     "pourboire_moyen": 0.13
+    },
+    {
+     "mois": "2019-04",
+     "departs": 85,
+     "pourboire_moyen": 0.16
+    },
+    {
+     "mois": "2019-05",
+     "departs": 74,
+     "pourboire_moyen": 0.67
+    },
+    {
+     "mois": "2019-06",
+     "departs": 58,
+     "pourboire_moyen": 0.38
+    },
+    {
+     "mois": "2019-07",
+     "departs": 93,
+     "pourboire_moyen": 0.16
+    },
+    {
+     "mois": "2019-08",
+     "departs": 92,
+     "pourboire_moyen": 0.03
+    },
+    {
+     "mois": "2019-09",
+     "departs": 85,
+     "pourboire_moyen": 0.21
+    },
+    {
+     "mois": "2019-10",
+     "departs": 100,
+     "pourboire_moyen": 0.57
+    },
+    {
+     "mois": "2019-11",
+     "departs": 97,
+     "pourboire_moyen": 0.15
+    },
+    {
+     "mois": "2019-12",
+     "departs": 87,
+     "pourboire_moyen": 0.03
+    }
+   ]
+  },
+  {
+   "id": 241,
+   "arrondissement": "Bronx",
+   "nom": "Van Cortlandt Village",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 754,
+     "pourboire_moyen": 0.09
+    },
+    {
+     "mois": "2019-02",
+     "departs": 804,
+     "pourboire_moyen": 0.13
+    },
+    {
+     "mois": "2019-03",
+     "departs": 852,
+     "pourboire_moyen": 0.18
+    },
+    {
+     "mois": "2019-04",
+     "departs": 624,
+     "pourboire_moyen": 0.26
+    },
+    {
+     "mois": "2019-05",
+     "departs": 556,
+     "pourboire_moyen": 0.66
+    },
+    {
+     "mois": "2019-06",
+     "departs": 523,
+     "pourboire_moyen": 0.75
+    },
+    {
+     "mois": "2019-07",
+     "departs": 597,
+     "pourboire_moyen": 0.14
+    },
+    {
+     "mois": "2019-08",
+     "departs": 535,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-09",
+     "departs": 626,
+     "pourboire_moyen": 0.15
+    },
+    {
+     "mois": "2019-10",
+     "departs": 669,
+     "pourboire_moyen": 0.15
+    },
+    {
+     "mois": "2019-11",
+     "departs": 595,
+     "pourboire_moyen": 0.12
+    },
+    {
+     "mois": "2019-12",
+     "departs": 639,
+     "pourboire_moyen": 0.1
+    }
+   ]
+  },
+  {
+   "id": 242,
+   "arrondissement": "Bronx",
+   "nom": "Van Nest/Morris Park",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 2773,
+     "pourboire_moyen": 0.16
+    },
+    {
+     "mois": "2019-02",
+     "departs": 2582,
+     "pourboire_moyen": 0.15
+    },
+    {
+     "mois": "2019-03",
+     "departs": 2627,
+     "pourboire_moyen": 0.14
+    },
+    {
+     "mois": "2019-04",
+     "departs": 1847,
+     "pourboire_moyen": 0.23
+    },
+    {
+     "mois": "2019-05",
+     "departs": 1642,
+     "pourboire_moyen": 0.22
+    },
+    {
+     "mois": "2019-06",
+     "departs": 1458,
+     "pourboire_moyen": 0.24
+    },
+    {
+     "mois": "2019-07",
+     "departs": 1831,
+     "pourboire_moyen": 0.16
+    },
+    {
+     "mois": "2019-08",
+     "departs": 1924,
+     "pourboire_moyen": 0.2
+    },
+    {
+     "mois": "2019-09",
+     "departs": 1923,
+     "pourboire_moyen": 0.22
+    },
+    {
+     "mois": "2019-10",
+     "departs": 2173,
+     "pourboire_moyen": 0.13
+    },
+    {
+     "mois": "2019-11",
+     "departs": 1770,
+     "pourboire_moyen": 0.12
+    },
+    {
+     "mois": "2019-12",
+     "departs": 1736,
+     "pourboire_moyen": 0.3
+    }
+   ]
+  },
+  {
+   "id": 243,
+   "arrondissement": "Manhattan",
+   "nom": "Washington Heights North",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 3228,
+     "pourboire_moyen": 1.11
+    },
+    {
+     "mois": "2019-02",
+     "departs": 2867,
+     "pourboire_moyen": 1.09
+    },
+    {
+     "mois": "2019-03",
+     "departs": 3081,
+     "pourboire_moyen": 1.07
+    },
+    {
+     "mois": "2019-04",
+     "departs": 2724,
+     "pourboire_moyen": 1.23
+    },
+    {
+     "mois": "2019-05",
+     "departs": 2812,
+     "pourboire_moyen": 1.08
+    },
+    {
+     "mois": "2019-06",
+     "departs": 2736,
+     "pourboire_moyen": 1.11
+    },
+    {
+     "mois": "2019-07",
+     "departs": 2324,
+     "pourboire_moyen": 0.93
+    },
+    {
+     "mois": "2019-08",
+     "departs": 2214,
+     "pourboire_moyen": 0.93
+    },
+    {
+     "mois": "2019-09",
+     "departs": 2410,
+     "pourboire_moyen": 0.99
+    },
+    {
+     "mois": "2019-10",
+     "departs": 2327,
+     "pourboire_moyen": 1.04
+    },
+    {
+     "mois": "2019-11",
+     "departs": 2220,
+     "pourboire_moyen": 1.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 2270,
+     "pourboire_moyen": 1.06
+    }
+   ]
+  },
+  {
+   "id": 244,
+   "arrondissement": "Manhattan",
+   "nom": "Washington Heights South",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 15567,
+     "pourboire_moyen": 1.52
+    },
+    {
+     "mois": "2019-02",
+     "departs": 14014,
+     "pourboire_moyen": 1.6
+    },
+    {
+     "mois": "2019-03",
+     "departs": 14761,
+     "pourboire_moyen": 1.58
+    },
+    {
+     "mois": "2019-04",
+     "departs": 14085,
+     "pourboire_moyen": 1.73
+    },
+    {
+     "mois": "2019-05",
+     "departs": 13918,
+     "pourboire_moyen": 1.78
+    },
+    {
+     "mois": "2019-06",
+     "departs": 13145,
+     "pourboire_moyen": 1.69
+    },
+    {
+     "mois": "2019-07",
+     "departs": 12124,
+     "pourboire_moyen": 1.69
+    },
+    {
+     "mois": "2019-08",
+     "departs": 11418,
+     "pourboire_moyen": 1.66
+    },
+    {
+     "mois": "2019-09",
+     "departs": 11207,
+     "pourboire_moyen": 1.79
+    },
+    {
+     "mois": "2019-10",
+     "departs": 11595,
+     "pourboire_moyen": 1.8
+    },
+    {
+     "mois": "2019-11",
+     "departs": 10860,
+     "pourboire_moyen": 1.81
+    },
+    {
+     "mois": "2019-12",
+     "departs": 10309,
+     "pourboire_moyen": 1.77
+    }
+   ]
+  },
+  {
+   "id": 245,
+   "arrondissement": "Staten Island",
+   "nom": "West Brighton",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-02",
+     "departs": 10,
+     "pourboire_moyen": 0.74
+    },
+    {
+     "mois": "2019-03",
+     "departs": 10,
+     "pourboire_moyen": 0.78
+    },
+    {
+     "mois": "2019-04",
+     "departs": 6,
+     "pourboire_moyen": 2.73
+    },
+    {
+     "mois": "2019-05",
+     "departs": 1,
+     "pourboire_moyen": 2.4
+    },
+    {
+     "mois": "2019-06",
+     "departs": 6,
+     "pourboire_moyen": 0.62
+    },
+    {
+     "mois": "2019-07",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 1,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 4,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 6,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 2,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 246,
+   "arrondissement": "Manhattan",
+   "nom": "West Chelsea/Hudson Yards",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 3,
+     "pourboire_moyen": 0.49
+    },
+    {
+     "mois": "2019-02",
+     "departs": 14,
+     "pourboire_moyen": 1.53
+    },
+    {
+     "mois": "2019-03",
+     "departs": 17,
+     "pourboire_moyen": 2.39
+    },
+    {
+     "mois": "2019-04",
+     "departs": 16,
+     "pourboire_moyen": 1.27
+    },
+    {
+     "mois": "2019-05",
+     "departs": 12,
+     "pourboire_moyen": 1.94
+    },
+    {
+     "mois": "2019-07",
+     "departs": 3,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-08",
+     "departs": 4,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 23,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 61,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 36,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 29,
+     "pourboire_moyen": 0.14
+    }
+   ]
+  },
+  {
+   "id": 247,
+   "arrondissement": "Bronx",
+   "nom": "West Concourse",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 2312,
+     "pourboire_moyen": 0.34
+    },
+    {
+     "mois": "2019-02",
+     "departs": 2392,
+     "pourboire_moyen": 0.36
+    },
+    {
+     "mois": "2019-03",
+     "departs": 2842,
+     "pourboire_moyen": 0.42
+    },
+    {
+     "mois": "2019-04",
+     "departs": 2525,
+     "pourboire_moyen": 0.84
+    },
+    {
+     "mois": "2019-05",
+     "departs": 2488,
+     "pourboire_moyen": 0.9
+    },
+    {
+     "mois": "2019-06",
+     "departs": 2482,
+     "pourboire_moyen": 1.14
+    },
+    {
+     "mois": "2019-07",
+     "departs": 2441,
+     "pourboire_moyen": 0.96
+    },
+    {
+     "mois": "2019-08",
+     "departs": 2546,
+     "pourboire_moyen": 0.89
+    },
+    {
+     "mois": "2019-09",
+     "departs": 2121,
+     "pourboire_moyen": 0.81
+    },
+    {
+     "mois": "2019-10",
+     "departs": 2164,
+     "pourboire_moyen": 0.98
+    },
+    {
+     "mois": "2019-11",
+     "departs": 1704,
+     "pourboire_moyen": 0.36
+    },
+    {
+     "mois": "2019-12",
+     "departs": 1784,
+     "pourboire_moyen": 0.39
+    }
+   ]
+  },
+  {
+   "id": 248,
+   "arrondissement": "Bronx",
+   "nom": "West Farms/Bronx River",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 744,
+     "pourboire_moyen": 0.11
+    },
+    {
+     "mois": "2019-02",
+     "departs": 683,
+     "pourboire_moyen": 0.07
+    },
+    {
+     "mois": "2019-03",
+     "departs": 742,
+     "pourboire_moyen": 0.08
+    },
+    {
+     "mois": "2019-04",
+     "departs": 533,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-05",
+     "departs": 563,
+     "pourboire_moyen": 0.11
+    },
+    {
+     "mois": "2019-06",
+     "departs": 486,
+     "pourboire_moyen": 0.12
+    },
+    {
+     "mois": "2019-07",
+     "departs": 542,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-08",
+     "departs": 544,
+     "pourboire_moyen": 0.09
+    },
+    {
+     "mois": "2019-09",
+     "departs": 534,
+     "pourboire_moyen": 0.05
+    },
+    {
+     "mois": "2019-10",
+     "departs": 528,
+     "pourboire_moyen": 0.03
+    },
+    {
+     "mois": "2019-11",
+     "departs": 507,
+     "pourboire_moyen": 0.04
+    },
+    {
+     "mois": "2019-12",
+     "departs": 511,
+     "pourboire_moyen": 0.13
+    }
+   ]
+  },
+  {
+   "id": 249,
+   "arrondissement": "Manhattan",
+   "nom": "West Village",
+   "service": "Yellow Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 11,
+     "pourboire_moyen": 1.21
+    },
+    {
+     "mois": "2019-02",
+     "departs": 18,
+     "pourboire_moyen": 2.15
+    },
+    {
+     "mois": "2019-03",
+     "departs": 20,
+     "pourboire_moyen": 1.81
+    },
+    {
+     "mois": "2019-04",
+     "departs": 6,
+     "pourboire_moyen": 0.85
+    },
+    {
+     "mois": "2019-05",
+     "departs": 18,
+     "pourboire_moyen": 1.22
+    },
+    {
+     "mois": "2019-06",
+     "departs": 2,
+     "pourboire_moyen": 2.63
+    },
+    {
+     "mois": "2019-08",
+     "departs": 2,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-09",
+     "departs": 12,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-10",
+     "departs": 48,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-11",
+     "departs": 39,
+     "pourboire_moyen": 0.0
+    },
+    {
+     "mois": "2019-12",
+     "departs": 19,
+     "pourboire_moyen": 0.0
+    }
+   ]
+  },
+  {
+   "id": 250,
+   "arrondissement": "Bronx",
+   "nom": "Westchester Village/Unionport",
+   "service": "Boro Zone",
+   "mis_a_jour": "2026-01-15T08:00:00Z",
+   "mois": [
+    {
+     "mois": "2019-01",
+     "departs": 1126,
+     "pourboire_moyen": 0.15
+    },
+    {
+     "mois": "2019-02",
+     "departs": 1119,
+     "pourboire_moyen": 0.11
+    },
+    {
+     "mois": "2019-03",
+     "departs": 1098,
+     "pourboire_moyen": 0.1
+    },
+    {
+     "mois": "2019-04",
+     "departs": 712,
+     "pourboire_moyen": 0.2
+    },
+    {
+     "mois": "2019-05",
+     "departs": 610,
+     "pourboire_moyen": 0.22
+    },
+    {
+     "mois": "2019-06",
+     "departs": 557,
+     "pourboire_moyen": 0.23
+    },
+    {
+     "mois": "2019-07",
+     "departs": 697,
+     "pourboire_moyen": 0.09
+    },
+    {
+     "mois": "2019-08",
+     "departs": 742,
+     "pourboire_moyen": 0.16
+    },
+    {
+     "mois": "2019-09",
+     "departs": 695,
+     "pourboire_moyen": 0.22
+    },
+    {
+     "mois": "2019-10",
+     "departs": 748,
+     "pourboire_moyen": 0.13
+    },
+    {
+     "mois": "2019-11",
+     "departs": 664,
+     "pourboire_moyen": 0.15
+    },
+    {
+     "mois": "2019-12",
+     "departs": 686,
+     "pourboire_moyen": 0.19
+    }
+   ]
+  }
+ ],
+ "suivant": "page-6.json"
+}

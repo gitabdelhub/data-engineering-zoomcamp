@@ -84,6 +84,7 @@
     return { pos: lessons.indexOf(it) + 1, total: lessons.length };
   }
   // Le nom d'un module tel qu'on l'écrit dans une phrase.
+  function modLabel(m) { return m.id === "W1" ? "Workshop" : "Module " + m.id; }
   function modName(m) { return m.id === "P" ? "Projet final" : m.id === "W1" ? "Workshop" : m.bonus ? "Bonus" : "Module " + Number(m.id); }
   function itemLabel(it) {
     if (it.type === "homework") return "Homework";
@@ -422,7 +423,7 @@
           <a class="btn white" href="${cur ? "#/l/" + cur.id : "#/progression"}">${doneCount() ? "Reprendre ma séance" : "Commencer le cours"} <span class="arr">→</span></a>
           <a class="btn ghost-w" href="#/methode">Comment ça marche</a>
         </div>
-        ${cur ? `<a class="resume" href="#/l/${cur.id}">${ring(pct, true)}<div><b>Module ${cur.module} · ${esc(cur.title)}</b><small>${pct} % du cours · ${doneCount()} étapes sur ${ITEMS.length}</small></div></a>` : ""}
+        ${cur ? `<a class="resume" href="#/l/${cur.id}">${ring(pct, true)}<div><b>${cur.module === "W1" ? "Workshop" : "Module " + cur.module} · ${esc(cur.title)}</b><small>${pct} % du cours · ${doneCount()} étapes sur ${ITEMS.length}</small></div></a>` : ""}
       </div>
       <div class="stage" id="stage" aria-label="Animation : les outils du cours en orbite autour d'un globe de données">
         <canvas id="globe"></canvas><div class="orbit" id="orbit"></div>
@@ -470,7 +471,7 @@
     }
     const mod = modOf(cur);
     box.innerHTML = `<div class="today-h">
-        <span class="eyebrow">Module ${mod.id} · ${esc(mod.title)} · ${itemLabel(cur)}${cur.min ? " · " + esc(dur(cur)) : ""}</span>
+        <span class="eyebrow">${modLabel(mod)} · ${esc(mod.title)} · ${itemLabel(cur)}${cur.min ? " · " + esc(dur(cur)) : ""}</span>
         <h2>Ta séance du jour</h2>
         <p>${esc(cur.title)}. Suis les étapes dans l'ordre, c'est le plus efficace. Tu peux t'arrêter entre deux étapes, tout est enregistré.</p>
         <div><a class="btn" href="#/l/${cur.id}">Continuer <span class="arr">→</span></a></div>
@@ -778,7 +779,7 @@
     }).join("");
     const pct = Math.round(doneCount(mod.items) / mod.items.length * 100);
     return `<aside class="curr" aria-label="Programme du module">
-      <div class="h"><span class="eyebrow">Module ${mod.id}</span><h3>${esc(mod.title)}</h3><div class="track"><b style="width:${pct}%"></b></div><span class="small">${doneCount(mod.items)} sur ${mod.items.length} terminées</span></div>
+      <div class="h"><span class="eyebrow">${modLabel(mod)}</span><h3>${esc(mod.title)}</h3><div class="track"><b style="width:${pct}%"></b></div><span class="small">${doneCount(mod.items)} sur ${mod.items.length} terminées</span></div>
       <ol>${rows}</ol></aside>`;
   }
 
@@ -826,8 +827,8 @@
     const st = S.les[it.id] = Object.assign({ step: 0, hints: 0, bfHints: 0, checks: {} }, S.les[it.id]);
     app.innerHTML = `<section class="gut"><div class="max lesson">
       <div class="lmain">
-        <nav class="crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/m/${mod.id}">Module ${mod.id} · ${esc(mod.title)}</a><span>/</span><span>Leçon ${n.pos}</span></nav>
-        <div class="ltitle"><div><span class="eyebrow">Module ${mod.id} · Leçon ${n.pos} sur ${n.total}${it.min ? " · " + esc(dur(it)) : ""}</span><h1>${esc(it.title)}</h1></div></div>
+        <nav class="crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/m/${mod.id}">${modLabel(mod)} · ${esc(mod.title)}</a><span>/</span><span>Leçon ${n.pos}</span></nav>
+        <div class="ltitle"><div><span class="eyebrow">${modLabel(mod)} · Leçon ${n.pos} sur ${n.total}${it.min ? " · " + esc(dur(it)) : ""}</span><h1>${esc(it.title)}</h1></div></div>
         <div id="majbox"></div>
         <ol class="fsteps" id="fsteps" aria-label="Déroulé de la leçon"></ol>
         <div class="tabs" role="tablist">
@@ -1162,7 +1163,7 @@
       const fresh = st.justDone;
       if (fresh) { delete st.justDone; save(); }
       const nextLabel = next && next.type === "lesson" ? `${itemLabel(next)} suivante` : next ? `Ensuite, ${itemLabel(next).toLowerCase()}` : "";
-      const title = fresh && modDone ? `Module ${mod.id} validé.` : fresh ? "Bien joué." : "Leçon déjà terminée.";
+      const title = fresh && modDone ? `${modLabel(mod)} validé.` : fresh ? "Bien joué." : "Leçon déjà terminée.";
       const c = card("donec", `<span class="lab">Leçon terminée</span><h2>${title}</h2>
         ${fresh && modDone && next ? `<p>Tout le module ${mod.id} est fait. Place au module suivant.</p>` : ""}
         <div class="donestats">
@@ -1250,9 +1251,12 @@
   function parseHomework(src) {
     const sections = [];
     let cur = { title: "", lines: [] }, fence = false;
+    // Certains énoncés (le workshop dlt) mettent leurs questions en ###, sous un « ## Questions »
+    const h3 = /^### Question\s+\d+/m.test(src);
     src.split("\n").forEach(l => {
       if (/^(```|~~~)/.test(l)) fence = !fence;
-      if (!fence && /^## /.test(l)) { sections.push(cur); cur = { title: l.slice(3).trim(), lines: [] }; }
+      const h = !fence && (/^## /.test(l) ? 3 : h3 && /^### /.test(l) && (/^### Question/i.test(l) || /^Question/i.test(cur.title)) ? 4 : 0);
+      if (h) { sections.push(cur); cur = { title: l.slice(h).trim(), lines: [] }; }
       else cur.lines.push(l);
     });
     sections.push(cur);
@@ -1260,7 +1264,7 @@
     const questions = [];
     let ctx = []; // les sections entre deux questions servent de contexte à la suivante
     sections.forEach(s => {
-      const m = s.title.match(/^Question\s+(\d+)\.?\s*(.*)$/i);
+      const m = s.title.match(/^Question\s+(\d+)[.:]?\s*(.*)$/i);
       if (!m) { ctx.push(s); return; }
       const opts = [], text = [];
       let f = false;
@@ -1280,8 +1284,8 @@
     const mod = modOf(it);
     const H = S.hw[it.id] = Object.assign({ cur: 1, q: {} }, S.hw[it.id]);
     app.innerHTML = `<section class="gut"><div class="max">
-      <div class="hwtop"><nav class="crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/m/${mod.id}">Module ${mod.id} · ${esc(mod.title)}</a><span>/</span><span>Homework</span></nav>
-      <span class="eyebrow">Module ${mod.id} · ${esc(it.eyebrow || "Homework de la cohorte 2026")}</span><h1>${esc(it.title.replace(/^Homework \d+ : /, ""))}</h1><div class="md lead2" id="hwintro"></div><details class="guidebox" id="hwguide" hidden><summary>Préparer ton environnement et les données, pas à pas</summary><div class="md"></div></details><div id="majbox"></div></div>
+      <div class="hwtop"><nav class="crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/m/${mod.id}">${modLabel(mod)} · ${esc(mod.title)}</a><span>/</span><span>Homework</span></nav>
+      <span class="eyebrow">${modLabel(mod)} · ${esc(it.eyebrow || "Homework de la cohorte 2026")}</span><h1>${esc(it.title.replace(/^Homework \d+ : /, ""))}</h1><div class="md lead2" id="hwintro"></div><details class="guidebox" id="hwguide" hidden><summary>Préparer ton environnement et les données, pas à pas</summary><div class="md"></div></details><div id="majbox"></div></div>
       <div class="hw"><article class="q" id="qcard"><p class="small">Chargement…</p></article><aside><div class="qlist" id="qlist"></div><div id="hwend"></div></aside></div>
       <div class="lnav" id="lnav">${itemNav(it)}</div>
     </div></section>`;
@@ -1386,7 +1390,7 @@
     const st = S.les[it.id] = Object.assign({ hints: 0 }, S.les[it.id]);
     app.innerHTML = `<section class="gut"><div class="max lesson">
       <div class="lmain">
-        <nav class="crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/m/${mod.id}">Module ${mod.id} · ${esc(mod.title)}</a><span>/</span><span>Défi</span></nav>
+        <nav class="crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/m/${mod.id}">${modLabel(mod)} · ${esc(mod.title)}</a><span>/</span><span>Défi</span></nav>
         <div class="defihero"><span class="lab light">Défi sans guide · niveau d'aide minimal</span><div class="md" id="defibody"></div></div>
         <div id="defimore"></div>
         <div class="lnav" id="lnav">${itemNav(it)}</div>
@@ -1537,7 +1541,7 @@
         return `<div class="pm"><span class="num">${m.id}</span><div><b>${esc(m.title)}</b><div class="track"><b style="width:${n ? Math.round(d / n * 100) : 0}%"></b></div></div><span class="small">${n ? d + " / " + n : "bientôt"}</span></div>`;
       }).join("")}</div>
       <div class="sh"><div><span class="eyebrow">Tes explications, de la plus récente à la plus ancienne</span><h2>Mon journal</h2></div></div>
-      ${journal.length ? `<div class="journal">${journal.map(i => `<article><span class="eyebrow">Module ${i.module} · ${esc(i.title)}</span><p>${esc(S.les[i.id].explain)}</p></article>`).join("")}</div>`
+      ${journal.length ? `<div class="journal">${journal.map(i => `<article><span class="eyebrow">${i.module === "W1" ? "Workshop" : "Module " + i.module} · ${esc(i.title)}</span><p>${esc(S.les[i.id].explain)}</p></article>`).join("")}</div>`
         : `<p class="small">Tes explications de fin de leçon apparaîtront ici. C'est une bonne base pour tes posts « learning in public ».</p>`}
       <div class="sh" style="margin-top:48px"><div><span class="eyebrow">Pour changer d'ordinateur ou de navigateur</span><h2>Sauvegarde</h2></div></div>
       <div class="row">
