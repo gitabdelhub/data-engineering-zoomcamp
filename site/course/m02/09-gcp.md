@@ -332,4 +332,5 @@ Explique le chemin de ta clé de compte de service, depuis le fichier téléchar
 - [01-12] Le bucket et le dataset que Terraform a créés, puis détruits en une commande : les voilà remplis par un pipeline. Infrastructure en code d'un côté, pipeline en code de l'autre.
 
 @@ teaser
+- [03-02] Ton `PARTITION BY DATE(...)` : au module 3, tu mesures combien de données il évite de lire.
 - [P] Dans ton projet final, ce DAG sera ta brique d'ingestion : planifié, vers ton data lake, puis transformé par dbt.

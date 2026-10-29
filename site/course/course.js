@@ -34,10 +34,10 @@ window.COURSE = {
       planned: 2, gate: "Homework du workshop", items: []
     },
     {
-      id: "03", dir: "03-data-warehouse", title: "Data warehouse", chips: ["BigQuery", "BigQuery ML"],
+      id: "03", title: "Data warehouse", chips: ["BigQuery", "BigQuery ML"],
       cover: ["#8ab4ff", "#1a57d6"], logo: ["googlebigquery", "#4285F4"],
       sats: [["googlecloud", "#4285F4"]], help: 2,
-      planned: 6, gate: "Homework 3", items: []
+      gate: "Homework 3 et défi des bases VTC", items: []
     },
     {
       id: "04", dir: "04-analytics-engineering", title: "Analytics engineering", chips: ["dbt", "DuckDB"],
