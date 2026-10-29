@@ -113,12 +113,17 @@
       official: ["05-data-platforms/images/bruin-pipeline-lineage.png", "Les couches d'un pipeline Bruin, de l'ingestion aux rapports."]
     },
     "06": {
-      intro: "Quand les données deviennent trop grosses pour pandas, Spark les découpe et les traite en parallèle : d'abord sur ta machine, puis sur un cluster Google.",
+      intro: "Quand les données deviennent trop grosses pour pandas, Spark les découpe et les traite en parallèle : d'abord dans ton Codespace, puis sur un cluster Google. Une CI vérifie que ton projet s'installe partout.",
       rows: [
         { zone: "Ton Codespace", nodes: [
           ["file", BLUE, "Parquet des taxis", "green et yellow"],
-          ["apachespark", "#E25A1C", "Spark en local", "PySpark dans Jupyter", "lecture"],
-          ["file", BLUE, "Parquet transformés", "par partitions", "écriture"]
+          ["apachespark", "#E25A1C", "Spark en local", "PySpark, puis ton cluster", "lecture"],
+          ["file", BLUE, "Rapports en parquet", "par partitions", "écriture"]
+        ] },
+        { zone: "Travail en équipe", link: "chaque changement passe par", nodes: [
+          ["git", "#F05032", "Ta branche", "un script à la fois"],
+          ["github", "#181717", "Pull request", "avec la commande spark-submit", "git push"],
+          ["githubactions", "#2088FF", "CI Spark", "Java, uv et un test", "déclenche"]
         ] },
         { zone: "Google Cloud", link: "puis à grande échelle", nodes: [
           ["googlecloudstorage", "#4285F4", "Bucket GCS", "les données d'entrée"],
