@@ -52,10 +52,10 @@ window.COURSE = {
       gate: "Homework 5, défi des pourboires et ta CI Bruin au vert", team: true, items: []
     },
     {
-      id: "06", dir: "06-batch", title: "Batch processing", chips: ["Spark", "Dataproc"],
+      id: "06", title: "Batch processing", chips: ["Spark", "Dataproc"],
       cover: ["#ff9a5c", "#b83c06"], logo: ["apachespark", "#E25A1C"],
       sats: [["googlecloud", "#4285F4"], ["googlebigquery", "#4285F4"]], help: 1,
-      planned: 16, gate: "Homework 6", items: []
+      gate: "Homework 6, défi des heures de pointe et ta CI Spark au vert", team: true, items: []
     },
     {
       id: "07", dir: "07-streaming", title: "Streaming", chips: ["Kafka", "Flink"],
