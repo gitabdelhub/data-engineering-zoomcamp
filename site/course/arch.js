@@ -65,13 +65,13 @@
       intro: "Tu ranges les taxis dans BigQuery comme en entreprise : une table externe, une table partitionnée et clusterisée qui coûte moins cher à lire, et un modèle de machine learning écrit en SQL.",
       rows: [
         { zone: "Google Cloud", nodes: [
-          ["file", BLUE, "Parquet des taxis", "yellow, janvier à juin 2024"],
+          ["file", BLUE, "CSV des taxis", "verts, 2019 et 2020, compressés"],
           ["googlecloudstorage", "#4285F4", "Bucket GCS", "ton data lake", "script de chargement"],
           ["googlebigquery", "#4285F4", "Table externe", "lit les fichiers sur place", "CREATE EXTERNAL TABLE"],
           ["googlebigquery", "#4285F4", "Table optimisée", "partitionnée et clusterisée", "CREATE TABLE … PARTITION BY"]
         ] },
         { zone: "BigQuery ML", link: "puis", nodes: [
-          ["googlebigquery", "#4285F4", "Données d'entraînement", "les trajets nettoyés"],
+          ["googlebigquery", "#4285F4", "Données d'entraînement", "les trajets payés par carte"],
           ["model", BLUE, "Ton modèle", "prédire le pourboire, en SQL", "CREATE MODEL"]
         ] }
       ],
