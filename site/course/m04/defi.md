@@ -144,10 +144,10 @@ select * from {{ ref('fct_airport_daily') }} where trips <= 0
 La fin de `uv run dbt build --select +fct_airport_daily` :
 
 ~~~text
-Done. PASS=17 WARN=0 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=17
+Done. PASS=... WARN=1 ERROR=0 SKIP=0 NO-OP=0 REUSED=0 TOTAL=...
 ~~~
 
-Le nombre total dépend de tes tests sur les modèles parents : 17 avec seulement ceux de la solution. En janvier 2019, la table a 153 lignes : les taxis jaunes partent de JFK et LaGuardia par milliers chaque jour, les verts y sont rares.
+`ERROR=0` est ce qui compte. `WARN=1`, c'est ton test des montants négatifs de la leçon 7, en `warn`, qui porte sur un modèle parent. Les totaux dépendent de tous les tests de tes modèles parents. En janvier 2019, la table a 153 lignes : les taxis jaunes partent de JFK et LaGuardia par milliers chaque jour, les verts y sont rares.
 
 @@ team
 Une vraie commande d'équipe, avec une CI. Sur une branche `module-04/defi-aeroports` : un commit pour le modèle, un pour les tests et la documentation, et un pour `.github/workflows/dbt.yml`, une Action qui vérifie ton projet à chaque pull request. Elle n'a pas les 2 Go de données, mais elle peut prouver que le projet est **valide** :
@@ -155,5 +155,7 @@ Une vraie commande d'équipe, avec une CI. Sur une branche `module-04/defi-aerop
 - `on: pull_request`, un job sur `ubuntu-latest`, puis `actions/checkout`, et `astral-sh/setup-uv` pour avoir uv ;
 - une étape qui écrit un `profiles.yml` de CI dans le dossier du projet, avec une target `ci` vers un fichier `ci.duckdb` vide (`type: duckdb`, `path: ci.duckdb`, `schema: ci`) ;
 - puis, dans `mon-travail/module-04/mon_taxi`, avec `DBT_PROFILES_DIR: .` : `uv run dbt deps`, `uv run dbt parse --target ci` (toutes les références, tous les YAML) et `uv run dbt build --select resource_type:seed --target ci` (les seeds et leurs tests).
+
+Si la CI dit qu'un modèle dépend d'un nœud `taxi_zone_lookup` introuvable, tes seeds ne sont pas dans Git : relis le piège du `.gitignore` de la leçon 5.
 
 Ouvre la pull request : la CI doit être verte avant la fusion. Dans la description, colle la sortie du script et une capture du graphe de `fct_airport_daily` dans la documentation dbt. Une fois fusionnée, publie la version : `git tag -a v0.4.0 -m "Module 4 : rapport des aéroports"`, `git push origin v0.4.0`, puis sur GitHub, **Releases**, **Draft a new release**, choisis le tag, et clique **Generate release notes** : GitHub liste les pull requests fusionnées depuis la version précédente.

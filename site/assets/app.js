@@ -981,7 +981,7 @@
       const target = m && (byId(m[1]) || C.modules.find(x => x.id === m[1]));
       let link = "";
       if (target && target.type) {
-        const where = `${modName(modOf(target))} · ${itemLabel(target)} : ${target.title}`;
+        const where = `${modName(modOf(target))} · ${itemLabel(target)} : ${target.title.replace(/^(Défi|Homework \S+) : /, "")}`;
         link = `<a class="bridge" href="#/l/${target.id}">${esc(where)} →</a>`;
       } else if (target) {
         const nm = modName(target) === target.title ? target.title : modName(target) + " · " + target.title;

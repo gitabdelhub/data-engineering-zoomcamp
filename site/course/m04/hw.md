@@ -8,7 +8,7 @@ Ici, seulement la préparation : les réponses, c'est toi qui les trouves.
 
 ### 1. La machine et la place
 
-Le build `prod` du projet officiel traite environ 117 millions de trajets. Passe ton Codespace en **4 cœurs** (16 Go de mémoire), comme à la leçon 9, et vérifie qu'il te reste au moins **20 Go** avec `df -h /workspaces`. Si tu as construit ton propre projet en `prod`, supprime d'abord ses tables pour faire de la place : `uv run python -c "import duckdb; duckdb.connect('taxi_rides_ny.duckdb').sql('drop schema mon_prod cascade')"`, depuis `mon-travail/module-04/`.
+Le build `prod` du projet officiel traite environ 117 millions de trajets. S'il manque de mémoire, fais comme à la leçon 9 : un Codespace de **4 cœurs** (16 Go) **et** `memory_limit: '10GB'` dans la target `prod` du profil. Vérifie qu'il te reste au moins **20 Go** avec `df -h /workspaces`. Si tu as construit ton propre projet en `prod`, supprime d'abord ses tables pour faire de la place : `uv run python -c "import duckdb; duckdb.connect('taxi_rides_ny.duckdb').sql('drop schema mon_prod cascade')"`, depuis `mon-travail/module-04/`.
 
 ### 2. Le profil du projet officiel
 
@@ -31,8 +31,8 @@ uv run --project ../../mon-travail/module-04 dbt build --target prod
 Il te faudra les FHV de 2019 dans la base, dans une table `prod.fhv_tripdata`. Les fichiers sont sur la page des [données FHV](https://github.com/DataTalksClub/nyc-tlc-data/releases/tag/fhv), au même format que les autres. Adapte ton `charger.py` de la leçon 2 : un type de taxi, une seule année. Puis déclare la table dans le `sources.yml` du projet officiel, et écris le modèle demandé.
 
 @@ q1
-- `--select` avec un nom seul, sans `+` : relis la leçon 9, ou essaie `uv run dbt ls --select int_trips_unioned` dans le projet officiel.
-- `dbt ls` ne construit rien : il te montre exactement ce que `dbt run` construirait avec la même sélection.
+- `--select` avec un nom seul, sans `+` : relis la leçon 9, et **prédis** ta réponse avant toute commande.
+- Ensuite seulement, vérifie ta prédiction : `dbt ls` ne construit rien, et montre ce que `dbt run` construirait avec la même sélection.
 
 @@ q2
 - Un test générique `accepted_values` est une requête qui renvoie les lignes dont la valeur n'est pas dans la liste.
@@ -44,7 +44,7 @@ Il te faudra les FHV de 2019 dans la base, dans une table `prod.fhv_tripdata`. L
 - `uv run --project ../../mon-travail/module-04 dbt show --target prod --inline "select count(*) from {{ ref('fct_monthly_zone_revenue') }}"`
 
 @@ q4
-- Trois filtres : le type de service, l'année du mois de revenu, et un `group by` sur la zone pour additionner les **12 mois**.
+- Deux filtres (le type de service, l'année du mois de revenu), puis un `group by` sur la zone pour additionner les **12 mois**.
 - `revenue_month` est une date de début de mois : `extract(year from revenue_month) = 2020`.
 - Trie par la somme de `revenue_monthly_total_amount`, du plus grand au plus petit.
 

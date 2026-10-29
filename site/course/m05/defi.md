@@ -44,6 +44,8 @@ mkdir -p pourboires/assets/ingestion pourboires/assets/staging pourboires/assets
 cp pipeline/assets/ingestion/payment_lookup.csv pourboires/assets/ingestion/
 ~~~
 
+Le `mon-pipeline/.gitignore` de la leçon 5 (`!*.csv`) garde ce CSV dans Git : vérifie avec `git status --short pourboires`.
+
 Écris `pourboires/pipeline.yml` sur le modèle de celui de la leçon 4, sans variable : ce pipeline ne lit que les taxis verts.
 
 ### 2. L'ingestion des CSV

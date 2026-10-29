@@ -46,7 +46,7 @@ def fingerprint(value):
 def git_ok():
     """Rien de suivi sous data/, et un nouveau fichier y serait ignoré."""
     tracked = subprocess.run(["git", "ls-files", DATA], capture_output=True, text=True).stdout.strip()
-    ignored = subprocess.run(["git", "check-ignore", "-q", f"{DATA}/test.csv.gz"]).returncode == 0
+    ignored = subprocess.run(["git", "check-ignore", "-q", f"{DATA}/test.txt"]).returncode == 0
     return tracked == "" and ignored
 
 

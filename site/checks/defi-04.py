@@ -19,9 +19,9 @@ LABELS = [
     "Le nombre total de trajets est juste",
     "Le comptage d'un aéroport sur une journée est juste",
     "Les trois aéroports sont là, avec leur nom",
-    "Le modèle est une table",
-    "Le modèle a ses tests génériques et un test singulier",
-    "Chaque colonne a une description",
+    "Le modèle est une table, et trip_date est une date sans heure",
+    "Chaque colonne est testée comme demandé, et le test singulier porte sur trips",
+    "Le modèle et chaque colonne ont une description",
     "Le dernier dbt build du modèle et de ses tests est vert",
 ]
 
@@ -55,7 +55,6 @@ def checks(con, manifest, results):
         sys.exit(f"❌ Aucun modèle {MODEL} dans ton projet.")
     table = f'{model["schema"]}.{model["alias"] or MODEL}'
     tests = [n for n in nodes.values() if n["resource_type"] == "test" and model["unique_id"] in n["depends_on"]["nodes"]]
-    generic = {n["test_metadata"]["name"] for n in tests if n.get("test_metadata")}
     singular = [n for n in tests if not n.get("test_metadata")]
     ids = {model["unique_id"]} | {n["unique_id"] for n in tests}
     ran = [r for r in results["results"] if r["unique_id"] in ids]
@@ -63,18 +62,33 @@ def checks(con, manifest, results):
     def sql(q):
         return lambda: con.execute(q.format(t=table)).fetchone()[0]
 
+    def columns():
+        return [r[0] for r in con.execute(f"DESCRIBE {table}").fetchall()]
+
+    def is_table():
+        kind = con.execute(f"SELECT typeof(trip_date) FROM {table} LIMIT 1").fetchone()[0]
+        return model["config"]["materialized"] == "table" and kind == "DATE"
+
+    def tested():
+        # (nom du test, colonne) pour chaque test générique du modèle
+        found = {(n["test_metadata"]["name"], n.get("column_name")) for n in tests if n.get("test_metadata")}
+        names = {name for name, _ in found}
+        not_null = all(("not_null", c) in found for c in columns())
+        accepted = {("accepted_values", "service_type"), ("accepted_values", "airport")} <= found
+        trips = any("trips" in n.get("raw_code", "").lower() for n in singular)
+        return "unique_combination_of_columns" in names and not_null and accepted and trips
+
     def documented():
-        cols = [r[0] for r in con.execute(f"DESCRIBE {table}").fetchall()]
         docs = model["columns"]
-        return all(docs.get(c, {}).get("description", "").strip() for c in cols)
+        return bool(model.get("description", "").strip()) and all(docs.get(c, {}).get("description", "").strip() for c in columns())
 
     return [
         sql("SELECT COUNT(*) || '|' || COUNT(DISTINCT (trip_date, service_type, airport)) FROM {t}"),
         sql("SELECT SUM(trips) FROM {t}"),
         sql("SELECT trips FROM {t} WHERE trip_date = '2019-01-15' AND service_type = 'Yellow' AND airport = 'JFK Airport'"),
         sql("SELECT STRING_AGG(DISTINCT airport, '|' ORDER BY airport) FROM {t}"),
-        lambda: model["config"]["materialized"] == "table",
-        lambda: {"unique_combination_of_columns", "not_null", "accepted_values"} <= generic and len(singular) >= 1,
+        is_table,
+        tested,
         documented,
         lambda: len(ran) == len(ids) and all(r["status"] in ("success", "pass") for r in ran),
     ]
