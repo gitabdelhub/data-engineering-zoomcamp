@@ -67,7 +67,7 @@ window.COURSE = {
       id: "P", docs: [["L'énoncé officiel du projet final", "cohorts/2026/project.md"]], title: "Projet final", chips: ["Ton dataset", "Terraform en CD", "Dashboard"],
       cover: ["#4d93ff", "#0b4fc4"], logo: ["github", "#181717"],
       sats: [["docker", "#2496ED"], ["terraform", "#844FBA"], ["googlebigquery", "#4285F4"], ["dbt", "#FF694B"]], help: 1,
-      planned: 4, gate: "Ton projet rendu et relu", team: true, items: []
+      gate: "Ton projet rendu et relu", team: true, items: []
     },
     {
       id: "B", bonus: true, dir: "02-workflow-orchestration", title: "Kestra, l'autre orchestrateur", chips: ["Kestra", "Facultatif"],
