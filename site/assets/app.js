@@ -667,6 +667,26 @@
   /* ---------- page d'un module ---------- */
 
   // « Ce que tu construis » : le schéma d'architecture du module (arch dans course.js).
+  // « Où tu en es » : le schéma du module qui se construit leçon après leçon (map dans arch.js).
+  // Un nœud = [leçon qui le construit, logo, couleur, nom, détail, texte de la flèche qui y mène].
+  function mapBlock(mod, it) {
+    const a = mod.arch, map = a && a.map;
+    if (!map) return "";
+    const pos = id => mod.items.findIndex(x => x.id === id), here = pos(it.id);
+    const state = n => { const p = pos(n[0]); return p < here ? "done" : p === here ? "now" : "todo"; };
+    const node = n => {
+      const s = state(n);
+      return `<div class="anode ${s}"><span class="alogo">${icon(n[1], n[2])}</span><span class="atxt"><b>${esc(n[3])}</b>${n[4] ? `<small>${esc(n[4])}</small>` : ""}</span>${s === "now" ? '<span class="mtag">Cette leçon</span>' : s === "done" ? '<span class="mok" title="Déjà construit">✓</span>' : ""}</div>`;
+    };
+    const edge = n => `<span class="aedge ${state(n)}"><i>${esc(n[5] || "")}</i></span>`;
+    const rows = map.map((r, k) => `${k && r.link ? `<div class="alink"><i>${esc(r.link)}</i></div>` : ""}<div class="arow">${r.zone ? `<span class="azone">${esc(r.zone)}</span>` : ""}<div class="aflow">${r.nodes.map((n, j) => (j ? edge(n) : "") + node(n)).join("")}</div></div>`).join("");
+    const all = map.flatMap(r => r.nodes), now = all.filter(n => state(n) === "now");
+    const note = (a.mapNotes || {})[it.id] || (now.length ? "Aujourd'hui, tu ajoutes : " + now.map(n => n[3]).join(", ") + "." : "");
+    return `<details class="where" open><summary><span class="lab">Où tu en es dans le ${esc(modLabel(mod).toLowerCase())}</span>
+      <span class="mleg"><span><i class="done"></i>Déjà construit</span><span><i class="now"></i>Cette leçon</span><span><i class="todo"></i>À venir</span></span></summary>
+      <div class="arch">${note ? `<p>${esc(note)}</p>` : ""}<div class="arows">${rows}</div></div></details>`;
+  }
+
   // Un nœud = [logo, couleur, nom, détail, texte de la flèche qui y mène].
   function archBlock(m) {
     const a = m.arch;
@@ -839,6 +859,7 @@
       <div class="lmain">
         <nav class="crumbs"><a href="#/">Accueil</a><span>/</span><a href="#/m/${mod.id}">${modLabel(mod)} · ${esc(mod.title)}</a><span>/</span><span>Leçon ${n.pos}</span></nav>
         <div class="ltitle"><div><span class="eyebrow">${modLabel(mod)} · Leçon ${n.pos} sur ${n.total}${it.min ? " · " + esc(dur(it)) : ""}</span><h1>${esc(it.title)}</h1></div></div>
+        ${mapBlock(mod, it)}
         <div id="majbox"></div>
         <ol class="fsteps" id="fsteps" aria-label="Déroulé de la leçon"></ol>
         <div class="tabs" role="tablist">
@@ -926,6 +947,17 @@
       box.appendChild(c);
       return c;
     }
+    // 🔑 Les concepts clés : « - Nom | mots à chercher | pourquoi c'est important ».
+    // Les boutons lancent la recherche : tu peux combler un trou tout seul, sans attendre personne.
+    function keyCard(box, src) {
+      const items = listItems(src).map(l => l.split("|").map(x => x.trim()));
+      if (!items.length) return;
+      const go = (u, t) => `<a class="btn ghost sm" href="${u}" target="_blank" rel="noopener">${t}</a>`;
+      const q = s => encodeURIComponent(s);
+      box.appendChild(card("chal keys", `<span class="lab">🔑 Les concepts clés de la leçon</span>
+        <p class="small">Ne passe pas vite dessus : la suite du cours repose sur eux. Si l'un d'eux reste flou après la leçon, cherche-le avant de continuer.</p>
+        <div class="keylist">${items.map(([t, k, why]) => `<div class="keyc"><b>🔑 ${mdInline(t)}</b>${why ? `<p>${mdInline(why)}</p>` : ""}${k ? `<div class="row">${go("https://www.youtube.com/results?search_query=" + q(k + " explication"), "Vidéos en français")}${go("https://www.youtube.com/results?search_query=" + q(k + " explained"), "Vidéos en anglais")}${go("https://www.google.com/search?q=" + q(k), "Google")}</div>` : ""}</div>`).join("")}</div>`));
+    }
     function nextBtn(label, from, enabled = true) {
       const b = doc.createElement("button");
       b.className = "btn";
@@ -1005,6 +1037,9 @@
       if (token !== routeToken) return;
       if (rev) box.appendChild(rev);
       if (ov.brief) mdCard(box, "chal brief", "L'essentiel en français", ov.brief);
+      if (ov.cles) keyCard(box, ov.cles);
+      if (ov.schema) renderMermaid(mdCard(box, "chal schema", "Le mécanisme en schéma", ov.schema));
+      if (ov.zoom) renderMermaid(mdCard(box, "chal zoom", "En détail : les concepts clés", ov.zoom));
       listItems(ov.declic).forEach(t => box.appendChild(bridgeCard("chal declic", "Ah, c'est donc ça !", t)));
       const vids = it.videos || [];
       vids.filter(v => !v.optional).forEach(v => { const vb = card("video", ""); box.appendChild(vb); mountVideo(vb, v); });

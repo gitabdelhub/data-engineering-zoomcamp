@@ -33,7 +33,33 @@
           ["googlecloud", "#4285F4", "Bucket GCS et dataset BigQuery", "créés et détruits en une commande", "terraform apply"]
         ] }
       ],
-      official: ["01-docker-terraform/images/terraform-provider-flow.png", "Terraform lit ton code, puis crée les ressources chez le fournisseur cloud."]
+      official: ["01-docker-terraform/images/terraform-provider-flow.png", "Terraform lit ton code, puis crée les ressources chez le fournisseur cloud."],
+      // « Où tu en es », en haut de chaque leçon : chaque pièce porte l'id de la leçon qui la construit.
+      map: [
+        { zone: "Ton Codespace · Docker, pas à pas", nodes: [
+          ["01-01", "docker", "#2496ED", "Un conteneur", "jetable, avec un volume"],
+          ["01-02", "python", "#3776AB", "Ton pipeline Python", "uv, un mois en argument", "ton code"],
+          ["01-03", "docker", "#2496ED", "Ton image Docker", "Dockerfile, docker build", "mis en image"]
+        ] },
+        { zone: "Le pipeline des taxis · réseau Docker", link: "tu appliques tout ça aux taxis", nodes: [
+          ["01-05", "file", BLUE, "CSV des taxis", "lu par paquets dans un notebook"],
+          ["01-06", "python", "#3776AB", "Ton script d'ingestion", "click, ses options en ligne de commande", "pandas"],
+          ["01-04", "postgresql", "#4169E1", "PostgreSQL", "dans un conteneur, avec un volume", "par paquets"],
+          ["01-07", "browser", "", "pgAdmin", "sur le même réseau Docker", "réseau Docker"]
+        ] },
+        { zone: "Tout automatisé", link: "puis tu automatises", nodes: [
+          ["01-08", "docker", "#2496ED", "L'ingestion en conteneur", "ton script dans une image"],
+          ["01-09", "docker", "#2496ED", "Docker Compose", "tout lancé en une commande", "réuni dans"],
+          ["01-10", "postgresql", "#4169E1", "Tes requêtes SQL", "JOIN, GROUP BY", "interrogé avec"]
+        ] },
+        { zone: "Google Cloud", link: "puis dans le cloud", nodes: [
+          ["01-12", "terraform", "#844FBA", "Terraform", "d'abord en local"],
+          ["01-13", "googlecloud", "#4285F4", "Bucket GCS et dataset BigQuery", "créés par ton code Terraform", "terraform apply"]
+        ] }
+      ],
+      mapNotes: {
+        "01-11": "Cette leçon n'ajoute pas de pièce : tu fais le ménage dans ce que tu as construit, sans perdre tes données."
+      }
     },
     "02": {
       intro: "Airflow lance ton pipeline tout seul, chaque mois : télécharger, charger, fusionner sans doublon. D'abord vers Postgres sur ta machine, puis vers Google Cloud.",
