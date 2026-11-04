@@ -1,4 +1,6 @@
 // Le plan du cours : les modules dans l'ordre conseillé (tout est ouvert).
+// Le parcours : 0, 1, 2, workshop, 3, 6, 4, 7, projet final.
+// library: true : hors parcours, rangé dans la Bibliothèque (toujours ouvert, progression gardée).
 // dir / docs : le cours officiel d'un module pas encore construit, lisible en aperçu.
 // Le contenu de chaque module (leçons, homework, défi) est ajouté par course/mXX.js.
 window.COURSE = {
@@ -40,22 +42,16 @@ window.COURSE = {
       gate: "Homework 3 et défi des bases VTC", items: []
     },
     {
-      id: "04", title: "Analytics engineering", chips: ["dbt", "DuckDB"],
-      cover: ["#ff9a7f", "#d93f1f"], logo: ["dbt", "#FF694B"],
-      sats: [["duckdb", "#000000"], ["googlebigquery", "#4285F4"]], help: 2,
-      gate: "Homework 4, défi des aéroports et ta CI dbt au vert", team: true, items: []
-    },
-    {
-      id: "05", title: "Data platforms", chips: ["Bruin", "DuckDB"],
-      cover: ["#ff8a96", "#c42a3f"], logo: ["bruin"],
-      sats: [["duckdb", "#000000"], ["githubactions", "#2088FF"]], help: 2,
-      gate: "Homework 5, défi des pourboires et ta CI Bruin au vert", team: true, items: []
-    },
-    {
       id: "06", title: "Batch processing", chips: ["Spark", "Dataproc"],
       cover: ["#ff9a5c", "#b83c06"], logo: ["apachespark", "#E25A1C"],
       sats: [["googlecloud", "#4285F4"], ["googlebigquery", "#4285F4"]], help: 1,
       gate: "Homework 6, défi des heures de pointe et ta CI Spark au vert", team: true, items: []
+    },
+    {
+      id: "04", title: "Analytics engineering", chips: ["dbt", "DuckDB"],
+      cover: ["#ff9a7f", "#d93f1f"], logo: ["dbt", "#FF694B"],
+      sats: [["duckdb", "#000000"], ["googlebigquery", "#4285F4"]], help: 2,
+      gate: "Homework 4, défi des aéroports et ta CI dbt au vert", team: true, items: []
     },
     {
       id: "07", title: "Streaming", chips: ["Kafka", "Flink"],
@@ -70,7 +66,15 @@ window.COURSE = {
       gate: "Ton projet rendu et relu", team: true, items: []
     },
     {
-      id: "B", bonus: true, dir: "02-workflow-orchestration", title: "Kestra, l'autre orchestrateur", chips: ["Kestra", "Facultatif"],
+      id: "05", library: true,
+      intro: "Ce module ne fait plus partie de ton parcours. Il reste ouvert ici, avec ta progression et tes notes, si tu veux découvrir Bruin, une plateforme qui réunit ingestion, transformations SQL et qualité des données.",
+      title: "Data platforms", chips: ["Bruin", "DuckDB"],
+      cover: ["#ff8a96", "#c42a3f"], logo: ["bruin"],
+      sats: [["duckdb", "#000000"], ["githubactions", "#2088FF"]], help: 2,
+      gate: "Homework 5, défi des pourboires et ta CI Bruin au vert", team: true, items: []
+    },
+    {
+      id: "B", bonus: true, library: true, dir: "02-workflow-orchestration", title: "Kestra, l'autre orchestrateur", chips: ["Kestra", "Facultatif"],
       intro: "Le module 2 officiel de la cohorte 2026 se fait avec Kestra. Ici tu as appris Airflow, le plus utilisé en entreprise. Ce bonus, c'est le cours officiel tel quel, avec ses vidéos : fais-le si tu veux comparer les deux outils, ou si une offre de stage parle de Kestra. Rien ne dépend de lui.",
       cover: ["#a77bff", "#3b1a8c"], logo: ["kestra"],
       sats: [["docker", "#2496ED"], ["postgresql", "#4169E1"], ["googlebigquery", "#4285F4"]], help: 1,

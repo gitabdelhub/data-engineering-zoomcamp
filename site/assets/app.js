@@ -57,11 +57,17 @@
     toastTimer = setTimeout(() => t.classList.remove("on"), ok ? 1400 : 5000);
   }
 
+  // Le parcours (PATH) : les modules dans l'ordre de course.js, sauf la Bibliothèque (LIB).
+  // ITEMS = les étapes du parcours (Continuer, pourcentage). ALL = toutes les étapes, Bibliothèque comprise.
+  const PATH = C.modules.filter(m => !m.library), LIB = C.modules.filter(m => m.library);
   const ITEMS = [];
-  C.modules.forEach(m => m.items.forEach(it => ITEMS.push(it)));
-  const byId = id => ITEMS.find(i => i.id === id);
-  const idx = id => ITEMS.findIndex(i => i.id === id);
+  PATH.forEach(m => m.items.forEach(it => ITEMS.push(it)));
+  const ALL = C.modules.flatMap(m => m.items);
+  const byId = id => ALL.find(i => i.id === id);
   const modOf = it => C.modules.find(m => m.id === it.module);
+  // La suite d'une étape : le parcours, ou son propre module s'il est en Bibliothèque.
+  const seqOf = it => modOf(it).library ? modOf(it).items : ITEMS;
+  const idx = it => seqOf(it).indexOf(it);
   const isDone = id => !!S.done[id];
   // Tout est ouvert : l'ordre du cours est conseillé, jamais imposé.
   const current = () => ITEMS.find(i => !isDone(i.id)) || null;
@@ -183,7 +189,7 @@
         const abs = new URL(href, base).href.split("#")[0];
         if (abs.startsWith(ROOT)) {
           const path = decodeURIComponent(abs.slice(ROOT.length));
-          const lesson = ITEMS.find(i => i.src === path);
+          const lesson = ALL.find(i => i.src === path);
           if (lesson) { a.href = "#/l/" + lesson.id; return; }
           a.href = `${GH}/${/\.[a-z]+$/i.test(path) ? "blob" : "tree"}/${REPO.branch}/${path}`;
         } else a.href = abs;
@@ -438,7 +444,9 @@
 
       ${statRow()}
       <div class="sh"><div><span class="eyebrow">Contenu de la cohorte 2026</span><h2>Les modules</h2></div><span class="eyebrow">Tous les modules sont ouverts</span></div>
-      <div class="mods">${C.modules.map(modCard).join("")}</div>
+      <div class="mods">${PATH.map(modCard).join("")}</div>
+      ${LIB.length ? `<div class="sh" style="margin-top:64px"><div><span class="eyebrow">Hors parcours, facultatif</span><h2>Bibliothèque</h2></div><span class="eyebrow">Toujours ouvert, ta progression est gardée</span></div>
+      <div class="mods">${LIB.map(modCard).join("")}</div>` : ""}
     </div></section>
 
     <section class="gut" style="padding-bottom:120px"><div class="max">${atelier()}</div></section>`;
@@ -493,7 +501,7 @@
   }
 
   function programList() {
-    return `<ol class="weeks">${C.modules.map(m => {
+    return `<ol class="weeks">${PATH.map(m => {
       const s = modStatus(m);
       const cls = s === "done" ? "ok" : s === "progress" || s === "open" ? "now" : "";
       const n = m.items.length;
@@ -507,7 +515,7 @@
   function statRow() {
     const lessons = ITEMS.filter(i => i.type === "lesson");
     const hws = ITEMS.filter(i => i.type === "homework");
-    const expl = lessons.filter(i => isDone(i.id) && S.les[i.id] && S.les[i.id].explain).length;
+    const expl = ALL.filter(i => i.type === "lesson" && isDone(i.id) && S.les[i.id] && S.les[i.id].explain).length;
     const maj = Object.keys(S.maj).filter(k => S.maj[k]).length;
     return `<div class="statrow" style="margin-top:56px">
       <div><strong>${doneCount(lessons)}<small> / ${lessons.length}</small></strong><span>leçons terminées</span></div>
@@ -563,7 +571,7 @@
   function startGlobe() {
     const stage = $("#stage"), gc = $("#globe"), orbitEl = $("#orbit");
     if (!stage) return () => {};
-    const ORB = [["docker", "#2496ED", "Docker"], ["apacheairflow", "#017CEE", "Airflow"], ["googlebigquery", "#4285F4", "BigQuery"], ["dbt", "#FF694B", "dbt"], ["bruin", "", "Bruin"], ["apachespark", "#E25A1C", "Spark"], ["apachekafka", "#231F20", "Kafka"], ["terraform", "#844FBA", "Terraform"]];
+    const ORB = [["docker", "#2496ED", "Docker"], ["apacheairflow", "#017CEE", "Airflow"], ["dlt", "", "dlt"], ["googlebigquery", "#4285F4", "BigQuery"], ["apachespark", "#E25A1C", "Spark"], ["dbt", "#FF694B", "dbt"], ["apachekafka", "#231F20", "Kafka"], ["terraform", "#844FBA", "Terraform"]];
     const chips = ORB.map(o => { const s = doc.createElement("span"); s.innerHTML = `<i class="oi">${icon(o[0], o[1])}</i>${o[2]}`; orbitEl.appendChild(s); return s; });
     const N = 520, pts = [], ACC = ["#ff6b2c", "#ee4fb6", "#c6f432", "#14c3c3"];
     for (let i = 0; i < N; i++) {
@@ -677,8 +685,9 @@
     const m = C.modules.find(x => x.id === id);
     if (!m) return viewHome();
     const s = modStatus(m);
+    const cur = m.library ? m.items.find(i => !isDone(i.id)) : current();
     const rows = m.items.map(it => {
-      const done = isDone(it.id), now = !done && it === current();
+      const done = isDone(it.id), now = !done && it === cur;
       return `<li class="${done ? "done" : now ? "cur" : ""}">
         <span class="c">${done ? "✓" : ""}</span>
         <div><a href="#/l/${it.id}">${esc(it.title)}</a>${S.maj[it.id] ? '<span class="maj">MAJ</span>' : ""}${it.team ? ' <i class="team">Équipe</i>' : ""}
@@ -694,6 +703,7 @@
     </div></section>
     <section class="gut" style="padding-block:36px 120px"><div class="max modbody">
       ${archBlock(m)}
+      ${m.library && !m.bonus ? `<div class="chal"><span class="lab">Bibliothèque</span><p>${esc(m.intro)}</p></div>` : ""}
       ${m.bonus ? `<div class="chal"><span class="lab">Bonus facultatif</span><p>${esc(m.intro)}</p></div><div id="plan"></div>` : s === "soon" ? `<div class="chal"><span class="lab">En préparation</span><p>Les exercices guidés de ce module (${m.planned} leçons) arrivent plus tard. Tu peux déjà le suivre avec le cours officiel ci-dessous : le texte et les vidéos de chaque leçon.</p></div><div id="plan"></div>` : ""}
       ${m.items.length ? `<div class="modmeta"><span><b>${doneCount(m.items)} / ${m.items.length}</b> étapes faites</span>${remaining(m.items) ? `<span>Reste environ <b>${esc(fmtMin(remaining(m.items)))}</b></span>` : ""}<span>Pour valider : ${esc(m.gate)}</span><span class="help">Niveau d'aide ${[1, 2, 3].map(k => `<i class="${k <= m.help ? "on" : ""}"></i>`).join("")}</span></div>
       <ol class="mlist">${rows}</ol>` : ""}
@@ -784,7 +794,7 @@
   }
 
   function itemNav(it) {
-    const i = idx(it.id), prev = ITEMS[i - 1], next = ITEMS[i + 1];
+    const seq = seqOf(it), i = idx(it), prev = seq[i - 1], next = seq[i + 1];
     const done = isDone(it.id);
     return `${prev ? `<a class="btn ghost" href="#/l/${prev.id}">← ${esc(prev.title)}</a>` : "<span></span>"}
       ${next ? (done ? `<a class="btn dark" href="#/l/${next.id}">${esc(next.title)} →</a>` : `<a class="btn dark" href="#/l/${next.id}">${esc(next.title)} →</a>`) : ""}`;
@@ -803,8 +813,8 @@
 
   // Une ancienne prédiction revient de temps en temps : c'est la révision espacée.
   async function revisionCard(it) {
-    const i = idx(it.id);
-    const pool = ITEMS.slice(0, Math.max(0, i - 1)).filter(x => x.type === "lesson" && isDone(x.id));
+    const i = idx(it);
+    const pool = seqOf(it).slice(0, Math.max(0, i - 1)).filter(x => x.type === "lesson" && isDone(x.id));
     if (pool.length < 2) return null;
     const pick = pool[[...it.id].reduce((a, c) => a + c.charCodeAt(0), 0) % pool.length];
     try {
@@ -1157,7 +1167,7 @@
     }
 
     function stepSummary(box) {
-      const next = ITEMS[idx(it.id) + 1];
+      const next = seqOf(it)[idx(it) + 1];
       const md = doneCount(mod.items), all = doneCount();
       const modDone = md === mod.items.length;
       const fresh = st.justDone;
@@ -1531,12 +1541,12 @@
   /* ---------- ma progression ---------- */
 
   function viewProgress() {
-    const journal = ITEMS.filter(i => i.type === "lesson" && isDone(i.id) && S.les[i.id] && S.les[i.id].explain)
+    const journal = ALL.filter(i => i.type === "lesson" && isDone(i.id) && S.les[i.id] && S.les[i.id].explain)
       .sort((a, b) => (S.doneAt[b.id] || 0) - (S.doneAt[a.id] || 0));
     app.innerHTML = `<section class="gut"><div class="max progpage">
       <div class="hwtop"><span class="eyebrow">Ta progression est gardée dans ce navigateur</span><h1>Ma progression</h1></div>
       ${statRow()}
-      <div class="progmods">${C.modules.map(m => {
+      <div class="progmods">${[...PATH, ...LIB.filter(m => m.items.length)].map(m => {
         const n = m.items.length, d = doneCount(m.items);
         return `<div class="pm"><span class="num">${m.id}</span><div><b>${esc(m.title)}</b><div class="track"><b style="width:${n ? Math.round(d / n * 100) : 0}%"></b></div></div><span class="small">${n ? d + " / " + n : "bientôt"}</span></div>`;
       }).join("")}</div>
