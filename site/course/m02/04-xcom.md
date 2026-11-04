@@ -2,7 +2,7 @@
 
 Chaque tâche d'Airflow tourne dans son **propre processus**, parfois sur une autre machine. Deux tâches ne partagent donc pas de variables Python : si `telecharger` met un nom de fichier dans une variable, `charger` ne la verra jamais. Pour se passer une information, les tâches utilisent les **XCom** (*cross-communication*).
 
-## Une valeur renvoyée devient un XCom
+## 🔑 Une valeur renvoyée devient un XCom
 
 Avec `@task`, c'est presque invisible : ce que la fonction **renvoie** est enregistré dans la base d'Airflow, et une autre tâche le reçoit **en argument**.
 
@@ -50,7 +50,7 @@ rapport(meteo(v), trafic(v))
 - Dans un run, clique sur le carré d'une tâche, onglet **Storage**, puis **XCom** : la valeur sous la clé `return_value`.
 - Le menu **Browse**, puis **XComs** : tous les XCom de tous les runs.
 
-## Les limites
+## 🔑 Les limites
 
 Un XCom est gardé **dans la base de métadonnées**. Il est fait pour de **petites** valeurs : un nombre, une date, un nom de fichier, une petite liste ou un dictionnaire. Jamais un fichier entier ni un tableau de millions de lignes : la base d'Airflow n'est pas un entrepôt de données.
 
@@ -191,3 +191,7 @@ Pourquoi deux tâches Airflow ne peuvent-elles pas se partager une variable Pyth
 
 @@ teaser
 - [02-07] Dans le pipeline des taxis, le nom du fichier passe de tâche en tâche, et le fichier lui-même reste dans le dossier `data/`.
+
+@@ cles
+- XCom : passer une valeur d'une tâche à l'autre | airflow xcom | Les tâches tournent séparément, parfois sur des machines différentes. Les XCom sont leur seul moyen de se parler.
+- Ce qu'un XCom ne doit pas transporter | airflow xcom limits large data | Un XCom transporte une adresse ou un petit nombre, jamais un fichier ni une table : sinon la base d'Airflow grossit et tout ralentit.

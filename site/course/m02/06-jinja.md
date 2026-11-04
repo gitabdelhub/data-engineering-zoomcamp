@@ -25,7 +25,7 @@ docker compose exec airflow-scheduler airflow dags test meteo_ville -c '{"ville"
 
 `-c` (pour *conf*) donne les valeurs en JSON. Les guillemets simples autour protègent les guillemets doubles du JSON.
 
-## Les templates Jinja
+## 🔑 Les templates Jinja
 
 Dans certains champs, Airflow remplace tout ce qui est entre `{{` et `}}` au moment du run :
 
@@ -62,7 +62,7 @@ preparer("{{ params.ville }}")
 
 Pour vérifier ce qu'Airflow a vraiment exécuté : clique sur le carré d'une tâche, onglet **Rendered Templates**.
 
-## Le piège des f-strings
+## 🔑 Le piège des f-strings
 
 En Python, dans une f-string, `{{` veut dire « une accolade ». `f"{{ params.ville }}"` devient donc `{ params.ville }`, avec **une seule** accolade, et Jinja ne le reconnaît plus. Garde les templates dans des chaînes normales, et colle les morceaux avec `+` :
 
@@ -71,7 +71,7 @@ VILLE = "{{ params.ville }}"
 BashOperator(task_id="dire", bash_command="echo " + VILLE)
 ```
 
-## La date logique d'un run manuel
+## 🔑 La date logique d'un run manuel
 
 Quand tu lances un run avec ▷, la fenêtre **Trigger Dag** remplit le champ **Logical Date** avec l'heure actuelle : `{{ ds }}` marche. Mais avec `airflow dags trigger` sans l'option `--logical-date`, un run manuel **n'a pas de date logique** dans Airflow 3, et `{{ ds }}` fait échouer la tâche avec `UndefinedError: 'ds' is undefined`. Pour un DAG lancé à la main, préfère des paramètres. Les dates logiques prennent tout leur sens avec la planification, à la leçon 8.
 
@@ -214,3 +214,7 @@ Quelle est la différence entre une valeur écrite en dur dans le DAG, un param�
 @@ teaser
 - [02-07] Ta constante `FICHIER` sert telle quelle dans le pipeline des taxis.
 - [02-08] Avec la planification, le mois ne vient plus d'un paramètre mais de la date logique : `{{ logical_date.strftime('%Y-%m') }}`.
+
+@@ cles
+- Les templates Jinja | airflow jinja templating | Ils injectent la date et les paramètres du run au moment de l'exécution. Toute la planification de la leçon 8 en dépend.
+- Le piège des f-strings | airflow jinja f-string accolades | Une f-string avale les accolades de Jinja sans erreur : ton DAG tourne, mais avec de mauvaises valeurs.

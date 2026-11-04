@@ -573,3 +573,39 @@ code,.md a{overflow-wrap:anywhere}
 .langbtn:hover{border-color:var(--blue);color:var(--blue)}
 .langbtn.on{background:var(--blue);border-color:var(--blue);color:var(--on-blue)}
 @media (max-width:520px){.langbtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;box-shadow:0 6px 20px rgba(0,0,0,.18)}}
+/* « Où tu en es » : le schéma du module en haut de chaque leçon */
+.where{margin:14px 0 4px}
+.where>summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;padding:2px 0 10px}
+.where>summary::-webkit-details-marker{display:none}
+.where>summary .lab::before{content:"▸ "}
+.where[open]>summary .lab::before{content:"▾ "}
+.where .arch{margin:0;padding:18px}
+.mleg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted)}
+.mleg span{display:inline-flex;align-items:center;gap:6px}
+.mleg i{width:12px;height:12px;border-radius:4px;border:1px solid var(--line);background:var(--bg)}
+.mleg i.now{border:2px solid var(--blue);background:var(--blue-soft)}
+.mleg i.todo{border-style:dashed;opacity:.6}
+.anode.done,.anode.now,.anode.todo{position:relative}
+.anode.now{border:2px solid var(--blue);background:var(--blue-soft);box-shadow:0 0 0 4px color-mix(in srgb,var(--blue) 16%,transparent)}
+.anode.todo{opacity:.45;border-style:dashed;box-shadow:none;background:transparent}
+.anode.todo .alogo{filter:grayscale(1)}
+.mtag{position:absolute;top:-10px;right:10px;background:var(--blue);color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.mok{position:absolute;top:-8px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--ok);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center}
+.aedge.todo::before{background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px);animation:none}
+.aedge.todo::after{border-left-color:var(--line)}
+.aedge.todo i{color:var(--muted)}
+@media (max-width:760px){.aedge.todo::before{background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px)}.aedge.todo::after{border-top-color:var(--line)}}
+/* 🔑 Les concepts clés, le schéma du mécanisme et le zoom */
+.chal.keys{border:2px solid var(--warn);background:var(--warn-soft)}
+.chal.keys .lab{color:var(--warn)}
+.keylist{display:grid;gap:10px}
+.keyc{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:8px}
+.keyc b{font-size:16px}
+.keyc p{font-size:15px;color:var(--ink);margin:0}
+.keyc .row{display:flex;flex-wrap:wrap;gap:8px}
+.chal.schema{border-left:4px solid var(--blue)}
+.chal.schema pre.mermaid,.chal.zoom pre.mermaid{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto}
+.chal.zoom{border-left:4px solid var(--warn)}
+.chal.zoom .md h3{font-size:18px;margin:22px 0 8px;padding-top:16px;border-top:1px solid var(--line)}
+.chal.zoom .md h3:first-child{margin-top:4px;padding-top:0;border-top:0}
+.mleg i.done{background:var(--ok);border-color:var(--ok);border-radius:50%}

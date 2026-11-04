@@ -32,7 +32,7 @@ Deux pièges du navigateur :
 
 En bas à gauche de VS Code, tu dois voir `Codespaces: <nom>`. C'est la preuve que tu travailles sur la machine de GitHub.
 
-## Le terminal, l'outil principal
+## 🔑 Le terminal, l'outil principal
 
 Ouvre un terminal avec **Ctrl + `** (ou Terminal → New Terminal). Les commandes de base :
 
@@ -49,7 +49,7 @@ Ouvre un terminal avec **Ctrl + `** (ou Terminal → New Terminal). Les commande
 
 Quand une commande occupe le terminal (un serveur, une base de données), ouvre un **deuxième terminal** avec le bouton `+`. Tu en auras souvent besoin.
 
-## L'onglet Ports
+## 🔑 L'onglet Ports
 
 Quand un programme écoute sur un port (pgAdmin sur 8085, Airflow sur 8080…), VS Code le détecte et l'affiche dans l'onglet **Ports**, à côté du terminal.
 
@@ -191,3 +191,7 @@ Explique à quelqu'un qui ne connaît pas : quand tu travailles dans un Codespac
 - [Codespaces dans le navigateur](https://docs.github.com/fr/codespaces/developing-in-a-codespace/developing-in-a-codespace)
 - [Codespaces dans VS Code](https://docs.github.com/fr/codespaces/developing-in-a-codespace/using-github-codespaces-in-visual-studio-code)
 - [Les heures gratuites de Codespaces](https://docs.github.com/fr/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces)
+
+@@ cles
+- Le terminal | terminal linux commandes de base | Tout le cours se fait au terminal. `cd`, `ls`, `pwd` et les chemins doivent devenir des réflexes.
+- Les ports d'un Codespace | github codespaces port forwarding | Chaque interface web du cours (pgAdmin, Airflow, Spark) passe par l'onglet Ports.

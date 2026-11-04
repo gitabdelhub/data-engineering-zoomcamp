@@ -2,7 +2,7 @@
 
 Jusqu'ici, tu choisis le mois à la main, à chaque run. Un vrai pipeline se lance **tout seul** : le 1er de chaque mois, il charge le mois qui vient de se terminer. Et quand on te demande deux ans d'historique, tu ne lances pas 24 runs à la main : tu fais un **backfill**.
 
-## Le schedule : une expression cron
+## 🔑 Le schedule : une expression cron
 
 `schedule` dit quand le DAG se lance. La forme la plus courante est une **expression cron**, que tu as déjà rencontrée au module 0 pour ta GitHub Action : cinq champs séparés par des espaces.
 
@@ -39,7 +39,7 @@ schedule=CronTriggerTimetable("0 9 1 * *", timezone="America/New_York")
 
 Un fuseau s'écrit avec un nom de la base IANA, comme `Europe/Paris` ou `America/New_York`. Pas avec `EST` ou `UTC-5` : ces décalages sont **fixes**, alors que New York change d'heure en mars et en novembre. Avec `America/New_York`, Airflow suit le changement d'heure tout seul : ton run de janvier part à 14 h UTC, celui d'avril à 13 h UTC, et les deux à 9 h à New York.
 
-## La date logique
+## 🔑 La date logique
 
 Chaque run planifié a une **date logique** (`logical_date`) : la date qu'il représente. Le run du 1er février 2019 à 9 h a pour date logique le 1er février 2019. C'est elle que tes templates utilisent :
 
@@ -60,7 +60,7 @@ FICHIER = "{{ params.taxi }}_tripdata_{{ logical_date.strftime('%Y-%m') }}.csv"
 
 `catchup=False` est le réglage par défaut d'Airflow 3, et le plus sûr : un DAG avec `start_date` en 2019 et `catchup=True` lancerait d'un coup des dizaines de runs.
 
-## Le backfill
+## 🔑 Le backfill
 
 Un backfill crée les runs d'une période passée, chacun avec sa date logique :
 
@@ -326,3 +326,8 @@ Explique la différence entre un run planifié, un run manuel et un run de backf
 
 @@ teaser
 - [02-09] Le même pipeline, mais les fichiers vont dans un bucket et les tables dans BigQuery.
+
+@@ cles
+- Les expressions cron | cron expression syntaxe | Toutes les planifications (Airflow, GitHub Actions, ta synchro du module 0) s'écrivent ainsi.
+- La date logique | airflow logical date data interval | Le concept le plus déroutant d'Airflow : le run planifié le 1er février traite les données de janvier.
+- `catchup` et le backfill | airflow catchup backfill | C'est comme ça qu'on charge des mois passés sans les lancer un par un à la main.

@@ -15,7 +15,7 @@ Pour apprendre, le **LocalExecutor** suffit : le scheduler lance lui-même les t
 
 Ton Codespace a 8 Go de mémoire : la version allégée y tient largement.
 
-## Lire le fichier
+## 🔑 Lire le fichier
 
 Le compose officiel commence par un bloc spécial :
 
@@ -254,3 +254,7 @@ Explique avec tes mots la différence entre le CeleryExecutor et le LocalExecuto
 
 @@ teaser
 - [02-05] Ton service `pgdatabase` deviendra une **connexion** Airflow : tes DAGs y écriront sans jamais contenir le mot de passe.
+
+@@ cles
+- Le docker-compose d'Airflow, service par service | airflow docker compose installation | Tu vas le démarrer, l'arrêter et le déboguer pendant tout le module. Il faut savoir quel service fait quoi.
+- Le fichier `.env` et ce qui reste hors de Git | docker compose fichier env secrets gitignore | Les mots de passe vont dans `.env`, jamais dans Git. Une erreur ici expose tes accès sur GitHub.

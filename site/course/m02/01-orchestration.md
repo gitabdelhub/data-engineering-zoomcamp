@@ -6,7 +6,7 @@ Qui lance le pipeline ? Que se passe-t-il si le téléchargement échoue à 3 h 
 
 Un **orchestrateur** répond à ces questions. Il lance tes tâches dans le bon ordre, au bon moment, les relance quand elles échouent, garde l'historique de chaque exécution et te montre tout dans une interface web. Il ne remplace pas ton code : il **pilote** ton code.
 
-## Le vocabulaire d'Airflow
+## 🔑 Le vocabulaire d'Airflow
 
 | Mot | Ce que c'est | Dans ton pipeline de taxis |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ graph LR
 
 Ici, « télécharger » et « créer les tables » ne dépendent pas l'une de l'autre : Airflow peut les lancer **en même temps**.
 
-## Les pièces d'Airflow 3
+## 🔑 Les pièces d'Airflow 3
 
 Airflow n'est pas un seul programme, mais plusieurs services qui travaillent ensemble. Tu les lanceras tous avec Docker Compose à la leçon suivante.
 
@@ -52,7 +52,7 @@ graph LR
     W[api-server : l'interface web] <--> DB
 ```
 
-## cron ou orchestrateur ?
+## 🔑 cron ou orchestrateur ?
 
 `cron` est le planificateur de Linux : une ligne comme `0 9 1 * * python ingest.py` lance un script le 1er de chaque mois à 9 h. C'est simple, mais c'est tout.
 
@@ -168,3 +168,8 @@ Explique à un ami qui connaît `cron` ce qu'un orchestrateur comme Airflow fait
 @@ teaser
 - [02-07] Le DAG que tu viens de dessiner, tu vas l'écrire pour de vrai, et le rendre impossible à mettre en double.
 - [02-08] Recharger toute une année d'un coup, en une commande : le backfill.
+
+@@ cles
+- DAG, tâche, run | airflow dag task run concepts | C'est le vocabulaire de tout le module. Sans lui, l'interface d'Airflow et ses messages restent incompréhensibles.
+- Les pièces d'Airflow : scheduler, dag-processor, api-server, base de métadonnées | airflow 3 architecture scheduler dag processor | Quand un DAG n'apparaît pas ou ne démarre pas, savoir quelle pièce fait quoi te dit où chercher.
+- Ce qu'un orchestrateur apporte de plus que cron | cron vs airflow orchestrateur | Les dépendances, les relances et l'historique : c'est la raison d'être de tout le module.

@@ -2,7 +2,7 @@
 
 Ton DAG va écrire dans Postgres. Il lui faut une adresse, un utilisateur, un mot de passe. Les écrire dans le fichier du DAG serait une mauvaise idée : le mot de passe finirait sur GitHub, et changer de base voudrait dire modifier chaque DAG. Airflow range ces informations dans des **connexions**.
 
-## Une connexion
+## 🔑 Une connexion
 
 Une connexion, c'est un **nom** (le `conn_id`) et tout ce qu'il faut pour joindre un service : un type (`postgres`, `google_cloud_platform`…), un hôte, un port, un utilisateur, un mot de passe, une base. Tes DAGs ne citent que le nom : `conn_id="ny_taxi"`.
 
@@ -28,7 +28,7 @@ Une connexion venue d'une variable d'environnement **n'apparaît pas** dans Admi
 docker compose exec airflow-scheduler airflow connections get ny_taxi
 ```
 
-## L'hôte : le nom du service, pas localhost
+## 🔑 L'hôte : le nom du service, pas localhost
 
 Tes tâches tournent **dans le conteneur** du scheduler. Pour elles, `localhost` désigne ce conteneur, où il n'y a pas de Postgres. Ta base des taxis est le service `pgdatabase` du même compose : sur le réseau que Compose a créé, son nom est son adresse.
 
@@ -217,3 +217,7 @@ Pourquoi les DAGs citent-ils un `conn_id` au lieu d'écrire directement l'adress
 
 @@ teaser
 - [02-09] Pour Google Cloud, la connexion ne contient pas de mot de passe mais le chemin d'une clé de compte de service.
+
+@@ cles
+- Connexions et hooks | airflow connections hooks | Les accès aux bases et au cloud se règlent une fois, hors du code. C'est aussi ce qui garde tes mots de passe hors de Git.
+- L'hôte, c'est le nom du service Docker | docker compose nom du service hôte localhost | Le même piège qu'au module 1, leçon 7 : dans un conteneur, `localhost` désigne le conteneur lui-même.
