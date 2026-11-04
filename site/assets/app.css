@@ -568,3 +568,8 @@ code,.md a{overflow-wrap:anywhere}
 .guidebox summary{cursor:pointer;font-weight:700;color:var(--blue)}
 .guidebox[open] summary{margin-bottom:10px}
 .guidebox .md h3{font-size:17px;margin:16px 0 6px}
+/* Bouton FR ⇄ EN (assets/lang.js) */
+.langbtn{font:inherit;font-size:13.5px;font-weight:600;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;white-space:nowrap;transition:border-color .15s,background .15s,color .15s}
+.langbtn:hover{border-color:var(--blue);color:var(--blue)}
+.langbtn.on{background:var(--blue);border-color:var(--blue);color:var(--on-blue)}
+@media (max-width:520px){.langbtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;box-shadow:0 6px 20px rgba(0,0,0,.18)}}
