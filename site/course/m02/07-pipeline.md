@@ -20,7 +20,7 @@ graph LR
     M --> X[cleanup]
 ```
 
-## Pourquoi staging puis fusion ?
+## 🔑 Pourquoi staging puis fusion ?
 
 Le but est l'**idempotence** : lancer deux fois le même mois doit donner **exactement** le même résultat qu'une seule fois. Dans la vraie vie, tu relanceras souvent : une tâche a échoué au milieu, un fichier a été corrigé, tu as cliqué deux fois.
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS villes_staging (LIKE villes);
 
 crée une table avec exactement les mêmes colonnes que `villes`. Pratique : staging et table finale ne peuvent pas diverger.
 
-### Fusionner : MERGE
+### 🔑 Fusionner : MERGE
 
 ```sql
 MERGE INTO villes AS T
@@ -351,3 +351,7 @@ Explique avec tes mots ce qu'est l'idempotence, et comment le trio staging, `uni
 
 @@ teaser
 - [02-08] Lancer ce DAG à la main pour chaque mois, c'est long. À la leçon suivante, il se lance tout seul, et rattrape les mois passés.
+
+@@ cles
+- Staging puis `MERGE` | sql merge staging table upsert | C'est ce qui rend un chargement relançable sans doublons. Tu le retrouves dans BigQuery, dbt et ton projet final.
+- L'idempotence | pipeline de données idempotent | Relancé deux fois, un pipeline doit donner le même résultat. C'est la première qualité qu'on attend d'un data engineer.

@@ -34,7 +34,7 @@ def premier_dag():
 premier_dag()
 ```
 
-## Ligne par ligne
+## 🔑 Ligne par ligne
 
 | Ligne | Ce qu'elle fait |
 | --- | --- |
@@ -51,7 +51,7 @@ premier_dag()
 | `dire_bonjour >> compter()` | `compter` commence quand `dire_bonjour` a réussi. Remarque les parenthèses : appeler une fonction `@task` **crée** la tâche |
 | `premier_dag()` | **Appelle** la fonction du DAG. Sans cette dernière ligne, le DAG n'existe pas |
 
-## Quand Airflow voit-il ton fichier ?
+## 🔑 Quand Airflow voit-il ton fichier ?
 
 Le service **dag-processor** relit le dossier `dags/` régulièrement :
 
@@ -243,3 +243,7 @@ Explique ce qui se passe entre le moment où tu enregistres `dags/journal.py` da
 
 @@ teaser
 - [02-04] Ta fonction `compter` renvoie un nombre. Où va-t-il ? Une autre tâche peut le récupérer : ce sont les XCom.
+
+@@ cles
+- La structure d'un DAG Airflow 3 : `@dag`, `@task`, opérateurs | airflow 3 dag decorator task sdk | Chaque DAG du cours, et de ton projet final, a cette forme. Attention : beaucoup de tutoriels montrent encore Airflow 2.
+- Quand Airflow lit ton fichier | airflow dag not showing dag processor | Un DAG qui n'apparaît pas dans l'interface, c'est le blocage numéro un des débutants.

@@ -4,7 +4,7 @@ Ton Codespace actuel utilise l'image par défaut de GitHub. Elle contient Docker
 
 La solution d'un data engineer : **décrire l'environnement dans un fichier**. C'est le même principe que le Dockerfile, que tu verras au module 1, et que Terraform pour le cloud : **l'infrastructure en code**.
 
-## Le fichier `.devcontainer/devcontainer.json`
+## 🔑 Le fichier `.devcontainer/devcontainer.json`
 
 Quand un repo contient ce fichier, chaque Codespace créé (ou reconstruit) à partir de ce repo est configuré automatiquement. Les blocs principaux :
 
@@ -182,3 +182,6 @@ Explique pourquoi on décrit son environnement dans un fichier plutôt que d'ins
 
 @@ teaser
 - [01-03] Ton premier Dockerfile : la même idée qu'ici, une image de base plus tes outils.
+
+@@ cles
+- Un environnement décrit en code (devcontainer) | devcontainer vs code codespaces | Tes outils sont réinstallés à l'identique dans chaque nouveau Codespace. La même idée que Docker au module 1.

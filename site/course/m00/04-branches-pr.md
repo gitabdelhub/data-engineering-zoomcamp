@@ -2,7 +2,7 @@
 
 En équipe, personne ne travaille directement sur `main`. Chaque tâche se fait sur sa propre **branche**, puis entre dans `main` par une **pull request** (PR) : une demande de fusion que les collègues relisent avant de l'accepter. C'est ce que tu feras pendant ton PFE et dans ton futur travail.
 
-## Le cycle d'une tâche
+## 🔑 Le cycle d'une tâche
 
 ```mermaid
 graph LR
@@ -39,7 +39,7 @@ Si tu vois `DataTalksClub/data-engineering-zoomcamp` dans « base », change-le 
 - **Une description** : ce que tu as fait, pourquoi, comment le tester.
 - **Petite** : une PR qui fait une seule chose se relit en 5 minutes. Une PR énorme ne se relit jamais vraiment.
 
-## Les conflits
+## 🔑 Les conflits
 
 Un **conflit** arrive quand deux branches modifient les mêmes lignes. Git ne peut pas choisir à ta place : il marque la zone dans le fichier.
 
@@ -217,3 +217,7 @@ Pourquoi les équipes ne poussent-elles jamais directement sur `main` ? Donne de
 
 @@ teaser
 - [01-03] Ta première issue fermée toute seule par une pull request.
+
+@@ cles
+- Branche, pull request, fusion | git branch pull request workflow | Le cycle de travail de toute équipe, en stage comme au PFE.
+- Les conflits | git merge conflict resolve | Ils arrivent forcément à plusieurs. Les résoudre calmement est une compétence attendue.

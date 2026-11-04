@@ -2,7 +2,7 @@
 
 Git garde l'historique de ton code. Chaque **commit** est une photo de tes fichiers à un instant, avec un message qui explique ce qui a changé.
 
-## Les trois zones de Git
+## 🔑 Les trois zones de Git
 
 ```mermaid
 graph LR
@@ -35,7 +35,7 @@ Un bon message dit **ce que fait** le commit, au présent, en une ligne courte :
 
 En entreprise, beaucoup d'équipes utilisent un préfixe : `feat:` (nouvelle fonctionnalité), `fix:` (correction), `docs:` (documentation). Par exemple : `feat: ingestion des zones de taxi`.
 
-## Ce qu'on ne commite jamais
+## 🔑 Ce qu'on ne commite jamais
 
 - Les secrets : mots de passe, clés de compte de service (`*.json` de Google Cloud), fichiers `.env`.
 - Les fichiers générés ou lourds : données (`*.csv`, `*.parquet`), environnements virtuels (`.venv/`), états Terraform (`*.tfstate`).
@@ -186,3 +186,7 @@ Explique la différence entre `git add`, `git commit` et `git push`, comme si tu
 @@ teaser
 - [01-02] Ces règles travailleront pour de vrai au module 1 : ton `.venv` de plusieurs centaines de Mo et tes fichiers Parquet n'apparaîtront jamais dans `git status`.
 - [01-13] Le faux mot de passe de l'exercice « Casser et réparer » deviendra une vraie clé Google Cloud.
+
+@@ cles
+- Les trois zones de Git : dossier, index, dépôt | git working directory staging area repository | Tout Git devient logique une fois ces trois zones comprises. Learn Git Branching les montre très bien.
+- Ce qu'on ne commite jamais (`.gitignore`) | gitignore secrets | Une clé ou un mot de passe poussé sur GitHub est public, même si tu le supprimes après.

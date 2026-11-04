@@ -19,7 +19,7 @@ Le principe est **le même** qu'avec Postgres, staging et fusion compris. Seuls 
 | L'identifiant | `md5(...)` | `MD5(CONCAT(...))` |
 | La fusion | `MERGE` | `MERGE`, presque mot pour mot |
 
-## La clé : montée en lecture seule
+## 🔑 La clé : montée en lecture seule
 
 Au module 1, ta clé de compte de service est dans `~/.gcp/key.json`, hors du repo, écrite depuis le secret Codespaces `GCP_SA_KEY`. Les conteneurs d'Airflow ne voient pas ton dossier personnel : il faut **monter** ce fichier dans les conteneurs, comme le dossier `dags/` :
 
@@ -29,7 +29,7 @@ Au module 1, ta clé de compte de service est dans `~/.gcp/key.json`, hors du re
 
 `${HOME}` est ton dossier personnel (`/home/codespace`). `:ro` (*read-only*) : Airflow peut lire la clé, jamais la modifier. La clé reste hors de Git et hors de l'image.
 
-## La connexion Google Cloud
+## 🔑 La connexion Google Cloud
 
 Les opérateurs et hooks Google utilisent la connexion `google_cloud_default`. Elle ne contient pas de mot de passe, mais le **chemin de la clé** et l'**ID du projet**. Une adresse comme pour Postgres serait illisible : on l'écrit en JSON, toujours dans `.env` :
 
@@ -334,3 +334,7 @@ Explique le chemin de ta clé de compte de service, depuis le fichier téléchar
 @@ teaser
 - [03-02] Ton `PARTITION BY DATE(...)` : au module 3, tu mesures combien de données il évite de lire.
 - [P] Dans ton projet final, ce DAG sera ta brique d'ingestion : planifié, vers ton data lake, puis transformé par dbt.
+
+@@ cles
+- La clé Google Cloud dans les conteneurs | airflow google cloud connection service account key docker | La clé doit être lisible par Airflow sans jamais entrer dans Git. Une erreur ici, et ton compte est exposé.
+- Table externe, puis `MERGE` dans BigQuery | bigquery external table merge | La même idée que staging puis fusion de la leçon 7, mais dans l'entrepôt. Le module 3 repart de là.

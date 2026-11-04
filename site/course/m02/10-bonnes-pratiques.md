@@ -4,7 +4,7 @@ Un DAG qui marche une fois n'est pas fini. En production, il tournera des centai
 
 ## Les règles
 
-### 1. Idempotent
+### 🔑 1. Idempotent
 
 Relancer une tâche donne le même résultat qu'une seule fois. Tu l'as construit à la leçon 7 (staging et `MERGE`) et vu casser à la leçon 8 (runs en parallèle). Les deux formes les plus simples : **vider puis remplir** (`TRUNCATE` puis `COPY`) pour une petite table de référence, **fusionner** (`MERGE` sur un identifiant) pour une grosse table qui grandit.
 
@@ -12,11 +12,11 @@ Relancer une tâche donne le même résultat qu'une seule fois. Tu l'as construi
 
 Une tâche qui télécharge, transforme et charge d'un coup doit **tout** refaire si la dernière étape échoue. Trois tâches : seule celle qui a échoué se relance, et les logs disent tout de suite où est le problème.
 
-### 3. Rien de lourd en haut du fichier
+### 🔑 3. Rien de lourd en haut du fichier
 
 Le dag-processor **relit tes fichiers** toutes les 30 secondes environ. Tout ce qui est écrit en dehors des tâches s'exécute **à chaque lecture** : un téléchargement, une requête SQL ou un `Variable.get` en haut du fichier tournerait des milliers de fois par jour, et ralentirait tout Airflow. En haut du fichier : seulement des imports, des constantes et la définition du DAG. Le travail se fait **dans** les tâches.
 
-### 4. Aucun secret dans le code
+### 🔑 4. Aucun secret dans le code
 
 Mots de passe, clés, adresses de bases : dans des connexions et des variables, définies dans `.env` (leçons 5 et 9). Le fichier du DAG peut être lu par toute l'équipe, et finit sur GitHub.
 
@@ -36,7 +36,7 @@ from datetime import timedelta
 
 Un chemin de fichier, un nombre, une date : oui. Un fichier, un tableau de données : non (leçon 4).
 
-## La boîte à outils du débogage
+## 🔑 La boîte à outils du débogage
 
 | Situation | L'outil |
 | --- | --- |
@@ -232,3 +232,8 @@ Choisis trois des six règles de la leçon. Pour chacune, raconte ce qui se pass
 
 @@ teaser
 - [02-defi] Le défi du module : un DAG planifié, sur des données que tu n'as jamais vues, avec toutes ces règles à la fois.
+
+@@ cles
+- Un DAG idempotent | airflow idempotent dag best practices | Les relances sont normales en production. Un DAG qui crée des doublons quand on le relance n'est pas fini.
+- Rien de lourd en haut du fichier | airflow top level code best practices | Airflow relit ton fichier en permanence : un téléchargement en haut du fichier se lance des centaines de fois.
+- Lire les logs d'une tâche | airflow task logs debugging | Savoir trouver la vraie erreur dans les logs, c'est ce qui te rend autonome face à un DAG rouge.

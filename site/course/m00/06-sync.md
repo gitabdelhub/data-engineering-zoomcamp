@@ -2,7 +2,7 @@
 
 Le repo officiel continue d'évoluer : corrections, nouvelles versions d'outils, nouveaux homework. Ton fork, lui, ne bouge pas tout seul. Il faut le **synchroniser**.
 
-## Les deux « remotes »
+## 🔑 Les deux « remotes »
 
 Un **remote** est une adresse de repo distant que Git connaît.
 
@@ -216,3 +216,7 @@ Explique ce que fait ton workflow, étape par étape : quand il se lance, avec q
 @@ teaser
 - [02] Airflow, l'orchestrateur du module 2, planifie ses DAG avec la même syntaxe `cron` que ta synchro de nuit.
 - [04] Le même GitHub Actions lancera les tests de tes modèles dbt à chaque pull request : ta première vraie CI.
+
+@@ cles
+- Les remotes `origin` et `upstream` | git remote origin upstream fork | Un fork a deux sources : la tienne et l'officielle. Les confondre, c'est pousser ou tirer au mauvais endroit.
+- GitHub Actions | github actions tutorial | L'automatisation de base de toute équipe : tests, synchro, déploiements. Tu la retrouves dans les CI des modules 4 à 7.
