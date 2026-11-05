@@ -60,3 +60,11 @@ Il te faudra les FHV de 2019 dans la base, dans une table `prod.fhv_tripdata`. L
 
 @@ submit
 La cohorte 2026 est terminée : le formulaire officiel n'accepte sans doute plus de réponses. Ton rendu, c'est ton dossier `mon-travail/module-04/homework/` poussé sur ton fork, avec ton `README.md` et ton `stg_fhv_tripdata.sql`. Avant de pousser, `git status` ne doit montrer aucun `.duckdb` ni `.parquet`. Pour vérifier tes réponses sans les recevoir toutes faites : compare-les avec d'autres étudiants sur le Slack de DataTalksClub (canal `#course-data-engineering`), ou cherche « de zoomcamp 2026 homework 4 » sur GitHub.
+
+@@ pas-q1
+>>> └── intermediate/
+**C'est un dessin, pas une commande.** Il décrit un projet imaginaire : réponds en le lisant. Tu peux vérifier ton raisonnement sur ton propre projet `mon_taxi` avec un modèle qui a des parents, en lisant ce que `uv run dbt run --select <modèle>` construit.
+
+@@ pas-q2
+>>> - accepted_values:
+**C'est un extrait de fichier à lire, pas à taper.** Réponds en le lisant. Pour vérifier, tu peux l'essayer dans ton projet `mon_taxi`, sur une **copie** de ton `schema.yml`, puis revenir en arrière.

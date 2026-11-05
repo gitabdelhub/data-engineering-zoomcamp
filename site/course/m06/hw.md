@@ -52,3 +52,9 @@ Ces données ne sont pas celles du cours, et je ne les ai pas téléchargées : 
 - `groupBy(...).count()`, puis un tri **croissant**.
 - Plusieurs zones peuvent avoir le même nombre minimal : regarde les premières lignes, pas seulement la première.
 - Le homework demande une vue temporaire (`createOrReplaceTempView`) : la leçon 6 te montre comment, et la question peut se faire en SQL.
+
+@@ pas-q6
+>>> wget https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv
+**Déjà fait** si tu as suivi l'étape 1 du guide en haut : le fichier est dans `data/homework/`. Sinon, depuis `mon-travail/module-06` : `wget -P data/homework https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv`.
+
+Le texte dit `bash` mais demande une « temp view » : c'est dans Spark, avec `spark.read.option("header", "true").csv('data/homework/taxi_zone_lookup.csv')`, puis `createOrReplaceTempView('zones')`.

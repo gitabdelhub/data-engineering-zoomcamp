@@ -47,3 +47,46 @@ Mon environnement de test n'avait pas accès au site de la ville de New York : j
 - Leçon 8 : une fenêtre d'une heure, **sans** grouper par zone : une seule ligne par heure.
 - `SUM(tip_amount)`, puis un tri décroissant dans Postgres.
 - Le défi du module te fait faire presque la même chose sur d'autres données : essaie-le après, pas avant.
+
+@@ pas-q1
+>>> cd 07-streaming/workshop/
+**Ne lance pas ce bloc :** le dossier `07-streaming/workshop/` n'existe plus. Ton infrastructure est celle de tes leçons, dans `mon-travail/module-07` :
+
+~~~bash
+cd /workspaces/data-engineering-zoomcamp/mon-travail/module-07
+docker compose build
+docker compose up -d
+docker compose ps
+~~~
+
+**Ce que tu dois voir :** les quatre services en `Up` (`redpanda`, `postgres`, `jobmanager`, `taskmanager`).
+
+>>> docker compose down -v
+**Depuis `mon-travail/module-07`.** `down -v` efface aussi les données de Postgres et de Redpanda : tes tables et tes topics des leçons disparaissent. C'est ce qu'on veut ici, pour un départ propre. Après le `up -d`, recrée les tables dont tu as besoin dans `psql`.
+
+>>> docker exec -it workshop-redpanda-1 rpk version
+**Ta version** (le nom `workshop-redpanda-1` n'existe pas chez toi), depuis `mon-travail/module-07` :
+
+~~~bash
+docker compose exec redpanda rpk version
+~~~
+
+`docker compose exec redpanda` trouve le conteneur par son nom de **service**, quel que soit le dossier.
+
+@@ pas-q2
+>>> docker exec -it workshop-redpanda-1 rpk topic create green-trips
+**Ta version**, depuis `mon-travail/module-07` : `docker compose exec redpanda rpk topic create green-trips`.
+
+**Ce que tu dois voir :** un petit tableau `TOPIC  STATUS` avec `green-trips  OK`. Si tu as `TOPIC_ALREADY_EXISTS`, le topic est déjà là : vérifie qu'il est vide avec `docker compose exec redpanda rpk topic describe green-trips` (le `HIGH-WATERMARK` doit être `0`), sinon supprime-le (`rpk topic delete green-trips`) et recrée-le.
+
+>>> t0 = time()
+**C'est un squelette, pas un script complet :** `# send all rows ...` est à remplacer par ta boucle d'envoi, et `producer` doit exister avant. Où : un nouveau fichier `src/producers/green_producer.py` (`code src/producers/green_producer.py` depuis `mon-travail/module-07`), sur le modèle de ton `producer.py` de la leçon 3. Lance-le avec `uv run python src/producers/green_producer.py`.
+
+@@ pas-q4
+>>> event_timestamp AS TO_TIMESTAMP(lpep_pickup_datetime, 'yyyy-MM-dd HH:mm:ss'),
+**Ce n'est pas un bloc complet :** ce sont trois lignes à mettre **dans** le `CREATE TABLE` de la source Kafka de ton job, à la place de `tpep_pickup_datetime BIGINT` et de la colonne calculée de la leçon 8. Les autres colonnes (`PULocationID`, etc.) restent autour, séparées par des virgules.
+
+**Où :** un nouveau fichier par question dans `src/job/` (par exemple `src/job/q4_tumbling.py`), lancé avec `docker compose exec jobmanager ./bin/flink run -py /opt/src/job/q4_tumbling.py --pyFiles /opt/src -d`.
+
+>>> FROM <your_table>
+**Où taper :** dans `psql` (`docker compose exec postgres psql -U postgres -d postgres`). Remplace `<your_table>` par le nom de ta table, sans les `< >`.

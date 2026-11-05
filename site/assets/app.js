@@ -1436,6 +1436,7 @@
         $(".ctxs", card).appendChild(c);
       });
       renderMd($(".qtext", card), q.text, base);
+      addPas(card, ov["pas-q" + q.n], base);
       const hb = $(".hintbtn", card), hout = $(".hints", card);
       const showH = () => {
         hout.innerHTML = hints.slice(0, s.hints).map((h, i) => `<div class="hintc"><b>${i + 1}/${hints.length}</b><span>${mdInline(h)}</span></div>`).join("");
