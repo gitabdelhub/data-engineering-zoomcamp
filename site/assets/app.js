@@ -201,6 +201,40 @@
     return el;
   }
 
+  // « Comment faire, exactement » : sous chaque bloc de commandes du cours, les étapes que le texte sous-entend.
+  // Section « @@ pas » de l'overlay : des entrées « >>> morceau du bloc », dans l'ordre du texte. Le morceau doit
+  // apparaître dans le bloc visé (ou « >>> # Titre » pour viser un titre). La recherche avance dans l'ordre,
+  // donc deux blocs qui se ressemblent sont visés l'un après l'autre.
+  function parsePas(src) {
+    if (!src) return [];
+    return src.split(/^>>> /m).slice(1).map(part => {
+      const nl = part.indexOf("\n");
+      return { key: (nl < 0 ? part : part.slice(0, nl)).trim(), body: nl < 0 ? "" : part.slice(nl + 1).trim() };
+    });
+  }
+  function addPas(el, src, base) {
+    const list = parsePas(src);
+    if (!list.length) return;
+    const targets = $$("pre.code, h1, h2, h3, h4", el);
+    let from = 0;
+    list.forEach(e => {
+      const head = e.key.startsWith("# ") ? e.key.slice(2).trim() : null;
+      let idx = -1;
+      for (let i = from; i < targets.length; i++) {
+        const t = targets[i];
+        if (head ? (/^H\d$/.test(t.tagName) && t.textContent.trim() === head) : (t.tagName === "PRE" && t.textContent.includes(e.key))) { idx = i; break; }
+      }
+      if (idx < 0) { console.warn("Étape non placée :", e.key); return; }
+      from = idx + 1;
+      const box = doc.createElement("details");
+      box.className = "pas";
+      box.open = true;
+      box.innerHTML = `<summary>Comment faire, exactement</summary><div class="md"></div>`;
+      renderMd($(".md", box), e.body, base);
+      targets[idx].after(box);
+    });
+  }
+
   let mermaidP = null;
   function loadMermaid() {
     if (!mermaidP) mermaidP = new Promise((res, rej) => {
@@ -905,7 +939,7 @@
     }
     if (token !== routeToken) return;
 
-    if (course) renderMd($("#coursbox"), course, base, { dropTitle: true });
+    if (course) { renderMd($("#coursbox"), course, base, { dropTitle: true }); addPas($("#coursbox"), ov.pas, base); }
     else $("#coursbox").innerHTML = `<p>Le texte du cours n'a pas pu être chargé. Tu peux le lire <a href="${GH}/blob/${REPO.branch}/${it.src}" target="_blank" rel="noopener">sur GitHub</a>.</p>`;
     renderResources(it, ov, meta);
 
@@ -1048,6 +1082,7 @@
       if (course) {
         const c = card("coursetext", `<div class="ct-h"><span class="lab">${it.src ? "Le texte du cours (en anglais) · tape les commandes toi-même dans ton Codespace" : "La leçon"}</span>${it.src ? `<a class="small" href="${GH}/blob/${REPO.branch}/${it.src}" target="_blank" rel="noopener">Voir sur GitHub</a>` : ""}</div><div class="md"></div>`);
         renderMd($(".md", c), course, base, { dropTitle: true });
+        addPas($(".md", c), ov.pas, base);
         box.appendChild(c);
         renderMermaid(c);
       }

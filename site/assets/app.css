@@ -609,3 +609,12 @@ code,.md a{overflow-wrap:anywhere}
 .chal.zoom .md h3{font-size:18px;margin:22px 0 8px;padding-top:16px;border-top:1px solid var(--line)}
 .chal.zoom .md h3:first-child{margin-top:4px;padding-top:0;border-top:0}
 .mleg i.done{background:var(--ok);border-color:var(--ok);border-radius:50%}
+
+/* Comment faire, exactement : les étapes cachées sous un bloc de commandes du cours */
+.pas{margin:10px 0 22px;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:10px;background:var(--ok-soft);padding:0}
+.pas>summary{cursor:pointer;padding:10px 14px;font-weight:600;font-size:14.5px;color:var(--ok)}
+.pas>.md{padding:0 16px 14px;font-size:15px}
+.pas>.md>:first-child{margin-top:0}
+.pas>.md>:last-child{margin-bottom:0}
+.pas pre.code{margin:8px 0}
+.pas td code{white-space:nowrap}
