@@ -55,3 +55,7 @@ Note `bruin version` dans ton README : quelques options du cours officiel ont ch
 @@ q7
 - Relis la leçon 6 : que s'est-il passé à ton premier run du staging, sur une base neuve ?
 - `bruin run --help` décrit chaque option : cherche celles qui existent parmi les quatre.
+
+@@ pas-q3
+>>> default: ["yellow", "green"]
+**C'est un extrait de `pipeline.yml` à lire, pas à taper.** Ton propre `mon-pipeline/pipeline/pipeline.yml` (module 5) a la même variable : tu peux essayer chaque proposition dessus et lire ce que Bruin répond.
