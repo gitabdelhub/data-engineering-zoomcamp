@@ -417,6 +417,7 @@
     cont.href = cur ? "#/l/" + cur.id : "#/progression";
     $("#nav-seance").href = cont.href;
   }
+  let lastIt = null;
   function onRoute() {
     cleanups.forEach(f => { try { f(); } catch (e) { /* rien */ } });
     cleanups = [];
@@ -425,6 +426,9 @@
     setNav(r === "l" ? "seance" : r || "home");
     // Le titre de l'onglet suit la page : utile avec plusieurs onglets ou dans l'historique.
     const it = r === "l" && byId(a), mod = r === "m" && C.modules.find(m => m.id === a);
+    // Règle d'AB : passer d'une étape à la suivante (par n'importe quel bouton ou lien) la coche comme terminée.
+    if (it && lastIt && !isDone(lastIt.id) && seqOf(lastIt)[idx(lastIt) + 1] === it) markDone(lastIt.id);
+    lastIt = it || null;
     const names = { methode: "Comment ça marche", progression: "Ma progression" };
     const pv = r === "v" && C.modules.find(m => m.id === a);
     const page = it ? it.title : mod ? "Module " + mod.id + " · " + mod.title : pv ? "Aperçu · " + pv.title : names[r];
@@ -853,13 +857,9 @@
     const seq = seqOf(it), i = idx(it), prev = seq[i - 1], next = seq[i + 1];
     const done = isDone(it.id);
     return `${prev ? `<a class="btn ghost" href="#/l/${prev.id}">← ${esc(prev.title)}</a>` : "<span></span>"}
-      ${next ? (done || it.type === "defi" ? `<a class="btn dark" href="#/l/${next.id}">${esc(next.title)} →</a>` : `<a class="btn dark" href="#/l/${next.id}" data-finish="${esc(it.id)}" title="Coche cette leçon comme terminée, puis ouvre la suivante">✓ Terminé, suivant : ${esc(next.title)} →</a>`) : ""}`;
+      ${next ? (done ? `<a class="btn dark" href="#/l/${next.id}">${esc(next.title)} →</a>` : `<a class="btn dark" href="#/l/${next.id}" data-finish="${esc(it.id)}" title="Coche cette leçon comme terminée, puis ouvre la suivante">✓ Terminé, suivant : ${esc(next.title)} →</a>`) : ""}`;
   }
-  // Passer à la suite avec le bouton du bas coche la leçon en cours (AB, 2026-11-06).
-  doc.addEventListener("click", e => {
-    const a = e.target.closest && e.target.closest("a[data-finish]");
-    if (a && !isDone(a.dataset.finish)) markDone(a.dataset.finish);
-  });
+  // Le clic sur ce bouton passe à l'étape suivante : onRoute coche alors celle-ci (règle d'AB, 2026-11-06).
 
   const STEP_NAMES = { discover: "Découvrir", predict: "Prédire", practice: "Pratiquer", breakfix: "Casser et réparer", explain: "Expliquer" };
   const STEP_HINTS = {
