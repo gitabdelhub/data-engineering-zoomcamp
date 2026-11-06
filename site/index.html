@@ -2,6 +2,26 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<script>
+/* Toujours la dernière version : si version.txt annonce plus récent que cette page
+   (raccourci épinglé, cache du navigateur), on recharge avec une adresse neuve.
+   À chaque mise à jour du site : changer ?v= partout ici ET site/version.txt. */
+(function () {
+  var V = "20261106e";
+  try {
+    fetch("version.txt?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.text() : ""; })
+      .then(function (t) {
+        t = (t || "").trim();
+        if (!/^\d{8}[a-z]*$/.test(t) || t <= V) return;
+        var k = "zc-maj-" + t;
+        try { if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, "1"); } catch (e) {}
+        location.replace(location.pathname + "?v=" + t + location.hash);
+      })
+      .catch(function () {});
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mon Zoomcamp</title>
 <meta name="description" content="Le Data Engineering Zoomcamp, en cours guidé dans l'ordre, sans copier-coller.">
@@ -10,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="vendor/hljs-github-dark.min.css">
-<link rel="stylesheet" href="assets/app.css?v=20261106d">
+<link rel="stylesheet" href="assets/app.css?v=20261106e">
 </head>
 <body>
 <header class="top gut"><div class="max in">
@@ -31,21 +51,21 @@
 <script src="vendor/marked.min.js"></script>
 <script src="vendor/purify.min.js"></script>
 <script src="vendor/highlight.min.js"></script>
-<script src="assets/icons.js?v=20261106d"></script>
-<script src="course/course.js?v=20261106d"></script>
-<script src="course/m00.js?v=20261106d"></script>
-<script src="course/m01.js?v=20261106d"></script>
-<script src="course/m02.js?v=20261106d"></script>
-<script src="course/m03.js?v=20261106d"></script>
-<script src="course/m04.js?v=20261106d"></script>
-<script src="course/m05.js?v=20261106d"></script>
-<script src="course/m06.js?v=20261106d"></script>
-<script src="course/m07.js?v=20261106d"></script>
-<script src="course/mp.js?v=20261106d"></script>
-<script src="course/w1.js?v=20261106d"></script>
-<script src="course/arch.js?v=20261106d"></script>
-<script src="assets/labo.js?v=20261106d"></script>
-<script src="assets/app.js?v=20261106d"></script>
-<script src="assets/lang.js?v=20261106d"></script>
+<script src="assets/icons.js?v=20261106e"></script>
+<script src="course/course.js?v=20261106e"></script>
+<script src="course/m00.js?v=20261106e"></script>
+<script src="course/m01.js?v=20261106e"></script>
+<script src="course/m02.js?v=20261106e"></script>
+<script src="course/m03.js?v=20261106e"></script>
+<script src="course/m04.js?v=20261106e"></script>
+<script src="course/m05.js?v=20261106e"></script>
+<script src="course/m06.js?v=20261106e"></script>
+<script src="course/m07.js?v=20261106e"></script>
+<script src="course/mp.js?v=20261106e"></script>
+<script src="course/w1.js?v=20261106e"></script>
+<script src="course/arch.js?v=20261106e"></script>
+<script src="assets/labo.js?v=20261106e"></script>
+<script src="assets/app.js?v=20261106e"></script>
+<script src="assets/lang.js?v=20261106e"></script>
 </body>
 </html>
