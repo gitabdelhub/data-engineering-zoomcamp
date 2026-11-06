@@ -45,7 +45,8 @@
         ] }
       ],
       mapNotes: {
-        "00-01": "Cette leçon n'ajoute pas de pièce : elle t'explique comment apprendre avec ce site."
+        "00-01": "Cette leçon n'ajoute pas de pièce : elle t'explique comment apprendre avec ce site.",
+        "00-14": "Cette leçon n'ajoute pas de pièce : c'est ton aide-mémoire de tout Git, à garder ouvert."
       }
     },
     "01": {

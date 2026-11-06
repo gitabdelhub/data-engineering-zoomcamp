@@ -3,6 +3,7 @@
 // Le moteur est écrit pour ce cours : il montre aussi les fichiers, la zone de préparation,
 // GitHub, l'ordinateur d'un collègue et les pull requests, que Learn Git Branching ne montre pas.
 // Une leçon le déclare dans sa section « @@ labo » : du JSON { niveaux: [ { titre, intro, postes, depart, buts, indices, solution } ] }.
+// Un niveau marqué « bonus: true » est facultatif : il se range après les niveaux essentiels.
 (function () {
   "use strict";
 
@@ -1238,7 +1239,9 @@
     if (typeof cfg === "string") {
       try { cfg = JSON.parse(cfg); } catch (e) { el.innerHTML = `<p class="small">Labo Git : la configuration de ce niveau est illisible (${esc(e.message)}).</p>`; return; }
     }
-    const levels = cfg.niveaux || [cfg];
+    const levels = (cfg.niveaux || [cfg]).slice().sort((a, b) => (a.bonus ? 1 : 0) - (b.bonus ? 1 : 0));
+    const nMain = levels.filter(lv => !lv.bonus).length;
+    const lvName = i => levels[i].bonus ? `Bonus ${i - nMain + 1} sur ${levels.length - nMain} · facultatif` : `Niveau ${i + 1} sur ${nMain}`;
     const lid = cfg.id || "labo";
     const md = helpers.md || ((node, src) => { node.textContent = src; });
     const inline = helpers.inline || esc;
@@ -1271,7 +1274,7 @@
 
     function lvKey(i) { return lid + ":" + (i + 1); }
     function renderLevels() {
-      $(".lb-levels").innerHTML = levels.length > 1 ? levels.map((lv, i) => `<button type="button" role="tab" aria-selected="${i === L}" class="${i === L ? "on" : ""} ${done[lvKey(i)] ? "ok" : ""}" data-l="${i}" title="${esc(lv.titre || "")}">${done[lvKey(i)] ? "✓" : i + 1}</button>`).join("") : "";
+      $(".lb-levels").innerHTML = levels.length > 1 ? levels.map((lv, i) => `${i === nMain && i ? '<span class="lb-bsep">bonus</span>' : ""}<button type="button" role="tab" aria-selected="${i === L}" class="${i === L ? "on" : ""} ${done[lvKey(i)] ? "ok" : ""} ${lv.bonus ? "bonus" : ""}" data-l="${i}" title="${esc(lvName(i) + " : " + (lv.titre || ""))}">${done[lvKey(i)] ? "✓" : lv.bonus ? "B" + (i - nMain + 1) : i + 1}</button>`).join("") : "";
       el.querySelectorAll(".lb-levels [data-l]").forEach(b => b.addEventListener("click", () => load(+b.dataset.l)));
     }
 
@@ -1285,7 +1288,7 @@
       if (lv.accueil !== false) S.log.push({ t: lv.accueil || "Tape ta première commande ci-dessous, puis Entrée. Tape aide pour la liste des commandes.", c: "fr", w: S.cur });
       keys(S.commits).forEach(c => { seen[c] = true; });
       renderLevels();
-      brief.innerHTML = `<h4>${levels.length > 1 ? `<span class="lb-n">Niveau ${L + 1} sur ${levels.length}</span>` : ""}${esc(lv.titre || "Labo Git")}</h4><div class="md lb-intro"></div><ul class="lb-goals"></ul>`;
+      brief.innerHTML = `<h4>${levels.length > 1 ? `<span class="lb-n${lv.bonus ? " bonus" : ""}">${lvName(L)}</span>` : ""}${esc(lv.titre || "Labo Git")}</h4><div class="md lb-intro"></div><ul class="lb-goals"></ul>`;
       md($(".lb-intro"), lv.intro || "");
       help.innerHTML = "";
       draw();
@@ -1322,8 +1325,12 @@
       won = true;
       done[lvKey(L)] = true; saveDone(done);
       renderLevels();
-      const last = L === levels.length - 1;
-      help.innerHTML = `<div class="lb-win"><b>🎉 Niveau réussi !</b><span>${esc(levels[L].bravo || (last ? "Tu as fini le labo de cette leçon. Passe maintenant à la suite de la leçon, puis refais-le pour de vrai dans ton Codespace." : "Bien joué. Le niveau suivant t'attend."))}</span>${last ? "" : '<button type="button" class="btn sm" data-a="next">Niveau suivant →</button>'}</div>`;
+      const last = L === levels.length - 1, lastMain = L === nMain - 1;
+      const tail = last ? "Tu as fini le labo de cette leçon. Passe maintenant à la suite de la leçon, puis refais-le pour de vrai dans ton Codespace."
+        : lastMain ? "Tu as l'essentiel ✓ Passe à la suite de la leçon. Les niveaux bonus sont là si tu veux t'entraîner encore."
+        : "Bien joué. Le niveau suivant t'attend.";
+      const bravo = levels[L].bravo ? levels[L].bravo + " " + (lastMain && !last ? tail : "") : tail;
+      help.innerHTML = `<div class="lb-win"><b>🎉 Niveau réussi !</b><span>${esc(bravo.trim())}</span>${last ? "" : `<button type="button" class="btn sm${lastMain ? " ghost" : ""}" data-a="next">${lastMain ? "Niveau bonus (facultatif) →" : "Niveau suivant →"}</button>`}</div>`;
       const nb = help.querySelector('[data-a="next"]');
       if (nb) nb.addEventListener("click", () => load(L + 1));
     }

@@ -45,6 +45,23 @@ Trois copies du même projet, à ne pas confondre :
 
 Ton fork bouge parfois sans passer par ton Codespace : quand tu fusionnes une mise à jour de ce site sur GitHub, par exemple. D'où le réflexe : **en début de séance, `git pull`**.
 
+@@ essentiel
+**En une image.** GitHub est un **coffre en ligne** pour ton dépôt. Ta copie et celle de GitHub ne se synchronisent **jamais toutes seules** : c'est toi qui envoies et qui récupères.
+
+| Tu veux… | Tu tapes |
+| --- | --- |
+| Copier un dépôt GitHub sur ta machine | `git clone <adresse>` |
+| Envoyer tes commits sur GitHub | `git push` |
+| Récupérer les commits des autres | `git pull` |
+| Regarder les nouveautés de GitHub sans toucher à ta branche | `git fetch` |
+| Voir à quelle adresse pointe `origin` | `git remote -v` |
+
+📌 **À retenir :** `origin` est le surnom de la copie sur GitHub. La première fois qu'une branche part sur GitHub : `git push -u origin nom-de-branche`. Ensuite, `git push` suffit.
+
+⚠️ **Attention :** push refusé (`rejected`, `fetch first`) ? Quelqu'un a poussé avant toi. Fais `git pull`, puis `git push`.
+
+💡 **Astuce :** le réflexe de chaque séance : **`git pull` en premier**.
+
 @@ labo
 {
   "id": "00-08",
@@ -54,56 +71,38 @@ Ton fork bouge parfois sans passer par ton Codespace : quand tu fusionnes une mi
       "intro": "Ton dépôt a deux commits, et un dépôt **vide** t'attend sur GitHub (panneau du haut). Fais connaître GitHub à ton dépôt sous le surnom `origin`, puis envoie ta branche `main`. Essaie d'abord `git push` tout court : lis bien les deux erreurs successives, elles te disent quoi faire.",
       "postes": ["moi", "github"],
       "depart": ["git init", "echo '# Mon projet' > README.md", "git add README.md", "git commit -m 'Premier commit'", "echo 'print(1)' > pipeline.py", "git add pipeline.py", "git commit -m 'Ajoute le pipeline'"],
-      "buts": [
-        "remote:origin | Ton dépôt connaît GitHub sous le nom `origin`",
-        "synced:main | GitHub a ta branche `main`, avec tes deux commits",
-        "upstream:main | Ta branche est reliée à GitHub : la prochaine fois, `git push` suffira"
-      ],
+      "buts": ["remote:origin | Ton dépôt connaît GitHub sous le nom `origin`", "synced:main | GitHub a ta branche `main`, avec tes deux commits", "upstream:main | Ta branche est reliée à GitHub : la prochaine fois, `git push` suffira"],
       "indices": ["L'adresse du dépôt GitHub dans ce labo : `https://github.com/toi/projet.git`. La commande : `git remote add origin <adresse>`.", "La première fois : `git push -u origin main`."],
       "solution": ["git push", "git remote add origin https://github.com/toi/projet.git", "git push", "git push -u origin main", "git status"]
-    },
-    {
-      "titre": "Cloner, comme ton Codespace",
-      "intro": "Cette fois, le dépôt existe déjà sur GitHub, et ton ordinateur est vide. Récupère-le avec `git clone`. Puis regarde ce que Git a réglé tout seul : l'historique, le surnom `origin`, et les étiquettes en pointillés `origin/main`.",
-      "postes": ["moi", "github"],
-      "depart": ["git init", "echo '# Projet de l équipe' > README.md", "git add README.md", "git commit -m 'Premier commit'", "echo 'id,zone' > zones.csv", "git add zones.csv", "git commit -m 'Ajoute les zones'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "rm -rf .git", "rm README.md zones.csv"],
-      "buts": [
-        "repo | Tu as un dépôt",
-        "synced:main | Ta branche `main` est identique à celle de GitHub",
-        "cmd:git remote -v | Tu as regardé le surnom avec `git remote -v`",
-        "cmd:git log | Tu as vu l'historique, arrivé avec le clone"
-      ],
-      "indices": ["`git clone https://github.com/toi/projet.git`", "Puis `git remote -v` et `git log --oneline`."],
-      "solution": ["git clone https://github.com/toi/projet.git", "git remote -v", "git log --oneline", "git status"]
     },
     {
       "titre": "fetch : regarder avant de fusionner",
       "intro": "Sam, ton collègue, vient de pousser un commit sur GitHub. Ton ordinateur ne le sait pas encore. Fais d'abord `git fetch` : regarde l'étiquette `origin/main` avancer, alors que ta branche `main` ne bouge pas. Lis `git status`. Puis mets ta branche à jour avec `git pull`.",
       "postes": ["moi", "github", "collegue"],
       "depart": ["git init", "echo '# Projet' > README.md", "git add README.md", "git commit -m 'Premier commit'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "collegue: git clone https://github.com/toi/projet.git", "echo 'Notes de Sam' > notes.md", "git add notes.md", "git commit -m 'Ajoute les notes de Sam'", "git push", "moi: git status"],
-      "buts": [
-        "cmd:git fetch | Tu as fait `git fetch`",
-        "cmd:git status | Tu as lu `git status` (« behind »)",
-        "synced:main | Ta branche `main` a rattrapé GitHub",
-        "file:notes.md | Le fichier de Sam est dans ton dossier",
-        "merges=0 | Pas de commit de fusion : une avance rapide suffisait"
-      ],
+      "buts": ["cmd:git fetch | Tu as fait `git fetch`", "cmd:git status | Tu as lu `git status` (« behind »)", "synced:main | Ta branche `main` a rattrapé GitHub", "file:notes.md | Le fichier de Sam est dans ton dossier", "merges=0 | Pas de commit de fusion : une avance rapide suffisait"],
       "indices": ["`git fetch`, puis `git status`.", "`git pull` pour fusionner `origin/main` dans ta branche."],
       "solution": ["git fetch", "git status", "git pull"]
+    },
+    {
+      "titre": "Cloner, comme ton Codespace",
+      "intro": "Cette fois, le dépôt existe déjà sur GitHub, et ton ordinateur est vide. Récupère-le avec `git clone`. Puis regarde ce que Git a réglé tout seul : l'historique, le surnom `origin`, et les étiquettes en pointillés `origin/main`.",
+      "postes": ["moi", "github"],
+      "depart": ["git init", "echo '# Projet de l équipe' > README.md", "git add README.md", "git commit -m 'Premier commit'", "echo 'id,zone' > zones.csv", "git add zones.csv", "git commit -m 'Ajoute les zones'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "rm -rf .git", "rm README.md zones.csv"],
+      "buts": ["repo | Tu as un dépôt", "synced:main | Ta branche `main` est identique à celle de GitHub", "cmd:git remote -v | Tu as regardé le surnom avec `git remote -v`", "cmd:git log | Tu as vu l'historique, arrivé avec le clone"],
+      "indices": ["`git clone https://github.com/toi/projet.git`", "Puis `git remote -v` et `git log --oneline`."],
+      "solution": ["git clone https://github.com/toi/projet.git", "git remote -v", "git log --oneline", "git status"],
+      "bonus": true
     },
     {
       "titre": "Quelqu'un a poussé avant toi",
       "intro": "Tu as fait un commit. Pendant ce temps, Sam a poussé le sien sur GitHub. Essaie d'envoyer ton commit : refusé. Lis le message, récupère le travail de Sam, puis renvoie. Si `git pull` te demande comment réconcilier, suis son conseil (la fusion).",
       "postes": ["moi", "github", "collegue"],
       "depart": ["git init", "echo '# Projet' > README.md", "git add README.md", "git commit -m 'Premier commit'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "collegue: git clone https://github.com/toi/projet.git", "echo 'Les tests de Sam' > tests.py", "git add tests.py", "git commit -m 'Ajoute les tests'", "git push", "moi: echo 'print(1)' > pipeline.py", "git add pipeline.py", "git commit -m 'Ajoute le pipeline'"],
-      "buts": [
-        "cmd:git push | Tu as tenté le push (et lu le refus)",
-        "merges>=1 | Ton commit et celui de Sam sont réunis par une fusion",
-        "synced:main | GitHub a maintenant ton commit aussi",
-        "file:tests.py | Le fichier de Sam est chez toi"
-      ],
+      "buts": ["cmd:git push | Tu as tenté le push (et lu le refus)", "merges>=1 | Ton commit et celui de Sam sont réunis par une fusion", "synced:main | GitHub a maintenant ton commit aussi", "file:tests.py | Le fichier de Sam est chez toi"],
       "indices": ["Après le refus : `git pull`. S'il demande une méthode : `git config --global pull.rebase false`, puis encore `git pull`.", "Enfin `git push`."],
-      "solution": ["git push", "git pull", "git config --global pull.rebase false", "git pull", "git push", "git log --oneline --graph"]
+      "solution": ["git push", "git pull", "git config --global pull.rebase false", "git pull", "git push", "git log --oneline --graph"],
+      "bonus": true
     }
   ]
 }

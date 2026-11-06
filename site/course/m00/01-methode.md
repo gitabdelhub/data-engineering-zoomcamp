@@ -16,6 +16,8 @@ Une leçon se fait toujours en 5 étapes, dans cet ordre :
 | 4. Casser et réparer | Tu provoques une erreur volontairement et tu trouves comment la corriger | La moitié du métier, c'est lire des erreurs |
 | 5. Expliquer | Tu écris avec tes mots ce que tu as compris | Si tu ne sais pas l'expliquer, tu ne l'as pas encore compris |
 
+Les leçons Git du module 0 vont plus droit au but, comme un livre « Pour les nuls » : **l'essentiel en 5 minutes**, deux niveaux du Labo Git, le vrai exercice dans ton Codespace, puis « Terminer ». Le détail technique, la prédiction et « Casser et réparer » y sont repliés en bonus : tu les ouvres si tu veux.
+
 À la fin de chaque module : le **homework** officiel du Zoomcamp, puis un **défi sans guide** sur d'autres données, vérifié par un script.
 
 Le cours avance en spirale. Le module 0 annonce ce qui viendra (« Tu le reverras »), et les modules suivants y renvoient (« Ah, c'est donc ça ! »). Les bases de Git et le travail en équipe s'apprennent au module 0, d'abord dans le **Labo Git** (un terminal dans la page, avec le dessin qui se construit), puis pour de vrai dans ton Codespace. Les commandes plus rares (stash, tag…) arrivent ensuite au moment précis où un exercice en a besoin (« Git en situation »).

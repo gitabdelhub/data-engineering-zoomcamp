@@ -52,6 +52,24 @@ Ton dépôt est un **fork**. Quand tu ouvres une pull request, GitHub propose pa
 
 Si tu vois `DataTalksClub/data-engineering-zoomcamp` dans « base », change-le avant de cliquer.
 
+@@ essentiel
+**En une image.** Une pull request, c'est montrer ta copie à un collègue **avant** qu'elle entre dans le classeur commun. Il relit, annote, demande une correction ou dit « c'est bon ». Ensuite seulement, elle entre dans `main`.
+
+Le chemin d'une tâche, toujours le même :
+
+| Étape | Tu fais |
+| --- | --- |
+| 1. Partir de `main` à jour | `git switch main`, puis `git pull` |
+| 2. Une branche pour ta tâche | `git switch -c ajout-contact` |
+| 3. Commiter, puis pousser la branche | `git push -u origin ajout-contact` |
+| 4. Ouvrir la pull request | sur GitHub, bouton **Compare & pull request** |
+| 5. Corriger après la revue | de nouveaux commits, puis `git push` : la PR se met à jour |
+| 6. Après la fusion | `git switch main`, `git pull`, `git branch -d ajout-contact` |
+
+📌 **À retenir :** en équipe, **personne ne pousse sur `main`**. Tout passe par une pull request relue.
+
+⚠️ **Attention :** ton dépôt est un fork. En ouvrant une PR, vérifie que **base repository** est bien `gitabdelhub/data-engineering-zoomcamp`, et pas celui de DataTalksClub.
+
 @@ labo
 {
   "id": "00-09",
@@ -61,12 +79,7 @@ Si tu vois `DataTalksClub/data-engineering-zoomcamp` dans « base », change-le 
       "intro": "Toi et Sam travaillez sur le même dépôt GitHub, et `main` est protégée (le cadenas). Ta tâche : ajouter un fichier `contact.md`. Fais-le comme en équipe : une branche `ajout-contact`, un commit, la branche poussée sur GitHub, puis une pull request (avec le formulaire du panneau GitHub, ou `gh pr create --title \"...\"`).",
       "postes": ["moi", "github", "collegue"],
       "depart": ["git init", "echo '# Projet de l équipe' > README.md", "git add README.md", "git commit -m 'Premier commit'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "git config pull.rebase false", "collegue: git clone https://github.com/toi/projet.git", "git config pull.rebase false", "@protect", "moi: git status"],
-      "buts": [
-        "branch:ajout-contact | La branche `ajout-contact` existe",
-        "github.branch:ajout-contact | Elle est poussée sur GitHub",
-        "pr:open | Une pull request est ouverte",
-        "github.commits=1 | `main` sur GitHub n'a pas bougé : rien n'a été poussé dessus"
-      ],
+      "buts": ["branch:ajout-contact | La branche `ajout-contact` existe", "github.branch:ajout-contact | Elle est poussée sur GitHub", "pr:open | Une pull request est ouverte", "github.commits=1 | `main` sur GitHub n'a pas bougé : rien n'a été poussé dessus"],
       "indices": ["`git switch -c ajout-contact`, puis `echo 'Tél : 01 23 45 67 89' > contact.md`, `git add` et `git commit`.", "`git push -u origin ajout-contact`, puis le bouton « Ouvrir une pull request » du panneau GitHub."],
       "solution": ["git switch -c ajout-contact", "echo 'Tél : 01 23 45 67 89' > contact.md", "git add contact.md", "git commit -m 'Ajoute le contact'", "git push -u origin ajout-contact", "gh pr create --title 'Ajoute le contact'"]
     },
@@ -75,13 +88,7 @@ Si tu vois `DataTalksClub/data-engineering-zoomcamp` dans « base », change-le 
       "intro": "Ta pull request #1 est ouverte. Passe sur le **terminal de Sam** (onglet au-dessus du terminal) : Sam relit et clique sur « Demander des changements », parce qu'il manque l'e-mail. Reviens sur **ton** terminal : ajoute la ligne `Mail : equipe@exemple.com` à `contact.md`, commite, pousse. Regarde la PR se mettre à jour. Sam approuve, puis fusionne la PR.",
       "postes": ["moi", "github", "collegue"],
       "depart": ["git init", "echo '# Projet de l équipe' > README.md", "git add README.md", "git commit -m 'Premier commit'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "git config pull.rebase false", "collegue: git clone https://github.com/toi/projet.git", "git config pull.rebase false", "@protect", "moi: git switch -c ajout-contact", "echo 'Tél : 01 23 45 67 89' > contact.md", "git add contact.md", "git commit -m 'Ajoute le contact'", "git push -u origin ajout-contact", "gh pr create --title 'Ajoute le contact'"],
-      "buts": [
-        "pr:changes | Sam a demandé des changements",
-        "github.contains:main,ajout-contact or pr:merged | Ta correction est poussée sur la branche de la PR",
-        "pr:approved | Sam a approuvé",
-        "pr:merged | La pull request est fusionnée",
-        "github.file:contact.md~Mail | `main` sur GitHub contient le contact avec l'e-mail"
-      ],
+      "buts": ["pr:changes | Sam a demandé des changements", "github.contains:main,ajout-contact or pr:merged | Ta correction est poussée sur la branche de la PR", "pr:approved | Sam a approuvé", "pr:merged | La pull request est fusionnée", "github.file:contact.md~Mail | `main` sur GitHub contient le contact avec l'e-mail"],
       "indices": ["Clique sur « Terminal de Sam », puis sur « Demander des changements » dans la PR (ou `gh pr review 1 --request-changes`).", "Sur ton terminal : `echo 'Mail : equipe@exemple.com' >> contact.md`, `git commit -am \"Ajoute l'e-mail\"`, `git push`. Puis de nouveau Sam : « Approuver », puis « Merge pull request »."],
       "solution": ["collegue: gh pr review 1 --request-changes -b 'Il manque l e-mail'", "moi: echo 'Mail : equipe@exemple.com' >> contact.md", "git commit -am 'Ajoute l e-mail'", "git push", "collegue: gh pr review 1 --approve", "gh pr merge 1 --merge"]
     },
@@ -90,29 +97,21 @@ Si tu vois `DataTalksClub/data-engineering-zoomcamp` dans « base », change-le 
       "intro": "La PR est fusionnée sur GitHub, et Sam a supprimé la branche là-bas. Mais vos deux ordinateurs ne le savent pas encore : regarde leurs étiquettes `main`, en retard. Sur **ton** ordinateur : reviens sur `main`, récupère, puis supprime ta branche locale. Sur l'ordinateur de **Sam** : récupère aussi.",
       "postes": ["moi", "github", "collegue"],
       "depart": ["git init", "echo '# Projet de l équipe' > README.md", "git add README.md", "git commit -m 'Premier commit'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "git config pull.rebase false", "collegue: git clone https://github.com/toi/projet.git", "git config pull.rebase false", "@protect", "moi: git switch -c ajout-contact", "echo 'Tél : 01 23 45 67 89' > contact.md", "git add contact.md", "git commit -m 'Ajoute le contact'", "git push -u origin ajout-contact", "gh pr create --title 'Ajoute le contact'", "collegue: gh pr review 1 --approve", "gh pr merge 1 --merge --delete-branch", "moi: git status"],
-      "buts": [
-        "on:main | Tu es sur `main`",
-        "synced:main | Ton `main` a rattrapé GitHub",
-        "nobranch:ajout-contact | Ta branche locale est supprimée",
-        "collegue.synced:main | Le `main` de Sam a rattrapé GitHub aussi"
-      ],
+      "buts": ["on:main | Tu es sur `main`", "synced:main | Ton `main` a rattrapé GitHub", "nobranch:ajout-contact | Ta branche locale est supprimée", "collegue.synced:main | Le `main` de Sam a rattrapé GitHub aussi"],
       "indices": ["Sur ton terminal : `git switch main`, `git pull`, `git branch -d ajout-contact`.", "Puis le terminal de Sam : `git pull`."],
-      "solution": ["git switch main", "git pull", "git branch -d ajout-contact", "collegue: git pull"]
+      "solution": ["git switch main", "git pull", "git branch -d ajout-contact", "collegue: git pull"],
+      "bonus": true
     },
     {
       "titre": "Oups : un commit directement sur main",
       "intro": "Par réflexe, tu as fait un commit directement sur `main`. Essaie de le pousser : `main` est protégée, GitHub refuse. Pas de panique : crée une branche à partir de là où tu es (ton commit vient avec), pousse-la, ouvre une PR. Sam approuve et fusionne. Puis remets ton `main` à jour.",
       "postes": ["moi", "github", "collegue"],
       "depart": ["git init", "echo '# Projet de l équipe' > README.md", "git add README.md", "git commit -m 'Premier commit'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "git config pull.rebase false", "collegue: git clone https://github.com/toi/projet.git", "git config pull.rebase false", "@protect", "moi: echo '# Projet de l équipe data' > README.md", "git commit -am 'Corrige le titre'"],
-      "buts": [
-        "cmd:git push | Tu as vu GitHub refuser le push sur `main`",
-        "pr:merged | Ton commit est arrivé dans `main` par une pull request",
-        "on:main | Tu es revenu sur `main`",
-        "synced:main | Ton `main` est à jour avec GitHub"
-      ],
+      "buts": ["cmd:git push | Tu as vu GitHub refuser le push sur `main`", "pr:merged | Ton commit est arrivé dans `main` par une pull request", "on:main | Tu es revenu sur `main`", "synced:main | Ton `main` est à jour avec GitHub"],
       "indices": ["`git switch -c corrige-titre` crée une branche sur ton commit. Puis `git push -u origin corrige-titre` et une PR.", "Sam approuve et fusionne. Ensuite, sur ton terminal : `git switch main` et `git pull`."],
       "solution": ["git push", "git switch -c corrige-titre", "git push -u origin corrige-titre", "gh pr create --title 'Corrige le titre'", "collegue: gh pr review 1 --approve", "gh pr merge 1 --merge --delete-branch", "moi: git switch main", "git pull"],
-      "bravo": "Ton commit n'est jamais perdu : une branche n'est qu'une étiquette, tu peux toujours en poser une sur ton travail et passer par une PR."
+      "bravo": "Ton commit n'est jamais perdu : une branche n'est qu'une étiquette, tu peux toujours en poser une sur ton travail et passer par une PR.",
+      "bonus": true
     }
   ]
 }

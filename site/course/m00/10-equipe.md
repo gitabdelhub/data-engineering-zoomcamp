@@ -47,6 +47,21 @@ S'il n'y a pas de conflit mais que ta branche est seulement **en retard** sur `m
 
 Tu entendras parler de `git rebase`, une autre façon de remettre ta branche à jour : au lieu d'un commit de fusion, tes commits sont « rejoués » au bout de `main`, pour un historique en ligne droite. Certaines équipes l'utilisent, d'autres l'interdisent. Commence par la fusion, que tu maîtrises maintenant, et demande la règle de ton équipe au PFE.
 
+@@ essentiel
+**En une image.** Deux collègues écrivent le même rapport. L'un finit forcément avant l'autre, et le second doit d'abord récupérer son travail avant de rendre le sien.
+
+| Ta situation | Tu fais |
+| --- | --- |
+| Push refusé : un collègue a poussé avant toi sur ta branche | `git pull`, puis `git push` |
+| Ta PR est en conflit avec `main` | dans ta branche : `git pull origin main`, tu résous, `git add`, `git commit`, `git push` |
+| Ta PR est juste en retard sur `main` | bouton **Update branch** sur GitHub, puis `git pull` chez toi |
+
+📌 **À retenir :** ce n'est jamais à `main` de s'adapter. C'est **ta branche** qui récupère le nouveau `main`.
+
+⚠️ **Attention :** **jamais** de `git push --force` sur une branche partagée : ça efface le travail des autres sur GitHub.
+
+💡 **Astuce :** trois réflexes évitent presque tous les ennuis : `git pull` en début de séance, des branches qui vivent peu, des petites PR.
+
 @@ labo
 {
   "id": "00-10",
@@ -56,12 +71,7 @@ Tu entendras parler de `git rebase`, une autre façon de remettre ta branche à 
       "intro": "Sam et toi écrivez un rapport ensemble, sur la branche `rapport`. Sam vient de pousser sa conclusion. Toi, tu as écrit ton introduction et fait un commit. Pousse : refusé. Récupère le travail de Sam, puis pousse à nouveau. Interdit d'utiliser `--force`.",
       "postes": ["moi", "github", "collegue"],
       "depart": ["git init", "git config pull.rebase false", "echo '# Projet' > README.md", "git add README.md", "git commit -m 'Premier commit'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "git switch -c rapport", "echo 'Plan du rapport' > plan.md", "git add plan.md", "git commit -m 'Ajoute le plan'", "git push -u origin rapport", "collegue: git clone https://github.com/toi/projet.git", "git config pull.rebase false", "git switch rapport", "echo 'Conclusion de Sam' > conclusion.md", "git add conclusion.md", "git commit -m 'Ajoute la conclusion'", "git push", "moi: echo 'Mon introduction' > intro.md", "git add intro.md", "git commit -m 'Ajoute l introduction'"],
-      "buts": [
-        "cmd:git push | Tu as tenté le push (et lu le refus)",
-        "file:conclusion.md | La conclusion de Sam est chez toi",
-        "synced:rapport | GitHub a ta branche `rapport` avec ton introduction",
-        "merges>=1 | Ton travail et celui de Sam sont réunis par une fusion : rien n'a été écrasé"
-      ],
+      "buts": ["cmd:git push | Tu as tenté le push (et lu le refus)", "file:conclusion.md | La conclusion de Sam est chez toi", "synced:rapport | GitHub a ta branche `rapport` avec ton introduction", "merges>=1 | Ton travail et celui de Sam sont réunis par une fusion : rien n'a été écrasé"],
       "indices": ["`git pull`, puis `git push`.", "Tu es déjà relié à `origin/rapport` : `git pull` et `git push` sans rien préciser suffisent."],
       "solution": ["git push", "git pull", "git push", "git log --oneline --graph"]
     },
@@ -70,12 +80,7 @@ Tu entendras parler de `git rebase`, une autre façon de remettre ta branche à 
       "intro": "Ta PR #1 change le titre du README. Mais la PR #2 de Sam, qui change **la même ligne**, vient d'être fusionnée dans `main`. Regarde le panneau GitHub : ta PR est en conflit, le bouton est grisé. Remets ta branche à jour avec `main`, résous le conflit, pousse. Puis Sam approuve et fusionne ta PR.",
       "postes": ["moi", "github", "collegue"],
       "depart": ["git init", "git config pull.rebase false", "echo '# Projet' > README.md", "echo 'Un projet de données.' >> README.md", "git add README.md", "git commit -m 'Premier commit'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "collegue: git clone https://github.com/toi/projet.git", "git config pull.rebase false", "@protect", "moi: git switch -c titre", "echo '# Projet data engineering' > README.md", "echo 'Un projet de données.' >> README.md", "git commit -am 'Titre plus précis'", "git push -u origin titre", "gh pr create --title 'Titre plus précis'", "collegue: git switch -c titre-taxis", "echo '# Projet taxis de New York' > README.md", "echo 'Un projet de données.' >> README.md", "git commit -am 'Titre : taxis'", "git push -u origin titre-taxis", "gh pr create --title 'Titre : taxis'", "moi: gh pr review 2 --approve", "collegue: gh pr merge 2 --merge --delete-branch", "git switch main", "git pull", "moi: git status"],
-      "buts": [
-        "cmd:git pull origin main or cmd:git merge origin/main | Tu as fait venir le nouveau `main` dans ta branche",
-        "nomarkers:README.md | Le conflit est résolu, sans marqueur",
-        "prmerged>=2 | Ta PR est fusionnée à son tour",
-        "github.nomarkers:README.md | Le `main` de GitHub est propre"
-      ],
+      "buts": ["cmd:git pull origin main or cmd:git merge origin/main | Tu as fait venir le nouveau `main` dans ta branche", "nomarkers:README.md | Le conflit est résolu, sans marqueur", "prmerged>=2 | Ta PR est fusionnée à son tour", "github.nomarkers:README.md | Le `main` de GitHub est propre"],
       "indices": ["Tu es sur `titre` : `git pull origin main`. Lis le conflit avec `cat README.md`.", "Réécris le README (`echo '# Projet taxis de New York, en data engineering' > README.md` puis `echo 'Un projet de données.' >> README.md`), puis `git add README.md`, `git commit -m \"...\"`, `git push`. Ensuite, terminal de Sam : approuver, puis fusionner."],
       "solution": ["git pull origin main", "cat README.md", "echo '# Projet taxis de New York, en data engineering' > README.md", "echo 'Un projet de données.' >> README.md", "git add README.md", "git commit -m 'Fusionne main dans titre'", "git push", "collegue: gh pr review 1 --approve", "gh pr merge 1 --merge --delete-branch"]
     },
@@ -84,17 +89,11 @@ Tu entendras parler de `git rebase`, une autre façon de remettre ta branche à 
       "intro": "Tout le cycle, à deux, avec `main` protégée. **Toi** : ajoute `faq.md` sur une branche, et ouvre une PR. **Sam** : ajoute `equipe.md` sur une autre branche, et ouvre une PR. Chacun approuve la PR de l'autre, puis les deux PR sont fusionnées. À la fin, les deux ordinateurs ont un `main` à jour.",
       "postes": ["moi", "github", "collegue"],
       "depart": ["git init", "git config pull.rebase false", "echo '# Projet' > README.md", "git add README.md", "git commit -m 'Premier commit'", "git remote add origin https://github.com/toi/projet.git", "git push -u origin main", "collegue: git clone https://github.com/toi/projet.git", "git config pull.rebase false", "@protect", "moi: git status"],
-      "buts": [
-        "prmerged>=2 | Deux pull requests fusionnées",
-        "github.file:faq.md | `faq.md` est dans `main` sur GitHub",
-        "github.file:equipe.md | `equipe.md` aussi",
-        "on:main | Tu es sur `main`",
-        "synced:main | Ton `main` est à jour",
-        "collegue.synced:main | Celui de Sam aussi"
-      ],
+      "buts": ["prmerged>=2 | Deux pull requests fusionnées", "github.file:faq.md | `faq.md` est dans `main` sur GitHub", "github.file:equipe.md | `equipe.md` aussi", "on:main | Tu es sur `main`", "synced:main | Ton `main` est à jour", "collegue.synced:main | Celui de Sam aussi"],
       "indices": ["Pour chacun : `git switch -c …`, un fichier, `git add`, `git commit`, `git push -u origin …`, puis une PR.", "Approuver la PR de l'autre depuis **son** terminal à soi, fusionner, puis sur les deux : `git switch main` et `git pull`."],
       "solution": ["git switch -c ajout-faq", "echo 'Q : où sont les données ? R : dans le bucket.' > faq.md", "git add faq.md", "git commit -m 'Ajoute la FAQ'", "git push -u origin ajout-faq", "gh pr create --title 'Ajoute la FAQ'", "collegue: git switch -c ajout-equipe", "echo 'Toi et Sam' > equipe.md", "git add equipe.md", "git commit -m 'Ajoute l équipe'", "git push -u origin ajout-equipe", "gh pr create --title 'Ajoute l équipe'", "gh pr review 1 --approve", "gh pr merge 1 --merge --delete-branch", "moi: gh pr review 2 --approve", "gh pr merge 2 --merge --delete-branch", "git switch main", "git pull", "collegue: git switch main", "git pull"],
-      "bravo": "C'est exactement la journée d'une équipe de data engineers. Tu es prêt pour le travail en équipe du PFE."
+      "bravo": "C'est exactement la journée d'une équipe de data engineers. Tu es prêt pour le travail en équipe du PFE.",
+      "bonus": true
     }
   ]
 }
@@ -263,5 +262,6 @@ Explique à un camarade de PFE les deux situations de cette leçon (push refusé
 - [Learn Git Branching, en français : « Remote », niveaux sur les historiques divergents](https://learngitbranching.js.org/?locale=fr_FR)
 
 @@ teaser
+- [00-14] Juste après : toute la partie Git sur une page, l'antisèche à garder ouverte, et les 10 erreurs du débutant.
 - [00-11] Ton site en ligne se met à jour par une branche et une PR, comme dans cette leçon.
 - [01-13] Au module 1, tu te resserviras de `git revert` pour annuler un changement Terraform déjà poussé, sans réécrire l'historique de l'équipe.

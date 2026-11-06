@@ -39,6 +39,22 @@ Ton Codespace est **déjà** un dépôt Git. Quand GitHub l'a créé, il a copi�
 
 Commence par le **Labo Git** ci-dessous : tu tapes les commandes dans la page, et le dessin te montre ce que Git fait.
 
+@@ essentiel
+**En une image.** Git est un appareil photo pour ton dossier. Chaque photo s'appelle un **commit**. Git les garde toutes, dans l'ordre, et tu peux revenir à n'importe laquelle.
+
+| Tu veux… | Tu tapes |
+| --- | --- |
+| Que Git s'occupe de ce dossier (une seule fois) | `git init` |
+| Savoir ce que Git voit (à taper tout le temps, ça ne change rien) | `git status` |
+
+📌 **À retenir :** `git init` crée un dossier caché, `.git`. **C'est lui, le dépôt** : tout l'historique vit dedans. Tes fichiers restent à côté, comme avant.
+
+📌 **À retenir :** Git tourne sur ta machine, même sans Internet. GitHub est un site qui en garde une copie en ligne : ce sera pour plus tard.
+
+⚠️ **Attention :** un fichier en rouge sous `Untracked files` n'est pas protégé. Git ne le photographie que si tu le lui demandes (leçon suivante).
+
+💡 **Astuce :** ton Codespace est déjà un dépôt Git (ton fork). Pour t'entraîner sans risque, tu travailleras dans un dossier à part, `/workspaces/labo-git`.
+
 @@ labo
 {
   "id": "00-03",
@@ -47,11 +63,7 @@ Commence par le **Labo Git** ci-dessous : tu tapes les commandes dans la page, e
       "titre": "Un dossier normal, puis un dépôt",
       "intro": "Ton dossier contient un seul fichier, `idees.txt`. Dans le dessin, la colonne **Dépôt** est vide : ce n'est pas encore un dépôt. Tape d'abord `git status` pour voir ce que Git répond dans un dossier normal. Puis transforme le dossier en dépôt, et affiche les fichiers cachés avec `ls -a`.",
       "depart": ["echo 'Mes idées de projet' > idees.txt"],
-      "buts": [
-        "cmd:git status | Tu as tapé `git status` (avant ou après, peu importe)",
-        "repo | Le dossier est devenu un dépôt : `git init`",
-        "cmd:ls -a | Tu as vu le dossier caché `.git` avec `ls -a`"
-      ],
+      "buts": ["cmd:git status | Tu as tapé `git status` (avant ou après, peu importe)", "repo | Le dossier est devenu un dépôt : `git init`", "cmd:ls -a | Tu as vu le dossier caché `.git` avec `ls -a`"],
       "indices": ["La commande qui transforme le dossier en dépôt tient en deux mots : `git` puis le verbe anglais « initialiser », en abrégé.", "`ls` liste les fichiers. L'option `-a` (*all*) montre aussi ceux dont le nom commence par un point."],
       "solution": ["git status", "git init", "ls -a"]
     },
@@ -59,12 +71,7 @@ Commence par le **Labo Git** ci-dessous : tu tapes les commandes dans la page, e
       "titre": "Ce que Git voit",
       "intro": "Le dépôt existe, mais il n'a aucun commit. Crée un deuxième fichier, `todo.txt`, qui contient `Apprendre Git`. Regarde sa couleur dans le dessin, puis demande à Git ce qu'il voit. Enfin, lis le fichier `.git/HEAD` : c'est lui qui dit à Git sur quelle branche tu es.",
       "depart": ["echo 'Mes idées de projet' > idees.txt", "git init"],
-      "buts": [
-        "file:todo.txt~Apprendre Git | `todo.txt` existe et contient « Apprendre Git »",
-        "untracked:todo.txt | Git le voit, mais ne le suit pas encore (étiquette rouge NOUVEAU)",
-        "cmd:git status | Tu as lu la réponse de `git status`",
-        "cmd:cat .git/HEAD | Tu as lu `.git/HEAD` avec `cat`"
-      ],
+      "buts": ["file:todo.txt~Apprendre Git | `todo.txt` existe et contient « Apprendre Git »", "untracked:todo.txt | Git le voit, mais ne le suit pas encore (étiquette rouge NOUVEAU)", "cmd:git status | Tu as lu la réponse de `git status`", "cmd:cat .git/HEAD | Tu as lu `.git/HEAD` avec `cat`"],
       "indices": ["`echo 'texte' > fichier` crée un fichier qui contient ce texte.", "`cat chemin/du/fichier` affiche un fichier. Ici, le chemin est `.git/HEAD`."],
       "solution": ["echo 'Apprendre Git' > todo.txt", "git status", "cat .git/HEAD"]
     },
@@ -72,14 +79,11 @@ Commence par le **Labo Git** ci-dessous : tu tapes les commandes dans la page, e
       "titre": "Casser pour comprendre",
       "intro": "Ce dépôt a déjà un commit : le rond bleu dans la colonne Dépôt. Supprime le dossier `.git` avec `rm -rf .git`, et regarde ce qui disparaît et ce qui reste. Puis recrée un dépôt neuf.",
       "depart": ["echo 'Mes idées de projet' > idees.txt", "git init", "git add idees.txt", "git commit -m 'Mes premières idées'"],
-      "buts": [
-        "cmd:rm -rf .git | Tu as supprimé le dossier `.git`",
-        "file:idees.txt | Ton fichier `idees.txt` est toujours là",
-        "commits=0 | Un dépôt neuf, sans aucun commit : l'ancien historique est bien perdu"
-      ],
+      "buts": ["cmd:rm -rf .git | Tu as supprimé le dossier `.git`", "file:idees.txt | Ton fichier `idees.txt` est toujours là", "commits=0 | Un dépôt neuf, sans aucun commit : l'ancien historique est bien perdu"],
       "indices": ["Après `rm -rf .git`, tape `git status` : Git ne reconnaît plus le dossier.", "Pour recréer un dépôt : la même commande qu'au niveau 1."],
       "solution": ["rm -rf .git", "ls -a", "git status", "git init"],
-      "bravo": "Retiens-le : le dépôt, c'est le dossier .git. Tes fichiers sont à côté, et ne dépendent pas de lui."
+      "bravo": "Retiens-le : le dépôt, c'est le dossier .git. Tes fichiers sont à côté, et ne dépendent pas de lui.",
+      "bonus": true
     }
   ]
 }
