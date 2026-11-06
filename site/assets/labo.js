@@ -1249,8 +1249,7 @@
     let L = 0, S = null, hist = [], hpos = 0, undo = [], seen = {}, playing = false, hintN = 0, won = false;
 
     el.classList.add("labo");
-    // Le terminal : juste sous la consigne, à côté du dessin (b), ou sous le dessin (a).
-    const LAY = (typeof window !== "undefined" && window.LABO_LAYOUT) || "b";
+    // Le terminal est sous le dessin ; à côté, la consigne et les buts.
     const TERM = `<div class="lb-term">
             <div class="lb-tabs"></div>
             <div class="lb-out" tabindex="0"></div>
@@ -1264,18 +1263,10 @@
           </div>`;
     el.innerHTML = `
       <div class="lb-top"><span class="lab">Labo Git · essaie ici, le dessin se construit à chaque commande</span><div class="lb-levels" role="tablist"></div></div>
-      ${LAY === "a" ? `<div class="lb-grid">
+      <div class="lb-grid">
         <div class="lb-main"><div class="lb-world" aria-live="polite"></div>${TERM}</div>
         <div class="lb-side"><div class="lb-brief"></div><div class="lb-help"></div></div>
-      </div>` : `<div class="lb-grid">
-        <div class="lb-world" aria-live="polite"></div>
-        <div class="lb-side">
-          <div class="lb-brief"></div>
-          ${TERM}
-          <div class="lb-goalbox"><span class="lb-gt">Tes buts</span><ul class="lb-goals"></ul></div>
-          <div class="lb-help"></div>
-        </div>
-      </div>`}`;
+      </div>`;
     const $ = s => el.querySelector(s);
     const world = $(".lb-world"), brief = $(".lb-brief"), outEl = $(".lb-out"), input = $(".lb-in input"), ps = $(".lb-ps"), tabs = $(".lb-tabs"), help = $(".lb-help");
 
@@ -1295,7 +1286,7 @@
       if (lv.accueil !== false) S.log.push({ t: lv.accueil || "Tape ta première commande ci-dessous, puis Entrée. Tape aide pour la liste des commandes.", c: "fr", w: S.cur });
       keys(S.commits).forEach(c => { seen[c] = true; });
       renderLevels();
-      brief.innerHTML = `<h4>${levels.length > 1 ? `<span class="lb-n${lv.bonus ? " bonus" : ""}">${lvName(L)}</span>` : ""}${esc(lv.titre || "Labo Git")}</h4><div class="md lb-intro"></div>${LAY === "a" ? '<ul class="lb-goals"></ul>' : ""}`;
+      brief.innerHTML = `<h4>${levels.length > 1 ? `<span class="lb-n${lv.bonus ? " bonus" : ""}">${lvName(L)}</span>` : ""}${esc(lv.titre || "Labo Git")}</h4><div class="md lb-intro"></div><ul class="lb-goals"></ul>`;
       md($(".lb-intro"), lv.intro || "");
       help.innerHTML = "";
       draw();
