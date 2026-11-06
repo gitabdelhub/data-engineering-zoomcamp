@@ -1250,21 +1250,20 @@
 
     el.classList.add("labo");
     el.innerHTML = `
-      <div class="lb-top"><span class="lab">Labo Git · essaie ici, le dessin se construit à chaque commande</span><div class="lb-levels" role="tablist"></div></div>
+      <div class="lb-top"><span class="lab">Labo Git · tape une commande, le dessin se construit en direct</span><div class="lb-levels" role="tablist"></div></div>
+      <div class="lb-brief"></div>
       <div class="lb-grid">
         <div class="lb-world" aria-live="polite"></div>
         <div class="lb-side">
-          <div class="lb-brief"></div>
           <div class="lb-term">
-            <div class="lb-tabs"></div>
+            <div class="lb-th"><div class="lb-tabs"></div><div class="lb-actions">
+              <button type="button" data-a="undo" title="Annuler la dernière commande">↶ Annuler</button>
+              <button type="button" data-a="reset" title="Recommencer le niveau depuis le début">⟲ Recommencer</button>
+              <button type="button" data-a="hint" title="Un indice, puis un autre">💡 Indice</button>
+              <button type="button" data-a="sol" title="Voir la solution, et la regarder se jouer">👁 Solution</button>
+            </div></div>
             <div class="lb-out" tabindex="0"></div>
             <form class="lb-in" autocomplete="off"><span class="lb-ps"></span><input type="text" spellcheck="false" autocapitalize="off" autocorrect="off" aria-label="Tape une commande" placeholder="tape une commande, puis Entrée"></form>
-          </div>
-          <div class="lb-actions">
-            <button type="button" class="btn ghost sm" data-a="undo">↶ Annuler la dernière commande</button>
-            <button type="button" class="btn ghost sm" data-a="reset">Recommencer le niveau</button>
-            <button type="button" class="btn ghost sm" data-a="hint">Un indice</button>
-            <button type="button" class="btn ghost sm" data-a="sol">Voir la solution</button>
           </div>
           <div class="lb-help"></div>
         </div>
@@ -1288,7 +1287,7 @@
       if (lv.accueil !== false) S.log.push({ t: lv.accueil || "Tape ta première commande ci-dessous, puis Entrée. Tape aide pour la liste des commandes.", c: "fr", w: S.cur });
       keys(S.commits).forEach(c => { seen[c] = true; });
       renderLevels();
-      brief.innerHTML = `<h4>${levels.length > 1 ? `<span class="lb-n${lv.bonus ? " bonus" : ""}">${lvName(L)}</span>` : ""}${esc(lv.titre || "Labo Git")}</h4><div class="md lb-intro"></div><ul class="lb-goals"></ul>`;
+      brief.innerHTML = `<div class="lb-bl"><h4>${levels.length > 1 ? `<span class="lb-n${lv.bonus ? " bonus" : ""}">${lvName(L)}</span>` : ""}${esc(lv.titre || "Labo Git")}</h4><div class="md lb-intro"></div></div><div class="lb-br"><span class="lb-gt">Tes buts</span><ul class="lb-goals"></ul></div>`;
       md($(".lb-intro"), lv.intro || "");
       help.innerHTML = "";
       draw();
@@ -1420,11 +1419,11 @@
         <header>${ICON_PC}<b>${esc(WHO[mc.k].title)}</b><small>~/projet · ${esc(head)}</small>${keys(S.m).length > 1 ? (cur ? '<span class="lb-you">tu tapes ici</span>' : '<span class="lb-sw">clique pour taper ici</span>') : ""}</header>
         ${extra}
         <div class="lb-zones">
-          <div class="lb-z"><span class="lb-zt">Dossier de travail<small>tes fichiers</small></span><div class="lb-chips">${work}</div><div class="lb-peek" hidden></div></div>
-          <div class="lb-arr">git add</div>
-          <div class="lb-z"><span class="lb-zt">Zone de préparation<small>le prochain commit</small></span><div class="lb-chips">${stage}</div><div class="lb-peek" hidden></div></div>
-          <div class="lb-arr">git commit</div>
-          <div class="lb-z lb-zr"><span class="lb-zt">Dépôt (.git)<small>l'historique</small></span>${repo}</div>
+          <div class="lb-z lb-zw"><span class="lb-zt"><i>1</i>Dossier de travail<small>tes fichiers, tels que tu les modifies</small></span><div class="lb-chips">${work}</div><div class="lb-peek" hidden></div></div>
+          <div class="lb-arr lb-aa"><span>git add</span></div>
+          <div class="lb-z lb-zs"><span class="lb-zt"><i>2</i>Zone de préparation<small>ce qui partira dans le prochain commit</small></span><div class="lb-chips">${stage}</div><div class="lb-peek" hidden></div></div>
+          <div class="lb-arr lb-ac"><span>git commit</span></div>
+          <div class="lb-z lb-zr"><span class="lb-zt"><i>3</i>Dépôt (.git)<small>l'historique : une photo par commit</small></span>${repo}</div>
         </div>
       </section>`;
     }
@@ -1448,14 +1447,14 @@
       const form = cand.length ? `<form class="lb-newpr"><select aria-label="Branche">${cand.map(b => `<option>${esc(b)}</option>`).join("")}</select><input type="text" placeholder="Titre de la pull request"><button class="btn sm" type="submit">Ouvrir une pull request</button></form>` : "";
       return `<section class="lb-gh"><header>${ICON_GH}<b>GitHub</b><small>${esc(SHORT_GH)}</small>${g.protect ? '<span class="lb-prot">🔒 main protégée</span>' : ""}</header>
         <div class="lb-ghg"><div class="lb-z lb-zr"><span class="lb-zt">Le dépôt sur GitHub<small>ce que tout le monde voit</small></span>${keys(g.branches).length ? graph(S, null, true) : '<span class="lb-empty">dépôt vide : personne n\'a encore poussé</span>'}</div>
-        <div class="lb-z"><span class="lb-zt">Pull requests<small>${g.prs.filter(p => p.state === "OPEN").length} ouverte(s)</small></span>${prs || '<span class="lb-empty">aucune pour l\'instant</span>'}${form}</div></div>
+        <div class="lb-z lb-zpr"><span class="lb-zt">Pull requests<small>${g.prs.filter(p => p.state === "OPEN").length} ouverte(s)</small></span>${prs || '<span class="lb-empty">aucune pour l\'instant</span>'}${form}</div></div>
       </section>`;
     }
 
     function graph(S, mc, gh) {
       const r = mc && mc.repo;
       const refs = gh ? Object.values(S.gh.branches) : [...Object.values(r.branches), ...Object.values(r.track), headId(r)].filter(Boolean);
-      if (!refs.length) return !gh && r.head.b ? `<div class="lb-row"><span class="lb-pill on" style="--c:${PAL[0]}"><em>HEAD →</em> ${esc(r.head.b)}</span><span class="lb-msg">pas encore de commit : la branche attend sa première photo</span></div>` : `<span class="lb-empty">aucun commit pour l'instant</span>`;
+      if (!refs.length) return !gh && r.head.b ? `<div class="lb-row unborn"><span class="lb-pill on" style="--c:${PAL[0]}"><em>HEAD →</em> ${esc(r.head.b)}</span><span class="lb-msg">pas encore de commit : la branche attend sa première photo</span></div>` : `<span class="lb-empty">aucun commit pour l'instant</span>`;
       const ids = new Set(); refs.forEach(x => ancestors(S, x).forEach(c => ids.add(c)));
       const Lo = layout(S, ids, prioRefs(S, mc, gh));
       const RH = 34, LW = 20, X0 = 14;
