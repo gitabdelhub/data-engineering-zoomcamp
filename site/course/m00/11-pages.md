@@ -42,7 +42,7 @@ En général **une à deux minutes**. Tu suis le déploiement dans l'onglet **Ac
 Personnalise ton site et suis son déploiement de bout en bout. Le site lit un petit fichier `site/moi.json` : s'il contient ton prénom, l'accueil te dit bonjour.
 
 @@ constraints
-- Le changement passe par une branche et une pull request, comme à la leçon 4
+- Le changement passe par une branche et une pull request, comme à la leçon « En équipe : branche, pull request et revue »
 - `site/moi.json` contient ton prénom dans le champ `prenom`
 - Avant de pousser, tu as vérifié le site **en local** dans ton Codespace
 - Après la fusion, tu as suivi le déploiement dans l'onglet Actions jusqu'au vert, et l'accueil du site en ligne affiche ton prénom
@@ -50,7 +50,7 @@ Personnalise ton site et suis son déploiement de bout en bout. Le site lit un p
 @@ guide
 ### 1. Une branche pour la tâche
 
-Comme à la leçon 4 : `git switch main`, `git pull`, puis crée une branche avec un nom qui dit ce qu'elle fait, par exemple `module-00/moi`.
+Comme à la leçon « En équipe : branche, pull request et revue » : `git switch main`, `git pull`, puis crée une branche avec un nom qui dit ce qu'elle fait, par exemple `module-00/moi`.
 
 ### 2. Écris site/moi.json
 

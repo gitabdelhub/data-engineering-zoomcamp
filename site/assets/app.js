@@ -358,8 +358,8 @@
     },
     async mergedPR() {
       const prs = await api(`repos/${REPO.owner}/${REPO.name}/pulls?state=closed&per_page=50`) || [];
-      // Les branches mon-zoomcamp/… sont celles où j'envoie les mises à jour du site : elles ne comptent pas.
-      const merged = prs.filter(p => p.merged_at && !/^mon-zoomcamp\//.test(p.head && p.head.ref || ""));
+      // Les branches mon-zoomcamp/… et claude/… sont celles où j'envoie les mises à jour du site : elles ne comptent pas.
+      const merged = prs.filter(p => p.merged_at && !/^(mon-zoomcamp|claude)\//.test(p.head && p.head.ref || ""));
       return { checks: [{ ok: merged.length > 0, text: merged.length ? `Une pull request fusionnée dans ton fork : « ${merged[0].title} »` : "Aucune pull request fusionnée dans ton fork pour l'instant" }] };
     },
     async moiJson() {
@@ -584,9 +584,11 @@
   function atelier() {
     const rows = [
       ["00-02", "Travailler dans ton Codespace depuis VS Code"],
-      ["00-05", "Mettre ton site en ligne et le personnaliser"],
-      ["00-06", "Écrire la synchro automatique du fork (GitHub Actions)"],
-      ["00-07", "Écrire ton fichier .devcontainer"]
+      ["00-03", "Apprendre Git depuis zéro, dans le Labo Git"],
+      ["00-09", "Travailler en équipe : branche, pull request, revue"],
+      ["00-11", "Mettre ton site en ligne et le personnaliser"],
+      ["00-12", "Écrire la synchro automatique du fork (GitHub Actions)"],
+      ["00-13", "Écrire ton fichier .devcontainer"]
     ];
     return `<article class="atelier">
       <div class="mosaic"><canvas id="mosaic"></canvas><div class="tag"><i></i>Module 0 · c'est toi qui le fais</div></div>
@@ -1071,9 +1073,14 @@
       if (token !== routeToken) return;
       if (rev) box.appendChild(rev);
       if (ov.brief) mdCard(box, "chal brief", "L'essentiel en français", ov.brief);
-      if (ov.cles) keyCard(box, ov.cles);
-      if (ov.schema) renderMermaid(mdCard(box, "chal schema", "Le mécanisme en schéma", ov.schema));
-      if (ov.zoom) renderMermaid(mdCard(box, "chal zoom", "En détail : les concepts clés", ov.zoom));
+      // Mes propres leçons (sans texte officiel) : d'abord la leçon et le Labo Git, ensuite les schémas et les concepts clés.
+      const own = !it.src && ov.labo;
+      const keysAndDiagrams = () => {
+        if (ov.cles) keyCard(box, ov.cles);
+        if (ov.schema) renderMermaid(mdCard(box, "chal schema", "Le mécanisme en schéma", ov.schema));
+        if (ov.zoom) renderMermaid(mdCard(box, "chal zoom", "En détail : les concepts clés", ov.zoom));
+      };
+      if (!own) keysAndDiagrams();
       listItems(ov.declic).forEach(t => box.appendChild(bridgeCard("chal declic", "Ah, c'est donc ça !", t)));
       const vids = it.videos || [];
       vids.filter(v => !v.optional).forEach(v => { const vb = card("video", ""); box.appendChild(vb); mountVideo(vb, v); });
@@ -1086,6 +1093,13 @@
         box.appendChild(c);
         renderMermaid(c);
       }
+      // Labo Git : le terminal simulé et le dessin qui se construit (assets/labo.js, section « @@ labo »).
+      if (ov.labo && window.LaboGit) {
+        const lb = doc.createElement("div");
+        box.appendChild(lb);
+        window.LaboGit.mount(lb, ov.labo, { md: (el, src) => renderMd(el, src, base), inline: mdInline });
+      }
+      if (own) keysAndDiagrams();
       listItems(ov.teaser).forEach(t => box.appendChild(bridgeCard("chal teaser", "Tu le reverras", t)));
       vids.filter(v => v.optional).forEach(v => {
         const d = doc.createElement("details");

@@ -321,7 +321,7 @@ Explique la différence entre un run planifié, un run manuel et un run de backf
 - [crontab.guru, pour lire une expression cron](https://crontab.guru/)
 
 @@ declic
-- [00-06] Les expressions cron, tu les as découvertes au module 0 : ta GitHub Action de synchronisation tourne avec `cron: "0 3 * * *"`. Airflow utilise exactement la même syntaxe à cinq champs, et compte lui aussi en UTC par défaut.
+- [00-12] Les expressions cron, tu les as découvertes au module 0 : ta GitHub Action de synchronisation tourne avec `cron: "0 3 * * *"`. Airflow utilise exactement la même syntaxe à cinq champs, et compte lui aussi en UTC par défaut.
 - [02-06] À la leçon 6, `{{ ds }}` échouait sur un run lancé par `airflow dags trigger` sans date. Ici, chaque run de backfill a sa date logique : c'est pour ces runs-là que les templates de dates existent.
 
 @@ teaser

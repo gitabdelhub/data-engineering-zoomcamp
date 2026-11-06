@@ -192,6 +192,9 @@ Explique à quelqu'un qui ne connaît pas : quand tu travailles dans un Codespac
 - [Codespaces dans VS Code](https://docs.github.com/fr/codespaces/developing-in-a-codespace/using-github-codespaces-in-visual-studio-code)
 - [Les heures gratuites de Codespaces](https://docs.github.com/fr/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces)
 
+@@ teaser
+- [00-03] Ton terminal affiche `(main)` au bout de chaque ligne : ton Codespace est déjà un dépôt Git. La leçon suivante t'explique ce que ça veut dire, depuis zéro.
+
 @@ cles
 - Le terminal | terminal linux commandes de base | Tout le cours se fait au terminal. `cd`, `ls`, `pwd` et les chemins doivent devenir des réflexes.
 - Les ports d'un Codespace | github codespaces port forwarding | Chaque interface web du cours (pgAdmin, Airflow, Spark) passe par l'onglet Ports.
