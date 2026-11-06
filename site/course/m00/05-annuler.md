@@ -40,6 +40,22 @@ Tu listes dans un fichier texte nommé `.gitignore` ce que Git doit faire sembla
 
 Le `.gitignore` lui-même, on le commite : toute l'équipe profite des mêmes règles. Attention, il n'agit que sur les fichiers **pas encore suivis**. Un fichier déjà commité reste suivi, même si tu ajoutes une règle.
 
+@@ essentiel
+**En une image.** Git est un bouton « annuler » pour ton dossier, mais avec plusieurs boutons. Le tout est de savoir **ce que** tu veux annuler.
+
+| Ta situation | Tu tapes |
+| --- | --- |
+| J'ai abîmé un fichier, je reviens au dernier commit | `git restore fichier` |
+| J'ai fait `git add` sur le mauvais fichier | `git restore --staged fichier` |
+| Je veux annuler un commit, même ancien ou déjà partagé | `git revert <identifiant>` |
+| Git ne doit jamais voir certains fichiers | une règle par ligne dans `.gitignore` |
+
+📌 **À retenir :** `git revert` n'efface rien : il ajoute un commit qui fait l'inverse. C'est la façon sûre d'annuler en équipe.
+
+📌 **À retenir :** un `.gitignore` typique contient `.env`, `*.csv`, `.venv/` et `*.log`. Le `.gitignore` lui-même, on le commite.
+
+⚠️ **Attention :** `git restore fichier` jette tes modifications pour de bon. Et un secret commité reste dans l'historique : écris le `.gitignore` **avant** le premier commit.
+
 @@ labo
 {
   "id": "00-05",
@@ -48,64 +64,44 @@ Le `.gitignore` lui-même, on le commite : toute l'équipe profite des mêmes r�
       "titre": "Annuler une modification ratée",
       "intro": "Ton fichier `notes.txt` était propre au dernier commit. Puis tu l'as écrasé par erreur : clique dessus dans le dessin pour voir les dégâts. Remets-le exactement comme dans le dernier commit.",
       "depart": ["git init", "echo 'Ma version propre' > notes.txt", "git add notes.txt", "git commit -m 'Ajoute mes notes'", "echo 'oups, tout effacé' > notes.txt"],
-      "buts": [
-        "file:notes.txt~Ma version propre | `notes.txt` contient de nouveau « Ma version propre »",
-        "clean | Plus aucune modification en attente"
-      ],
+      "buts": ["file:notes.txt~Ma version propre | `notes.txt` contient de nouveau « Ma version propre »", "clean | Plus aucune modification en attente"],
       "indices": ["`git status` te propose lui-même la commande, entre parenthèses.", "`git restore notes.txt`"],
       "solution": ["git status", "git restore notes.txt", "cat notes.txt"]
-    },
-    {
-      "titre": "Sortir un fichier de la zone de préparation",
-      "intro": "Tu as tapé `git add .` trop vite : `motdepasse.txt` est parti dans la zone de préparation avec `notes.txt`. Retire **seulement** `motdepasse.txt` de la zone de préparation (sans supprimer le fichier), puis commite `notes.txt` seul.",
-      "depart": ["git init", "echo 'Mes notes' > notes.txt", "git add notes.txt", "git commit -m 'Ajoute mes notes'", "echo 'Une note de plus' >> notes.txt", "echo 'PASSWORD=1234' > motdepasse.txt", "git add ."],
-      "buts": [
-        "committed:notes.txt~Une note de plus | La nouvelle note est dans un commit",
-        "notcommitted:motdepasse.txt | `motdepasse.txt` n'est dans aucun commit",
-        "file:motdepasse.txt | Le fichier existe toujours sur ton disque"
-      ],
-      "indices": ["`git status` montre la commande pour « unstage » un fichier.", "`git restore --staged motdepasse.txt`, puis un commit."],
-      "solution": ["git status", "git restore --staged motdepasse.txt", "git status", "git commit -m 'Ajoute une note'"]
-    },
-    {
-      "titre": "Voyager dans le temps",
-      "intro": "`recette.txt` a changé trois fois. Va voir à quoi il ressemblait au **tout premier** commit, lis-le, puis reviens sur `main`. Regarde l'étiquette `HEAD` quitter la branche, puis y revenir.",
-      "depart": ["git init", "echo 'Recette : des pâtes' > recette.txt", "git add recette.txt", "git commit -m 'Première recette'", "echo 'Recette : des pâtes au pesto' > recette.txt", "git commit -am 'Ajoute le pesto'", "echo 'Recette : des pâtes au pesto et au parmesan' > recette.txt", "git commit -am 'Ajoute le parmesan'"],
-      "buts": [
-        "cmd:git switch --detach or cmd:git checkout | Tu es allé voir un ancien commit",
-        "cmd:cat recette.txt | Tu as lu l'ancienne recette",
-        "on:main | Tu es revenu sur `main`"
-      ],
-      "indices": ["`git log --oneline` donne les identifiants. Le premier commit est en bas. `HEAD~2` le désigne aussi.", "`git switch --detach HEAD~2`, puis `cat recette.txt`, puis `git switch main`."],
-      "solution": ["git log --oneline", "git switch --detach HEAD~2", "cat recette.txt", "git switch main"]
-    },
-    {
-      "titre": "Annuler un vieux commit avec revert",
-      "intro": "Au deuxième commit, quelqu'un a ajouté `bug.txt`, qui casse tout. Depuis, un troisième commit a été fait. Annule **seulement** le commit qui a ajouté `bug.txt`, sans toucher à l'historique : un nouveau rond doit apparaître.",
-      "depart": ["git init", "echo 'Mon script' > script.py", "git add script.py", "git commit -m 'Ajoute le script'", "echo 'erreur' > bug.txt", "git add bug.txt", "git commit -m 'Ajoute bug.txt'", "echo '# doc' > README.md", "git add README.md", "git commit -m 'Ajoute le README'"],
-      "buts": [
-        "revert | Un commit « Revert … » est apparu",
-        "nofile:bug.txt | `bug.txt` a disparu",
-        "file:README.md | Le README, ajouté après, est toujours là",
-        "commits>=4 | Les anciens commits sont toujours dans l'historique"
-      ],
-      "indices": ["`git log --oneline` : repère l'identifiant du commit « Ajoute bug.txt ». C'est aussi `HEAD~1`.", "`git revert HEAD~1` (ou `git revert` suivi de l'identifiant)."],
-      "solution": ["git log --oneline", "git revert HEAD~1", "git log --oneline", "ls"]
     },
     {
       "titre": "Le .gitignore",
       "intro": "Ce nouveau projet contient un secret (`.env`), des données (`trajets.csv`) et un journal (`debug.log`). Écris un `.gitignore` qui les ignore tous les trois, puis commite tout le reste d'un coup avec `git add .`. Regarde les étiquettes IGNORÉ apparaître.",
       "depart": ["git init", "echo 'print(1)' > pipeline.py", "echo 'PASSWORD=1234' > .env", "echo 'id,km' > trajets.csv", "echo 'debug' > debug.log"],
-      "buts": [
-        "ignored:.env | `.env` est ignoré",
-        "ignored:trajets.csv | Les fichiers `.csv` sont ignorés",
-        "ignored:debug.log | Les fichiers `.log` sont ignorés",
-        "committed:.gitignore | Le `.gitignore` est commité",
-        "committed:pipeline.py | `pipeline.py` est commité",
-        "notcommitted:.env | Le secret n'est dans aucun commit"
-      ],
+      "buts": ["ignored:.env | `.env` est ignoré", "ignored:trajets.csv | Les fichiers `.csv` sont ignorés", "ignored:debug.log | Les fichiers `.log` sont ignorés", "committed:.gitignore | Le `.gitignore` est commité", "committed:pipeline.py | `pipeline.py` est commité", "notcommitted:.env | Le secret n'est dans aucun commit"],
       "indices": ["Une règle par ligne. Dans le labo : `echo '.env' > .gitignore` crée le fichier, puis `echo '*.csv' >> .gitignore` ajoute une ligne.", "Après les trois règles : `git status` (le secret a disparu de la liste), puis `git add .` et `git commit -m \"...\"`."],
       "solution": ["echo '.env' > .gitignore", "echo '*.csv' >> .gitignore", "echo '*.log' >> .gitignore", "git status", "git add .", "git commit -m 'Premier commit avec .gitignore'"]
+    },
+    {
+      "titre": "Sortir un fichier de la zone de préparation",
+      "intro": "Tu as tapé `git add .` trop vite : `motdepasse.txt` est parti dans la zone de préparation avec `notes.txt`. Retire **seulement** `motdepasse.txt` de la zone de préparation (sans supprimer le fichier), puis commite `notes.txt` seul.",
+      "depart": ["git init", "echo 'Mes notes' > notes.txt", "git add notes.txt", "git commit -m 'Ajoute mes notes'", "echo 'Une note de plus' >> notes.txt", "echo 'PASSWORD=1234' > motdepasse.txt", "git add ."],
+      "buts": ["committed:notes.txt~Une note de plus | La nouvelle note est dans un commit", "notcommitted:motdepasse.txt | `motdepasse.txt` n'est dans aucun commit", "file:motdepasse.txt | Le fichier existe toujours sur ton disque"],
+      "indices": ["`git status` montre la commande pour « unstage » un fichier.", "`git restore --staged motdepasse.txt`, puis un commit."],
+      "solution": ["git status", "git restore --staged motdepasse.txt", "git status", "git commit -m 'Ajoute une note'"],
+      "bonus": true
+    },
+    {
+      "titre": "Voyager dans le temps",
+      "intro": "`recette.txt` a changé trois fois. Va voir à quoi il ressemblait au **tout premier** commit, lis-le, puis reviens sur `main`. Regarde l'étiquette `HEAD` quitter la branche, puis y revenir.",
+      "depart": ["git init", "echo 'Recette : des pâtes' > recette.txt", "git add recette.txt", "git commit -m 'Première recette'", "echo 'Recette : des pâtes au pesto' > recette.txt", "git commit -am 'Ajoute le pesto'", "echo 'Recette : des pâtes au pesto et au parmesan' > recette.txt", "git commit -am 'Ajoute le parmesan'"],
+      "buts": ["cmd:git switch --detach or cmd:git checkout | Tu es allé voir un ancien commit", "cmd:cat recette.txt | Tu as lu l'ancienne recette", "on:main | Tu es revenu sur `main`"],
+      "indices": ["`git log --oneline` donne les identifiants. Le premier commit est en bas. `HEAD~2` le désigne aussi.", "`git switch --detach HEAD~2`, puis `cat recette.txt`, puis `git switch main`."],
+      "solution": ["git log --oneline", "git switch --detach HEAD~2", "cat recette.txt", "git switch main"],
+      "bonus": true
+    },
+    {
+      "titre": "Annuler un vieux commit avec revert",
+      "intro": "Au deuxième commit, quelqu'un a ajouté `bug.txt`, qui casse tout. Depuis, un troisième commit a été fait. Annule **seulement** le commit qui a ajouté `bug.txt`, sans toucher à l'historique : un nouveau rond doit apparaître.",
+      "depart": ["git init", "echo 'Mon script' > script.py", "git add script.py", "git commit -m 'Ajoute le script'", "echo 'erreur' > bug.txt", "git add bug.txt", "git commit -m 'Ajoute bug.txt'", "echo '# doc' > README.md", "git add README.md", "git commit -m 'Ajoute le README'"],
+      "buts": ["revert | Un commit « Revert … » est apparu", "nofile:bug.txt | `bug.txt` a disparu", "file:README.md | Le README, ajouté après, est toujours là", "commits>=4 | Les anciens commits sont toujours dans l'historique"],
+      "indices": ["`git log --oneline` : repère l'identifiant du commit « Ajoute bug.txt ». C'est aussi `HEAD~1`.", "`git revert HEAD~1` (ou `git revert` suivi de l'identifiant)."],
+      "solution": ["git log --oneline", "git revert HEAD~1", "git log --oneline", "ls"],
+      "bonus": true
     }
   ]
 }

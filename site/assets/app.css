@@ -353,7 +353,7 @@ blockquote{margin:0;padding:12px 16px;border-left:3px solid var(--blue);backgrou
 .md h2{font-size:24px;margin-top:14px}
 .md h3{font-size:19px;margin-top:8px;letter-spacing:-.02em}
 .md h4{font-size:16px}
-.md ul,.md ol{padding-left:22px;display:grid;gap:6px}
+.md ul,.md ol{padding-left:22px;display:grid;gap:6px}.md ol:has(> li:nth-child(10)){padding-left:30px}
 .md li>p{margin:0}
 .md img{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--line);background:#fff}
 .md a{text-decoration:underline;text-underline-offset:2px}
@@ -749,3 +749,27 @@ code,.md a{overflow-wrap:anywhere}
 @media (prefers-reduced-motion:reduce){.labo *{animation:none!important}}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .lb-chk.bad,:root:not([data-theme="light"]) .lb-rev.changes_requested{background:#3a1414;color:#ff8a80}}
 :root[data-theme="dark"] .lb-chk.bad,:root[data-theme="dark"] .lb-rev.changes_requested{background:#3a1414;color:#ff8a80}
+
+/* Leçons « Pour les nuls » : l'essentiel d'abord, le détail replié */
+.chal.essentiel{border:2px solid var(--blue);background:linear-gradient(180deg,var(--blue-soft),var(--bg) 160px)}
+.chal.essentiel .md table{font-size:14.5px}
+.chal.essentiel .md p:has(> strong:first-child){margin:8px 0}
+.ess-schema{border-top:1px dashed var(--line);margin-top:10px;padding-top:10px}
+.techbox{border:1px dashed var(--line);border-radius:12px;padding:12px 16px;background:var(--bg)}
+.techbox>summary{cursor:pointer;display:grid;gap:2px;list-style:none}
+.techbox>summary::-webkit-details-marker{display:none}
+.techbox>summary span{font-weight:700}
+.techbox>summary span::after{content:" ▸";color:var(--blue)}
+.techbox[open]>summary span::after{content:" ▾"}
+.techbox>summary small{color:var(--muted);font-size:13px}
+.techbox[open]>summary{margin-bottom:12px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.techbox .tb-zoom:not(:empty){border-top:1px solid var(--line);margin-top:14px;padding-top:6px}
+.techbox .bn{margin:6px 0 16px}
+.techbox .bn h3{font-size:16px;margin:0 0 6px}
+.techbox .bans{margin-top:8px;border-left:3px solid var(--blue);padding-left:10px}
+.techbox .bans summary{cursor:pointer;color:var(--blue);font-weight:600;font-size:14px}
+.lb-levels{align-items:center;flex-wrap:wrap}
+.lb-levels button.bonus{border-style:dashed;font-size:11.5px}
+.lb-levels button.bonus.ok{border-style:solid}
+.lb-bsep{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;color:var(--muted);margin-left:6px;letter-spacing:.04em}
+.lb-n.bonus{color:var(--muted)}

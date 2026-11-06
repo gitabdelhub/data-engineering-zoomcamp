@@ -37,6 +37,23 @@ Sur un projet, `main` doit toujours marcher : c'est ce qui est en production, ou
 
 L'extension **Git Graph** dessine l'historique de ton dépôt comme le Labo Git. Installe-la dans ton Codespace : panneau Extensions (**Ctrl + Shift + X**), cherche `Git Graph` (de mhutchie), **Install**. Elle montre les dépôts ouverts dans VS Code : tu vas ajouter ton dossier d'entraînement à la fenêtre dans la partie Pratiquer.
 
+@@ essentiel
+**En une image.** Une branche est un **marque-page** posé sur un commit. La créer ne copie aucun fichier : c'est instantané. Quand tu fais un commit, le marque-page de la branche où tu es avance avec toi.
+
+| Tu veux… | Tu tapes |
+| --- | --- |
+| Créer une branche et passer dessus | `git switch -c menu` |
+| Revenir sur `main` | `git switch main` |
+| Voir les branches (`*` = celle où tu es) | `git branch` |
+| Ramener `menu` dans la branche où tu es | `git merge menu` |
+| Supprimer une branche déjà fusionnée | `git branch -d menu` |
+
+📌 **À retenir :** on fusionne **vers** la branche où l'on est. Pour ramener `menu` dans `main` : d'abord `git switch main`, puis `git merge menu`.
+
+📌 **À retenir :** **HEAD** veut dire « tu es ici ». Si `main` n'a pas bougé, la fusion avance juste l'étiquette (*fast-forward*). Sinon, Git crée un commit de fusion, qui a deux parents.
+
+💡 **Astuce :** en équipe, une tâche = une branche, et `main` doit toujours marcher.
+
 @@ labo
 {
   "id": "00-06",
@@ -45,54 +62,35 @@ L'extension **Git Graph** dessine l'historique de ton dépôt comme le Labo Git.
       "titre": "Une branche, c'est une étiquette",
       "intro": "Crée une branche `essai` avec `git branch essai` : regarde, deux étiquettes sur le même rond. Lis le fichier `.git/refs/heads/essai`. Puis passe sur `essai` et fais un commit : une seule étiquette avance. Laquelle ?",
       "depart": ["git init", "echo 'Recette : des pâtes' > recette.txt", "git add recette.txt", "git commit -m 'Première recette'", "echo 'Ingrédients : pâtes, sel' > ingredients.txt", "git add ingredients.txt", "git commit -m 'Ajoute les ingrédients'"],
-      "buts": [
-        "branch:essai | La branche `essai` existe",
-        "cmd:cat .git/refs/heads/essai | Tu as lu son fichier dans `.git`",
-        "on:essai | Tu es sur `essai` (HEAD pointe sur elle)",
-        "commits>=3 | Un nouveau commit sur `essai`",
-        "contains:main,essai | `main` n'a pas bougé : elle est restée derrière"
-      ],
+      "buts": ["branch:essai | La branche `essai` existe", "cmd:cat .git/refs/heads/essai | Tu as lu son fichier dans `.git`", "on:essai | Tu es sur `essai` (HEAD pointe sur elle)", "commits>=3 | Un nouveau commit sur `essai`", "contains:main,essai | `main` n'a pas bougé : elle est restée derrière"],
       "indices": ["`git branch essai` crée l'étiquette. `cat .git/refs/heads/essai` montre ce qu'elle contient : un identifiant de commit.", "`git switch essai`, puis par exemple `echo 'sauce tomate' >> recette.txt` et `git commit -am \"Ajoute la sauce\"`."],
       "solution": ["git branch essai", "cat .git/refs/heads/essai", "git switch essai", "echo 'sauce tomate' >> recette.txt", "git commit -am 'Ajoute la sauce'", "git log --oneline --graph --all"]
+    },
+    {
+      "titre": "Deux histoires qui se rejoignent",
+      "intro": "`main` et `boissons` ont avancé chacune de leur côté, sur des fichiers différents. Fusionne `boissons` dans `main` : un commit de fusion, avec deux parents, va apparaître. Puis supprime l'étiquette `boissons`, devenue inutile.",
+      "depart": ["git init", "echo 'Menu : pâtes' > menu.txt", "git add menu.txt", "git commit -m 'Premier menu'", "git switch -c boissons", "echo 'Eau, jus' > boissons.txt", "git add boissons.txt", "git commit -m 'Ajoute les boissons'", "git switch main", "echo 'Ouvert le midi' > horaires.txt", "git add horaires.txt", "git commit -m 'Ajoute les horaires'"],
+      "buts": ["on:main | Tu es sur `main`", "merges>=1 | Un commit de fusion relie les deux histoires", "tracked:boissons.txt | `main` contient maintenant `boissons.txt`", "nobranch:boissons | L'étiquette `boissons` est supprimée"],
+      "indices": ["Tu es déjà sur `main` : `git merge boissons`.", "`git branch -d boissons` supprime l'étiquette. Ses commits restent : ils font partie de l'histoire de `main`."],
+      "solution": ["git log --oneline --graph --all", "git merge boissons", "git branch -d boissons", "git log --oneline --graph"]
     },
     {
       "titre": "La fusion en avance rapide",
       "intro": "La branche `dessert` a deux commits d'avance, et `main` n'a pas bougé depuis. Ramène le travail de `dessert` dans `main`. Regarde bien : aucun nouveau rond, l'étiquette `main` glisse simplement.",
       "depart": ["git init", "echo 'Menu : pâtes' > menu.txt", "git add menu.txt", "git commit -m 'Premier menu'", "git switch -c dessert", "echo 'Dessert : tiramisu' >> menu.txt", "git commit -am 'Ajoute le tiramisu'", "echo 'Café offert' >> menu.txt", "git commit -am 'Ajoute le café'"],
-      "buts": [
-        "on:main | Tu es sur `main`",
-        "contains:dessert,main | `main` contient le travail de `dessert`",
-        "merges=0 | Aucun commit de fusion : Git a juste avancé l'étiquette"
-      ],
+      "buts": ["on:main | Tu es sur `main`", "contains:dessert,main | `main` contient le travail de `dessert`", "merges=0 | Aucun commit de fusion : Git a juste avancé l'étiquette"],
       "indices": ["On fusionne **vers** la branche où l'on est : va d'abord sur `main`.", "`git switch main`, puis `git merge dessert`."],
-      "solution": ["git switch main", "git merge dessert", "git log --oneline --graph --all"]
-    },
-    {
-      "titre": "Deux histoires qui se rejoignent",
-      "intro": "Cette fois, `main` et `boissons` ont avancé chacune de leur côté, sur des fichiers différents. Fusionne `boissons` dans `main` : un commit de fusion, avec deux parents, va apparaître. Puis supprime l'étiquette `boissons`, devenue inutile.",
-      "depart": ["git init", "echo 'Menu : pâtes' > menu.txt", "git add menu.txt", "git commit -m 'Premier menu'", "git switch -c boissons", "echo 'Eau, jus' > boissons.txt", "git add boissons.txt", "git commit -m 'Ajoute les boissons'", "git switch main", "echo 'Ouvert le midi' > horaires.txt", "git add horaires.txt", "git commit -m 'Ajoute les horaires'"],
-      "buts": [
-        "on:main | Tu es sur `main`",
-        "merges>=1 | Un commit de fusion relie les deux histoires",
-        "tracked:boissons.txt | `main` contient maintenant `boissons.txt`",
-        "nobranch:boissons | L'étiquette `boissons` est supprimée"
-      ],
-      "indices": ["Tu es déjà sur `main` : `git merge boissons`.", "`git branch -d boissons` supprime l'étiquette. Ses commits restent : ils font partie de l'histoire de `main`."],
-      "solution": ["git log --oneline --graph --all", "git merge boissons", "git branch -d boissons", "git log --oneline --graph"]
+      "solution": ["git switch main", "git merge dessert", "git log --oneline --graph --all"],
+      "bonus": true
     },
     {
       "titre": "À toi : le cycle complet",
       "intro": "Sans aide : crée une branche `contact`, fais-y **deux** commits (un fichier `contact.txt`, puis une ligne de plus). Reviens sur `main`, fais-y un commit sur un autre fichier. Fusionne `contact` dans `main`, puis supprime la branche.",
       "depart": ["git init", "echo '# Mon restaurant' > README.md", "git add README.md", "git commit -m 'Premier commit'"],
-      "buts": [
-        "merges>=1 | Un commit de fusion dans `main`",
-        "tracked:contact.txt | `main` contient `contact.txt`",
-        "commits>=5 | Au moins 5 commits (1 + 2 sur contact + 1 sur main + la fusion)",
-        "nobranch:contact | La branche `contact` est supprimée",
-        "on:main | Tu termines sur `main`"
-      ],
+      "buts": ["merges>=1 | Un commit de fusion dans `main`", "tracked:contact.txt | `main` contient `contact.txt`", "commits>=5 | Au moins 5 commits (1 + 2 sur contact + 1 sur main + la fusion)", "nobranch:contact | La branche `contact` est supprimée", "on:main | Tu termines sur `main`"],
       "indices": ["`git switch -c contact` crée la branche et y va.", "Après tes deux commits : `git switch main`, un commit sur un autre fichier, `git merge contact`, `git branch -d contact`."],
-      "solution": ["git switch -c contact", "echo 'Tél : 01 23 45 67 89' > contact.txt", "git add contact.txt", "git commit -m 'Ajoute le contact'", "echo 'Mail : resto@exemple.com' >> contact.txt", "git commit -am 'Ajoute le mail'", "git switch main", "echo 'Ouvert du mardi au samedi' > horaires.txt", "git add horaires.txt", "git commit -m 'Ajoute les horaires'", "git merge contact", "git branch -d contact"]
+      "solution": ["git switch -c contact", "echo 'Tél : 01 23 45 67 89' > contact.txt", "git add contact.txt", "git commit -m 'Ajoute le contact'", "echo 'Mail : resto@exemple.com' >> contact.txt", "git commit -am 'Ajoute le mail'", "git switch main", "echo 'Ouvert du mardi au samedi' > horaires.txt", "git add horaires.txt", "git commit -m 'Ajoute les horaires'", "git merge contact", "git branch -d contact"],
+      "bonus": true
     }
   ]
 }

@@ -524,7 +524,7 @@
       let ov = {};
       try { ov = parseOverlay(await getText(cur.overlay)); } catch (e) { /* hors ligne */ }
       const st = S.les[cur.id] || { step: 0 };
-      rows = stepsOf(ov).map((k, i) => ({ k, state: i < st.step ? "ok" : i === st.step ? "now" : "lock", label: STEP_NAMES[k], hint: STEP_HINTS[k] }));
+      rows = stepsOf(ov).map((k, i) => ({ k, state: i < st.step ? "ok" : i === st.step ? "now" : "lock", label: stepName(k, ov), hint: stepHint(k, ov) }));
     } else if (cur.type === "homework") {
       rows = [{ state: "now", label: "Répondre aux questions", hint: "Une réponse et ton raisonnement pour chaque question" }, { state: "lock", label: "Terminer le homework", hint: "Quand toutes les questions sont faites" }];
     } else {
@@ -865,7 +865,11 @@
     explain: "Quelques lignes avec tes mots"
   };
   const EXPLAIN_MIN = 100; // longueur conseillée, pas obligatoire
-  function stepsOf(ov) { return ["discover", "predict", "practice", "breakfix", "explain"].filter(k => k === "discover" || ov[k]); }
+  // Une leçon « Pour les nuls » (section « @@ essentiel ») va droit au but : découvrir, pratiquer, terminer.
+  // Prédire et casser-réparer restent là, en bonus repliés dans la dernière étape.
+  function stepsOf(ov) { return (ov.essentiel ? ["discover", "practice", "explain"] : ["discover", "predict", "practice", "breakfix", "explain"]).filter(k => k === "discover" || ov[k]); }
+  function stepName(k, ov) { return ov.essentiel && k === "explain" ? "Terminer" : STEP_NAMES[k]; }
+  function stepHint(k, ov) { return ov.essentiel && k === "explain" ? "Une phrase avec tes mots, et les bonus si tu veux" : STEP_HINTS[k]; }
 
   // Une ancienne prédiction revient de temps en temps : c'est la révision espacée.
   async function revisionCard(it) {
@@ -959,7 +963,7 @@
       $("#fsteps").innerHTML = steps.map((k, i) => {
         const cls = i === view ? "now" : i < st.step ? "ok" : "";
         const can = true;
-        return `<li class="${cls}${can ? " can" : ""}">${can ? `<button data-step="${i}">` : "<span>"}<b>${String(i + 1).padStart(2, "0")}</b>${STEP_NAMES[k]}${can ? "</button>" : "</span>"}</li>`;
+        return `<li class="${cls}${can ? " can" : ""}">${can ? `<button data-step="${i}">` : "<span>"}<b>${String(i + 1).padStart(2, "0")}</b>${stepName(k, ov)}${can ? "</button>" : "</span>"}</li>`;
       }).join("");
       $$("#fsteps [data-step]").forEach(b => b.addEventListener("click", () => go(+b.dataset.step)));
     }
@@ -1073,6 +1077,7 @@
       if (token !== routeToken) return;
       if (rev) box.appendChild(rev);
       if (ov.brief) mdCard(box, "chal brief", "L'essentiel en français", ov.brief);
+      if (ov.essentiel) return discoverLight(box);
       // Mes propres leçons (sans texte officiel) : d'abord la leçon et le Labo Git, ensuite les schémas et les concepts clés.
       const own = !it.src && ov.labo;
       const keysAndDiagrams = () => {
@@ -1109,6 +1114,49 @@
         d.addEventListener("toggle", () => { if (d.open && !$(".player", d)) mountVideo($(".video", d), v); });
       });
       box.appendChild(nextBtn(steps.length > 1 ? "J'ai regardé et lu, je passe à la suite" : "Terminer", 0));
+    }
+
+    // L'essentiel d'abord : 5 minutes de lecture, le schéma, le Labo Git, les concepts clés.
+    // La leçon complète et le zoom sont repliés : « Détail technique, tu peux sauter ».
+    function discoverLight(box) {
+      const ess = mdCard(box, "chal essentiel", "⏱️ L'essentiel en 5 minutes", ov.essentiel);
+      if (ov.schema) { const sc = card("ess-schema", `<div class="md"></div>`); renderMd($(".md", sc), ov.schema, base); ess.appendChild(sc); renderMermaid(sc); }
+      if (ov.labo && window.LaboGit) {
+        const lb = doc.createElement("div");
+        box.appendChild(lb);
+        window.LaboGit.mount(lb, ov.labo, { md: (el, src) => renderMd(el, src, base), inline: mdInline });
+      }
+      if (ov.cles) keyCard(box, ov.cles);
+      if (course || ov.zoom) {
+        const d = doc.createElement("details");
+        d.className = "techbox";
+        d.innerHTML = `<summary><span>🔧 Détail technique : la leçon complète, en détail</span><small>Tu peux sauter. Ouvre-la si tu veux comprendre le pourquoi, ou si un niveau du labo te bloque.</small></summary><div class="md tb-course"></div><div class="md tb-zoom"></div>`;
+        if (course) { renderMd($(".tb-course", d), course, base, { dropTitle: true }); addPas($(".tb-course", d), ov.pas, base); }
+        if (ov.zoom) renderMd($(".tb-zoom", d), ov.zoom, base);
+        d.addEventListener("toggle", () => { if (d.open) renderMermaid(d); });
+        box.appendChild(d);
+      }
+      listItems(ov.teaser).forEach(t => box.appendChild(bridgeCard("chal teaser", "Tu le reverras", t)));
+      box.appendChild(nextBtn("J'ai l'essentiel, je passe au vrai exercice", 0));
+    }
+
+    // Les bonus repliés de la dernière étape : prédire, puis casser et réparer.
+    function bonusBox(box) {
+      const parts = [];
+      if (ov.predict) parts.push(["Prédis", ov.predict, ov["predict-answer"], [], "La réponse"]);
+      if (ov.breakfix) parts.push(["Casse et répare", ov.breakfix, ov["breakfix-answer"], listItems(ov["breakfix-hints"]), "L'explication"]);
+      if (!parts.length) return;
+      const d = doc.createElement("details");
+      d.className = "techbox bonus";
+      d.innerHTML = `<summary><span>🎯 Bonus : deux petits défis pour retenir</span><small>Facultatif. Une question à prédire, et une erreur à provoquer puis réparer.</small></summary>` +
+        parts.map(([t], i) => `<div class="bn"><h3>${esc(t)}</h3><div class="md bq"></div><div class="bh"></div><details class="bans"><summary>${esc(parts[i][4])} (après avoir essayé)</summary><div class="md ba"></div></details></div>`).join("");
+      $$(".bn", d).forEach((bn, i) => {
+        const [, q, a, hints] = parts[i];
+        renderMd($(".bq", bn), q, base);
+        renderMd($(".ba", bn), a || "", base);
+        if (hints.length) $(".bh", bn).innerHTML = `<details class="bans"><summary>Des indices</summary><ul class="small">${hints.map(h => `<li>${mdInline(h)}</li>`).join("")}</ul></details>`;
+      });
+      box.appendChild(d);
     }
 
     function stepPredict(box) {
@@ -1225,8 +1273,10 @@
     }
 
     function stepExplain(box) {
-      const c = mdCard(box, "chal", "Explique avec tes mots", ov.explain);
-      const t = area("explain", "big", "Deux ou trois phrases, sans relire le cours. Si tu bloques, c'est le signe qu'il faut revoir un passage.", EXPLAIN_MIN);
+      if (ov.essentiel) bonusBox(box);
+      const c = mdCard(box, "chal", ov.essentiel ? "Pour finir : explique en une phrase, avec tes mots (facultatif)" : "Explique avec tes mots", ov.explain);
+      const min = ov.essentiel ? 40 : EXPLAIN_MIN;
+      const t = area("explain", "big", ov.essentiel ? "Une phrase suffit, sans relire la leçon. Si tu bloques, rouvre « L'essentiel en 5 minutes »." : "Deux ou trois phrases, sans relire le cours. Si tu bloques, c'est le signe qu'il faut revoir un passage.", min);
       c.appendChild(t);
       const count = doc.createElement("p");
       count.className = "small";
@@ -1235,7 +1285,7 @@
       fin.className = "btn";
       fin.textContent = "Terminer la leçon ✓";
       c.appendChild(fin);
-      const upd = () => { const n = (t.value || "").trim().length; count.textContent = n >= EXPLAIN_MIN ? `${n} caractères · c'est bon` : `${n} caractères · deux ou trois phrases, c'est l'idéal`; };
+      const upd = () => { const n = (t.value || "").trim().length; count.textContent = n >= min ? `${n} caractères · c'est bon` : `${n} caractères · ${ov.essentiel ? "une phrase suffit" : "deux ou trois phrases, c'est l'idéal"}`; };
       t.addEventListener("change-len", upd);
       upd();
       fin.addEventListener("click", () => {

@@ -42,6 +42,30 @@ Quand tu ouvres un fichier en conflit, VS Code colore les deux versions et affic
 
 Faire de petites branches qui vivent peu de temps, récupérer souvent le travail des autres, et se parler (« je touche au fichier de config ») évite la plupart des conflits. Tu verras ces réflexes d'équipe à la leçon « En équipe : quand le travail se croise ».
 
+@@ essentiel
+**En une image.** Deux personnes ont réécrit **la même phrase** d'un document. Git ne choisit pas à ta place : il te montre les deux versions et attend ta décision. Un conflit n'est pas une erreur, c'est une question.
+
+Git écrit les deux versions dans le fichier :
+
+~~~text
+<<<<<<< HEAD
+Plat du jour : lasagnes        ← ta version
+=======
+Plat du jour : couscous        ← celle de l'autre branche
+>>>>>>> menu-hiver
+~~~
+
+| Pour résoudre | Tu fais |
+| --- | --- |
+| 1. Voir les fichiers en conflit | `git status` |
+| 2. Écrire la version finale, et **supprimer les trois lignes de marqueurs** | dans l'éditeur |
+| 3. Dire à Git « c'est réglé » | `git add menu.txt` |
+| 4. Finir la fusion | `git commit` |
+
+📌 **À retenir :** des lignes **différentes** changées des deux côtés : pas de conflit, Git mélange seul. Les **mêmes** lignes : conflit.
+
+⚠️ **Attention :** pas prêt à choisir ? `git merge --abort` annule toute la fusion.
+
 @@ labo
 {
   "id": "00-07",
@@ -50,12 +74,7 @@ Faire de petites branches qui vivent peu de temps, récupérer souvent le travai
       "titre": "Pas de conflit : des lignes différentes",
       "intro": "`menu.txt` a trois lignes : entrée, plat, dessert. Sur la branche `entree`, quelqu'un a changé **la ligne 1**. Sur `main`, tu as changé **la ligne 3**. Avant de fusionner, devine : conflit ou pas ? Puis fusionne `entree` dans `main`, et lis le fichier.",
       "depart": ["git init", "echo 'Entrée : salade' > menu.txt", "echo 'Plat : lasagnes' >> menu.txt", "echo 'Dessert : fruit' >> menu.txt", "git add menu.txt", "git commit -m 'Premier menu'", "git switch -c entree", "echo 'Entrée : soupe' > menu.txt", "echo 'Plat : lasagnes' >> menu.txt", "echo 'Dessert : fruit' >> menu.txt", "git commit -am 'Change l entrée'", "git switch main", "echo 'Entrée : salade' > menu.txt", "echo 'Plat : lasagnes' >> menu.txt", "echo 'Dessert : tiramisu' >> menu.txt", "git commit -am 'Change le dessert'"],
-      "buts": [
-        "merges>=1 | Fusion faite, avec un commit de fusion",
-        "committed:menu.txt~soupe | L'entrée de la branche est là",
-        "committed:menu.txt~tiramisu | Ton dessert est là aussi",
-        "cmd:cat menu.txt | Tu as lu le résultat"
-      ],
+      "buts": ["merges>=1 | Fusion faite, avec un commit de fusion", "committed:menu.txt~soupe | L'entrée de la branche est là", "committed:menu.txt~tiramisu | Ton dessert est là aussi", "cmd:cat menu.txt | Tu as lu le résultat"],
       "indices": ["Tu es sur `main` : `git merge entree`.", "Git a mélangé les deux changements tout seul, parce qu'ils ne touchent pas les mêmes lignes. Vérifie avec `cat menu.txt`."],
       "solution": ["git merge entree", "cat menu.txt", "git log --oneline --graph --all"]
     },
@@ -63,12 +82,7 @@ Faire de petites branches qui vivent peu de temps, récupérer souvent le travai
       "titre": "Ton premier conflit",
       "intro": "Cette fois, `main` et `menu-hiver` ont changé **la même ligne** : le plat. Fusionne, regarde le fichier passer en rouge CONFLIT, lis-le avec `cat`. Puis écris la version finale (garde le plat que tu veux), et termine la fusion.",
       "depart": ["git init", "echo 'Entrée : salade' > menu.txt", "echo 'Plat : lasagnes' >> menu.txt", "echo 'Dessert : fruit' >> menu.txt", "git add menu.txt", "git commit -m 'Premier menu'", "git switch -c menu-hiver", "echo 'Entrée : salade' > menu.txt", "echo 'Plat : couscous' >> menu.txt", "echo 'Dessert : fruit' >> menu.txt", "git commit -am 'Plat d hiver : couscous'", "git switch main", "echo 'Entrée : salade' > menu.txt", "echo 'Plat : pizza' >> menu.txt", "echo 'Dessert : fruit' >> menu.txt", "git commit -am 'Plat : pizza'"],
-      "buts": [
-        "cmd:git merge | Tu as lancé la fusion (et vu le conflit)",
-        "nomarkers:menu.txt | Plus aucun marqueur <<<<<<< ======= >>>>>>> dans le fichier",
-        "nomerge | La fusion est terminée",
-        "merges>=1 | Le commit de fusion existe"
-      ],
+      "buts": ["cmd:git merge | Tu as lancé la fusion (et vu le conflit)", "nomarkers:menu.txt | Plus aucun marqueur <<<<<<< ======= >>>>>>> dans le fichier", "nomerge | La fusion est terminée", "merges>=1 | Le commit de fusion existe"],
       "indices": ["`git merge menu-hiver`, puis `cat menu.txt` pour voir les marqueurs.", "Dans le labo, réécris le fichier entier avec `echo` : `echo 'Entrée : salade' > menu.txt`, puis `>>` pour les deux lignes suivantes, sans les marqueurs. Ensuite `git add menu.txt` et `git commit -m \"Fusionne le menu d'hiver\"`."],
       "solution": ["git merge menu-hiver", "cat menu.txt", "echo 'Entrée : salade' > menu.txt", "echo 'Plat : couscous' >> menu.txt", "echo 'Dessert : fruit' >> menu.txt", "git add menu.txt", "git status", "git commit -m 'Fusionne le menu d hiver'"]
     },
@@ -76,26 +90,19 @@ Faire de petites branches qui vivent peu de temps, récupérer souvent le travai
       "titre": "Le piège : commiter avec les marqueurs",
       "intro": "La fusion est en cours, avec un conflit dans `menu.txt`. Essaie de faire `git commit` tout de suite : Git refuse. Lis pourquoi, puis règle le conflit correctement. Attention : `git add` sur un fichier qui contient encore les marqueurs, Git l'accepte… et les marqueurs partent dans le commit. Le but l'interdit.",
       "depart": ["git init", "echo 'Plat : lasagnes' > menu.txt", "git add menu.txt", "git commit -m 'Premier menu'", "git switch -c midi", "echo 'Plat : salade' > menu.txt", "git commit -am 'Plat du midi'", "git switch main", "echo 'Plat : burger' > menu.txt", "git commit -am 'Plat : burger'", "git merge midi"],
-      "buts": [
-        "cmd:git commit | Tu as vu Git refuser le commit tant que le conflit n'est pas marqué comme réglé",
-        "nomarkers:menu.txt | Aucun marqueur, ni dans le fichier ni dans le commit",
-        "nomerge | La fusion est terminée"
-      ],
+      "buts": ["cmd:git commit | Tu as vu Git refuser le commit tant que le conflit n'est pas marqué comme réglé", "nomarkers:menu.txt | Aucun marqueur, ni dans le fichier ni dans le commit", "nomerge | La fusion est terminée"],
       "indices": ["`git commit -m \"essai\"` d'abord, pour lire l'erreur.", "Réécris `menu.txt` avec une seule ligne de plat, puis `git add menu.txt` et `git commit -m \"...\"`."],
-      "solution": ["git status", "git commit -m 'essai'", "echo 'Plat : salade' > menu.txt", "git add menu.txt", "git commit -m 'Fusionne le plat du midi'"]
+      "solution": ["git status", "git commit -m 'essai'", "echo 'Plat : salade' > menu.txt", "git add menu.txt", "git commit -m 'Fusionne le plat du midi'"],
+      "bonus": true
     },
     {
       "titre": "Abandonner une fusion",
       "intro": "Tu as lancé une fusion, il y a un conflit, et tu n'es pas prêt à choisir (il faut d'abord demander à ton équipe). Annule toute la fusion : tout doit redevenir comme avant.",
       "depart": ["git init", "echo 'Prix : 10 euros' > tarifs.txt", "git add tarifs.txt", "git commit -m 'Premiers tarifs'", "git switch -c promo", "echo 'Prix : 8 euros' > tarifs.txt", "git commit -am 'Promo'", "git switch main", "echo 'Prix : 12 euros' > tarifs.txt", "git commit -am 'Hausse des prix'", "git merge promo"],
-      "buts": [
-        "cmd:git merge --abort | Tu as annulé la fusion",
-        "nomerge | Plus de fusion en cours",
-        "merges=0 | Aucun commit de fusion",
-        "file:tarifs.txt~12 euros | Le fichier est revenu à ta version"
-      ],
+      "buts": ["cmd:git merge --abort | Tu as annulé la fusion", "nomerge | Plus de fusion en cours", "merges=0 | Aucun commit de fusion", "file:tarifs.txt~12 euros | Le fichier est revenu à ta version"],
       "indices": ["`git status` rappelle la commande pour annuler, entre parenthèses.", "`git merge --abort`"],
-      "solution": ["git status", "git merge --abort", "git status", "cat tarifs.txt"]
+      "solution": ["git status", "git merge --abort", "git status", "cat tarifs.txt"],
+      "bonus": true
     }
   ]
 }

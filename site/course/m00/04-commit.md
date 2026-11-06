@@ -47,6 +47,24 @@ Beaucoup d'équipes ajoutent un préfixe : `feat:` (nouvelle fonctionnalité), `
 
 Chaque commit porte un nom et un e-mail : ceux de `git config user.name` et `git config user.email`. Dans un Codespace, GitHub les a déjà réglés avec ton compte. Tu vérifieras dans la partie Pratiquer.
 
+@@ essentiel
+**En une image.** Un photographe de mariage. `git add`, c'est appeler les personnes qui seront sur la photo. `git commit`, c'est appuyer sur le bouton. Les invités restés au buffet ne sont pas sur la photo.
+
+Ce qui donne trois zones : **dossier de travail** (tes fichiers) → `git add` → **zone de préparation** (la prochaine photo) → `git commit` → **dépôt** (les photos prises).
+
+| Tu veux… | Tu tapes |
+| --- | --- |
+| Préparer un fichier pour la prochaine photo | `git add fichier` |
+| Prendre la photo | `git commit -m "Ajoute mes idées"` |
+| Voir ce que tu as modifié | `git diff` |
+| Voir les photos déjà prises | `git log --oneline` |
+
+📌 **À retenir :** dans `git status`, **rouge** = pas encore préparé, **vert** = partira dans le prochain commit.
+
+📌 **À retenir :** un commit = une idée, avec un message qui dit ce qu'il fait : `Corrige l'URL de janvier`, pas `modifs`.
+
+⚠️ **Attention :** `git add .` prépare **tout**. Regarde `git status` avant, pour ne pas envoyer un mot de passe par erreur.
+
 @@ labo
 {
   "id": "00-04",
@@ -55,11 +73,7 @@ Chaque commit porte un nom et un e-mail : ceux de `git config user.name` et `git
       "titre": "Ta première photo",
       "intro": "Ton dépôt contient `idees.txt`, en rouge : Git ne le suit pas. Mets-le dans la zone de préparation, regarde-le passer d'une colonne à l'autre, puis prends la photo. Lis `git status` entre chaque étape.",
       "depart": ["echo 'Mes idées de projet' > idees.txt", "git init"],
-      "buts": [
-        "cmd:git add | Tu as préparé le fichier avec `git add`",
-        "commits>=1 | Ton premier commit est dans le dépôt (un rond apparaît)",
-        "clean | `git status` dit « nothing to commit, working tree clean »"
-      ],
+      "buts": ["cmd:git add | Tu as préparé le fichier avec `git add`", "commits>=1 | Ton premier commit est dans le dépôt (un rond apparaît)", "clean | `git status` dit « nothing to commit, working tree clean »"],
       "indices": ["`git add idees.txt` met le fichier dans la zone de préparation.", "`git commit -m \"Ajoute mes idées\"` prend la photo. Le message entre guillemets est obligatoire dans le labo."],
       "solution": ["git status", "git add idees.txt", "git status", "git commit -m 'Ajoute mes idées'", "git status"]
     },
@@ -67,13 +81,7 @@ Chaque commit porte un nom et un e-mail : ceux de `git config user.name` et `git
       "titre": "Deux idées, deux commits",
       "intro": "Tu as fait deux choses différentes : tu as ajouté une ligne à `idees.txt`, et tu as créé `todo.txt`. Fais **deux commits séparés**, un par fichier. Avant le premier, regarde avec `git diff` la ligne que tu as ajoutée.",
       "depart": ["echo 'Mes idées de projet' > idees.txt", "git init", "git add idees.txt", "git commit -m 'Ajoute mes idées'", "echo 'Un pipeline sur le foot' >> idees.txt", "echo 'Apprendre Git' > todo.txt"],
-      "buts": [
-        "cmd:git diff | Tu as regardé la modification avec `git diff`",
-        "committed:idees.txt~foot | La nouvelle idée est dans un commit",
-        "committed:todo.txt | `todo.txt` est dans un commit",
-        "commits>=3 | Deux commits séparés (3 en tout, avec le premier)",
-        "clean | Plus rien en attente"
-      ],
+      "buts": ["cmd:git diff | Tu as regardé la modification avec `git diff`", "committed:idees.txt~foot | La nouvelle idée est dans un commit", "committed:todo.txt | `todo.txt` est dans un commit", "commits>=3 | Deux commits séparés (3 en tout, avec le premier)", "clean | Plus rien en attente"],
       "indices": ["`git add .` préparerait les deux fichiers d'un coup : ici, prépare-les un par un.", "Le cycle, deux fois : `git add un-fichier`, puis `git commit -m \"...\"`."],
       "solution": ["git diff", "git add idees.txt", "git commit -m 'Ajoute une idée sur le foot'", "git add todo.txt", "git commit -m 'Ajoute ma liste de choses à faire'", "git log --oneline"]
     },
@@ -81,14 +89,11 @@ Chaque commit porte un nom et un e-mail : ceux de `git config user.name` et `git
       "titre": "La photo est prise au moment du git add",
       "intro": "Écris `version 1` dans `notes.txt`, prépare-le avec `git add`. **Puis** remplace son contenu par `version 2`, et seulement ensuite fais le commit. Quelle version est dans la photo ? Regarde les colonnes avant de taper `git commit`, puis clique sur les fichiers pour voir leur contenu.",
       "depart": ["git init", "echo 'Mes idées de projet' > idees.txt", "git add idees.txt", "git commit -m 'Ajoute mes idées'"],
-      "buts": [
-        "committed:notes.txt~version 1 | Le commit contient `version 1`",
-        "file:notes.txt~version 2 | Ton fichier, lui, contient `version 2`",
-        "cmd:git status | Tu as lu `git status` : `notes.txt` est encore « modified »"
-      ],
+      "buts": ["committed:notes.txt~version 1 | Le commit contient `version 1`", "file:notes.txt~version 2 | Ton fichier, lui, contient `version 2`", "cmd:git status | Tu as lu `git status` : `notes.txt` est encore « modified »"],
       "indices": ["`echo 'version 1' > notes.txt`, puis `git add notes.txt`.", "`>` remplace tout le contenu : `echo 'version 2' > notes.txt`. Puis `git commit -m \"...\"` et `git status`."],
       "solution": ["echo 'version 1' > notes.txt", "git add notes.txt", "echo 'version 2' > notes.txt", "git status", "git commit -m 'Ajoute mes notes'", "git status"],
-      "bravo": "La zone de préparation garde une copie du fichier au moment du git add. Ce que tu modifies après n'y entre que si tu refais git add."
+      "bravo": "La zone de préparation garde une copie du fichier au moment du git add. Ce que tu modifies après n'y entre que si tu refais git add.",
+      "bonus": true
     }
   ]
 }
@@ -142,7 +147,7 @@ L'identifiant (le *hash*) est calculé à partir du contenu, du message, de l'au
 Tu modifies `README.md`, puis tu lances `git add README.md`. Ensuite, tu modifies **encore** `README.md`, et tu lances `git commit -m "..."`. Quelle version du fichier est enregistrée dans le commit ?
 
 @@ predict-answer
-La version **du moment du `git add`**. La deuxième modification n'est pas préparée : elle reste dans le dossier de travail, et `git status` montre `README.md` en « modified » juste après le commit. C'est le niveau 3 du Labo Git : la zone de préparation est une vraie copie, pas un marque-page.
+La version **du moment du `git add`**. La deuxième modification n'est pas préparée : elle reste dans le dossier de travail, et `git status` montre `README.md` en « modified » juste après le commit. C'est le niveau bonus du Labo Git : la zone de préparation est une vraie copie, pas un marque-page.
 
 @@ practice
 Dans ton dossier d'entraînement `/workspaces/labo-git`, prends tes trois premières photos, proprement.
