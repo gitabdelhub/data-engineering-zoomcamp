@@ -126,7 +126,7 @@ Chaque clé du fichier :
 - `features` : Docker dans le Codespace (`docker-in-docker`), Terraform et la CLI Google Cloud ;
 - `postCreateCommand` : installe `uv` une seule fois, après la création ;
 - `forwardPorts` et `portsAttributes` : les ports ouverts, et leur nom dans l'onglet Ports ;
-- `customizations` : des extensions VS Code installées d'office. Ce n'était pas demandé, c'est un bonus.
+- `customizations` : des extensions VS Code installées d'office, dont Git Graph (leçon « Les branches et la fusion »). Ce n'était pas demandé, c'est un bonus.
 
 ~~~json
 {
@@ -145,7 +145,7 @@ Chaque clé du fichier :
   },
   "customizations": {
     "vscode": {
-      "extensions": ["ms-python.python", "ms-toolsai.jupyter", "hashicorp.terraform"]
+      "extensions": ["ms-python.python", "ms-toolsai.jupyter", "hashicorp.terraform", "mhutchie.git-graph"]
     }
   }
 }

@@ -250,7 +250,7 @@ Explique avec tes mots la différence entre le CeleryExecutor et le LocalExecuto
 
 @@ declic
 - [01-09] Le healthcheck et `depends_on` avec `condition: service_healthy`, tu les as écrits toi-même au module 1. Le compose d'Airflow utilise exactement la même mécanique : tous ses services attendent que `postgres` soit `healthy`, puis que `airflow-init` ait fini.
-- [00-07] Le port 8080 que tu ajoutes à ton devcontainer suit la même logique que 5432 et 8085 : le devcontainer ne lance pas Airflow, il donne un nom au port dans l'onglet Ports.
+- [00-13] Le port 8080 que tu ajoutes à ton devcontainer suit la même logique que 5432 et 8085 : le devcontainer ne lance pas Airflow, il donne un nom au port dans l'onglet Ports.
 
 @@ teaser
 - [02-05] Ton service `pgdatabase` deviendra une **connexion** Airflow : tes DAGs y écriront sans jamais contenir le mot de passe.

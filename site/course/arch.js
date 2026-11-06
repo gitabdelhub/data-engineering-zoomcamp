@@ -5,7 +5,7 @@
   const BLUE = "#146ef5";
   const ARCH = {
     "00": {
-      intro: "Avant Docker, tu montes ton atelier : ta copie du cours qui se met à jour seule, un poste de travail dans le navigateur, et ton site en ligne.",
+      intro: "Avant Docker, tu apprends Git depuis zéro (seul, puis sur GitHub, puis en équipe) et tu montes ton atelier : un poste de travail dans le navigateur, ta copie du cours qui se met à jour seule, et ton site en ligne.",
       rows: [
         { zone: "GitHub", nodes: [
           ["github", "#181717", "Le repo officiel", "DataTalksClub"],
@@ -17,7 +17,36 @@
           ["browser", "", "Ton Codespace", "VS Code dans Chrome ou sur ton PC", "construit"],
           ["git", "#F05032", "Branche, commit, PR", "ton travail revient dans main", "tu travailles avec"]
         ] }
-      ]
+      ],
+      map: [
+        { zone: "Ton poste de travail", nodes: [
+          ["00-02", "browser", "", "Ton Codespace", "VS Code dans le navigateur, sur ton fork"]
+        ] },
+        { zone: "Git, seul sur ta machine · dossier labo-git", link: "tu y apprends Git, pas à pas", nodes: [
+          ["00-03", "git", "#F05032", "Un dépôt", "git init, le dossier .git"],
+          ["00-04", "git", "#F05032", "Des commits", "les trois zones, add, commit", "chaque photo"],
+          ["00-05", "file", BLUE, "Retour en arrière", "restore, revert, .gitignore", "en sécurité"]
+        ] },
+        { zone: "Git, seul sur ta machine · plusieurs pistes", link: "puis tu travailles en parallèle", nodes: [
+          ["00-06", "git", "#F05032", "Des branches", "switch, merge"],
+          ["00-07", "git", "#F05032", "Un conflit réglé", "les marqueurs <<< === >>>", "quand ça se croise"]
+        ] },
+        { zone: "GitHub", link: "puis ton dépôt part en ligne", nodes: [
+          ["00-08", "github", "#181717", "Ton fork", "clone, push, pull, origin"]
+        ] },
+        { zone: "En équipe · toi et un collègue", link: "et tu travailles à plusieurs", nodes: [
+          ["00-09", "github", "#181717", "Une pull request", "branche, revue, merge"],
+          ["00-10", "user", "", "Le travail qui se croise", "push refusé, conflit dans une PR", "au quotidien"]
+        ] },
+        { zone: "Ton fork, prêt pour la suite", link: "et tu équipes ton fork", nodes: [
+          ["00-11", "githubpages", "#222222", "Ton site", "GitHub Pages"],
+          ["00-12", "githubactions", "#2088FF", "La synchro", "une GitHub Action chaque nuit", "à jour"],
+          ["00-13", "docker", "#2496ED", "Ton devcontainer", "tes outils décrits en code", "équipé"]
+        ] }
+      ],
+      mapNotes: {
+        "00-01": "Cette leçon n'ajoute pas de pièce : elle t'explique comment apprendre avec ce site."
+      }
     },
     "01": {
       intro: "Tu fais tourner une base Postgres et ton script d'ingestion dans des conteneurs, puis tu crées tes ressources Google Cloud avec Terraform.",

@@ -4,7 +4,7 @@ Le repo officiel continue d'évoluer : corrections, nouvelles versions d'outils,
 
 ## 🔑 Les deux « remotes »
 
-Un **remote** est une adresse de repo distant que Git connaît.
+Un **remote** est une adresse de repo distant que Git connaît. Tu connais déjà `origin` (leçon « GitHub : clone, push et pull »). Un fork en a souvent un deuxième, qu'on appelle par convention `upstream`.
 
 | Remote | Adresse | Rôle |
 | --- | --- | --- |
@@ -212,6 +212,9 @@ Explique ce que fait ton workflow, étape par étape : quand il se lance, avec q
 - [Les permissions du GITHUB_TOKEN](https://docs.github.com/fr/actions/security-for-github-actions/security-guides/automatic-token-authentication)
 - [La commande gh repo sync](https://cli.github.com/manual/gh_repo_sync)
 - [Synchroniser un fork (documentation GitHub)](https://docs.github.com/fr/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)
+
+@@ declic
+- [00-08] Tu as vu que ton Codespace parle à ton fork (`origin`), jamais au dépôt officiel. `upstream` est la pièce qui manquait : le chemin du dépôt officiel vers ton fork.
 
 @@ teaser
 - [02] Airflow, l'orchestrateur du module 2, planifie ses DAG avec la même syntaxe `cron` que ta synchro de nuit.

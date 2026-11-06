@@ -213,7 +213,7 @@ Pourquoi les DAGs citent-ils un `conn_id` au lieu d'écrire directement l'adress
 
 @@ declic
 - [01-07] Au module 1, pgAdmin devait joindre Postgres par le nom `pgdatabase`, pas par `localhost`. C'est la même règle ici : dans un réseau Docker, chaque conteneur a son propre `localhost`, et les autres s'appellent par leur nom de service.
-- [00-03] Le `.env` qui ne part jamais sur GitHub garde maintenant ta connexion. C'est encore la règle du module 0 qui te protège.
+- [00-05] Le `.env` qui ne part jamais sur GitHub garde maintenant ta connexion. C'est encore la règle du module 0 qui te protège.
 
 @@ teaser
 - [02-09] Pour Google Cloud, la connexion ne contient pas de mot de passe mais le chemin d'une clé de compte de service.

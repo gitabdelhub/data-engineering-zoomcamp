@@ -18,7 +18,7 @@ Une leçon se fait toujours en 5 étapes, dans cet ordre :
 
 À la fin de chaque module : le **homework** officiel du Zoomcamp, puis un **défi sans guide** sur d'autres données, vérifié par un script.
 
-Le cours avance en spirale. Le module 0 annonce ce qui viendra (« Tu le reverras »), et les modules suivants y renvoient (« Ah, c'est donc ça ! »). Git, lui, s'apprend en route, au moment précis où un exercice en a besoin (« Git en situation »).
+Le cours avance en spirale. Le module 0 annonce ce qui viendra (« Tu le reverras »), et les modules suivants y renvoient (« Ah, c'est donc ça ! »). Les bases de Git et le travail en équipe s'apprennent au module 0, d'abord dans le **Labo Git** (un terminal dans la page, avec le dessin qui se construit), puis pour de vrai dans ton Codespace. Les commandes plus rares (stash, tag…) arrivent ensuite au moment précis où un exercice en a besoin (« Git en situation »).
 
 ## Les indices et la solution
 
@@ -60,7 +60,7 @@ La recherche sur l'apprentissage est assez nette : ce qui fait retenir, c'est l'
 @@ guide
 ### 1. Écris dans la case ci-dessous
 
-Ton contrat s'écrit directement sur ce site, dans la case « Ton texte ». Il est enregistré tout seul dans ton navigateur : tu le recopieras dans ton fork à la leçon 3.
+Ton contrat s'écrit directement sur ce site, dans la case « Ton texte ». Il est enregistré tout seul dans ton navigateur : tu le recopieras dans ton fork à la leçon « GitHub : clone, push et pull ».
 
 ### 2. Réponds aux quatre questions, une phrase chacune
 
@@ -87,7 +87,7 @@ Il n'y a pas de bonne réponse unique. Un exemple :
 
 > Je fais ce cours pour arriver à mon PFE en sachant construire un vrai pipeline de données. Je vise 3 séances d'une heure par semaine. Quand je bloque plus de 20 minutes : je relis l'erreur en entier, je cherche dans la FAQ du cours, je cherche l'erreur exacte sur le web, puis je pose ma question sur le Slack de DataTalksClub avec ce que j'ai essayé. À la fin de chaque module, je publie un post LinkedIn avec le lien de mon code.
 
-Garde le tien : à la leçon 3, tu le mettras dans le fichier `mon-travail/README.md` de ton fork.
+Garde le tien : à la leçon « GitHub : clone, push et pull », tu le mettras dans le fichier `mon-travail/README.md` de ton fork.
 
 @@ selfcheck
 - Mon contrat ne contient aucune date

@@ -12,10 +12,10 @@ window.COURSE = {
   faq: "https://datatalks.club/faq/data-engineering-zoomcamp.html",
   modules: [
     {
-      id: "00", title: "Préparer ton poste", chips: ["Codespaces", "Git", "GitHub Actions"],
+      id: "00", title: "Git, GitHub et ton poste", chips: ["Git", "Travail en équipe", "Codespaces", "GitHub Actions"],
       cover: ["#3a4250", "#0d1117"], logo: ["github", "#181717"],
       sats: [["githubactions", "#2088FF"], ["git", "#F05032"]], help: 3,
-      gate: "Ta synchro du fork et ton devcontainer", items: []
+      gate: "Ta première pull request, ta synchro du fork et ton devcontainer", items: []
     },
     {
       id: "01", title: "Docker et Terraform", chips: ["Docker", "Postgres", "Terraform"],
