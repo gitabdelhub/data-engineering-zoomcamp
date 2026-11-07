@@ -1249,7 +1249,7 @@
     let L = 0, S = null, hist = [], hpos = 0, undo = [], seen = {}, playing = false, hintN = 0, won = false;
 
     el.classList.add("labo");
-    // Le terminal est sous le dessin ; à côté, la consigne et les buts.
+    // L'énoncé en haut ; dessous, le terminal (gauche) et le dessin (droite), même largeur (AB, 2026-11-07).
     const TERM = `<div class="lb-term">
             <div class="lb-tabs"></div>
             <div class="lb-out" tabindex="0"></div>
@@ -1263,9 +1263,10 @@
           </div>`;
     el.innerHTML = `
       <div class="lb-top"><span class="lab">Labo Git · essaie ici, le dessin se construit à chaque commande</span><div class="lb-levels" role="tablist"></div></div>
+      <div class="lb-brief"></div>
       <div class="lb-grid">
-        <div class="lb-main"><div class="lb-world" aria-live="polite"></div>${TERM}</div>
-        <div class="lb-side"><div class="lb-brief"></div><div class="lb-help"></div></div>
+        <div class="lb-main">${TERM}<div class="lb-help"></div></div>
+        <div class="lb-world" aria-live="polite"></div>
       </div>`;
     const $ = s => el.querySelector(s);
     const world = $(".lb-world"), brief = $(".lb-brief"), outEl = $(".lb-out"), input = $(".lb-in input"), ps = $(".lb-ps"), tabs = $(".lb-tabs"), help = $(".lb-help");
