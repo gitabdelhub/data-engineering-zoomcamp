@@ -840,6 +840,13 @@
     return viewLesson(it);
   }
 
+  // Liste des leçons rétractable (AB, 2026-11-07) : le cours prend alors toute la largeur. Choix gardé dans le navigateur.
+  try { if (localStorage.getItem("mzc.currOff") === "1") doc.documentElement.classList.add("curr-off"); } catch (e) { /* rien */ }
+  doc.addEventListener("click", e => {
+    if (!e.target.closest || !e.target.closest("[data-currtog]")) return;
+    const off = doc.documentElement.classList.toggle("curr-off");
+    try { localStorage.setItem("mzc.currOff", off ? "1" : "0"); } catch (err) { /* rien */ }
+  });
   function curriculum(mod, active) {
     const rows = mod.items.map(it => {
       const done = isDone(it.id);
@@ -849,6 +856,7 @@
     }).join("");
     const pct = Math.round(doneCount(mod.items) / mod.items.length * 100);
     return `<aside class="curr" aria-label="Programme du module">
+      <button type="button" class="currtog" data-currtog title="Replier ou déplier la liste des leçons"><span class="on">Replier la liste »</span><span class="off">« Leçons</span></button>
       <div class="h"><span class="eyebrow">${modLabel(mod)}</span><h3>${esc(mod.title)}</h3><div class="track"><b style="width:${pct}%"></b></div><span class="small">${doneCount(mod.items)} sur ${mod.items.length} terminées</span></div>
       <ol>${rows}</ol></aside>`;
   }
