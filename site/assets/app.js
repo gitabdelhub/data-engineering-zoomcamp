@@ -228,8 +228,10 @@
       from = idx + 1;
       const box = doc.createElement("details");
       box.className = "pas";
-      box.open = true;
-      box.innerHTML = `<summary>Comment faire, exactement</summary><div class="md"></div>`;
+      // Replié par défaut (AB, 2026-11-07 : lire le cours puis le pas à pas, c'est lourd). Ouvert d'office s'il signale un piège.
+      const trap = /attention|ne tape pas|⚠️|piège|ne correspond pas|ce que le texte ne dit pas|ne marche pas|erreur/i.test(e.body);
+      box.open = trap;
+      box.innerHTML = `<summary>Comment faire, exactement${trap ? ' <small class="pastrap">· un piège à connaître</small>' : ""}</summary><div class="md"></div>`;
       renderMd($(".md", box), e.body, base);
       targets[idx].after(box);
     });
@@ -880,9 +882,11 @@
   const EXPLAIN_MIN = 100; // longueur conseillée, pas obligatoire
   // Une leçon « Pour les nuls » (section « @@ essentiel ») va droit au but : découvrir, pratiquer, terminer.
   // Prédire et casser-réparer restent là, en bonus repliés dans la dernière étape.
-  function stepsOf(ov) { return (ov.essentiel ? ["discover", "practice", "explain"] : ["discover", "predict", "practice", "breakfix", "explain"]).filter(k => k === "discover" || ov[k]); }
-  function stepName(k, ov) { return ov.essentiel && k === "explain" ? "Terminer" : STEP_NAMES[k]; }
-  function stepHint(k, ov) { return ov.essentiel && k === "explain" ? "Une phrase avec tes mots, et les bonus si tu veux" : STEP_HINTS[k]; }
+  // ov.leger (leçon marquée light: true, 2026-11-07) : le cours guidé, puis Terminer ; l'exercice, prédire et casser passent en bonus.
+  // light: "p" garde l'exercice (il construit la suite du module) ; prédire et casser passent en bonus.
+  function stepsOf(ov) { return (ov.leger === "p" ? ["discover", "practice", "explain"] : ov.leger ? ["discover", "explain"] : ov.essentiel ? ["discover", "practice", "explain"] : ["discover", "predict", "practice", "breakfix", "explain"]).filter(k => k === "discover" || ov[k]); }
+  function stepName(k, ov) { return (ov.essentiel || ov.leger) && k === "explain" ? "Terminer" : STEP_NAMES[k]; }
+  function stepHint(k, ov) { return (ov.essentiel || ov.leger) && k === "explain" ? "Une phrase avec tes mots, et les bonus si tu veux" : STEP_HINTS[k]; }
 
   // Une ancienne prédiction revient de temps en temps : c'est la révision espacée.
   async function revisionCard(it) {
@@ -940,7 +944,7 @@
     notes.addEventListener("input", () => { S.notes[it.id] = notes.value; saveSoon(); });
 
     let ov, course = "", base = null, meta = {};
-    try { ov = parseOverlay(await getText(it.overlay)); }
+    try { ov = parseOverlay(await getText(it.overlay)); if (it.light && !ov.essentiel) ov.leger = it.light; }
     catch (e) {
       if (token === routeToken) $("#stepbox").innerHTML = `<div class="upd"><b>Erreur</b><span>Je n'arrive pas à charger les exercices de cette leçon (${esc(e.message)}). Recharge la page.</span></div>`;
       return;
@@ -964,6 +968,7 @@
 
     const steps = stepsOf(ov);
     if (isDone(it.id) && st.step < steps.length) st.step = steps.length;
+    if (!isDone(it.id) && st.step >= steps.length) st.step = steps.length - 1;
     let view = Math.min(st.step, steps.length);
 
     function go(i) { view = i; renderSteps(); renderStep(); $("#fsteps").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }
@@ -1158,10 +1163,14 @@
       const parts = [];
       if (ov.predict) parts.push(["Prédis", ov.predict, ov["predict-answer"], [], "La réponse"]);
       if (ov.breakfix) parts.push(["Casse et répare", ov.breakfix, ov["breakfix-answer"], listItems(ov["breakfix-hints"]), "L'explication"]);
+      if (ov.leger === true && ov.practice) {
+        const cons = listItems(ov.constraints);
+        parts.unshift(["Un exercice en plus", ov.practice + (cons.length ? "\n\n" + cons.map(x => "- " + x).join("\n") : ""), (ov.guide ? "### Pas à pas\n\n" + ov.guide + "\n\n### Une solution\n\n" : "") + (ov.solution || ""), listItems(ov.hints), "Le pas à pas et une solution"]);
+      }
       if (!parts.length) return;
       const d = doc.createElement("details");
       d.className = "techbox bonus";
-      d.innerHTML = `<summary><span>🎯 Bonus : deux petits défis pour retenir</span><small>Facultatif. Une question à prédire, et une erreur à provoquer puis réparer.</small></summary>` +
+      d.innerHTML = (ov.leger === true ? `<summary><span>🎯 Pour aller plus loin (facultatif)</span><small>Tu as déjà tout tapé dans le cours. Fais ces exercices seulement si une notion reste floue.</small></summary>` : `<summary><span>🎯 Bonus : deux petits défis pour retenir</span><small>Facultatif. Une question à prédire, et une erreur à provoquer puis réparer.</small></summary>`) +
         parts.map(([t], i) => `<div class="bn"><h3>${esc(t)}</h3><div class="md bq"></div><div class="bh"></div><details class="bans"><summary>${esc(parts[i][4])} (après avoir essayé)</summary><div class="md ba"></div></details></div>`).join("");
       $$(".bn", d).forEach((bn, i) => {
         const [, q, a, hints] = parts[i];
@@ -1286,10 +1295,11 @@
     }
 
     function stepExplain(box) {
-      if (ov.essentiel) bonusBox(box);
-      const c = mdCard(box, "chal", ov.essentiel ? "Pour finir : explique en une phrase, avec tes mots (facultatif)" : "Explique avec tes mots", ov.explain);
-      const min = ov.essentiel ? 40 : EXPLAIN_MIN;
-      const t = area("explain", "big", ov.essentiel ? "Une phrase suffit, sans relire la leçon. Si tu bloques, rouvre « L'essentiel en 5 minutes »." : "Deux ou trois phrases, sans relire le cours. Si tu bloques, c'est le signe qu'il faut revoir un passage.", min);
+      const light = ov.essentiel || ov.leger;
+      if (light) bonusBox(box);
+      const c = mdCard(box, "chal", light ? "Pour finir : explique en une phrase, avec tes mots (facultatif)" : "Explique avec tes mots", ov.explain);
+      const min = light ? 40 : EXPLAIN_MIN;
+      const t = area("explain", "big", ov.essentiel ? "Une phrase suffit, sans relire la leçon. Si tu bloques, rouvre « L'essentiel en 5 minutes »." : ov.leger ? "Une phrase suffit, sans relire la leçon. Si tu bloques, relis « L'essentiel en français » en haut de la leçon." : "Deux ou trois phrases, sans relire le cours. Si tu bloques, c'est le signe qu'il faut revoir un passage.", min);
       c.appendChild(t);
       const count = doc.createElement("p");
       count.className = "small";
@@ -1298,7 +1308,7 @@
       fin.className = "btn";
       fin.textContent = "Terminer la leçon ✓";
       c.appendChild(fin);
-      const upd = () => { const n = (t.value || "").trim().length; count.textContent = n >= min ? `${n} caractères · c'est bon` : `${n} caractères · ${ov.essentiel ? "une phrase suffit" : "deux ou trois phrases, c'est l'idéal"}`; };
+      const upd = () => { const n = (t.value || "").trim().length; count.textContent = n >= min ? `${n} caractères · c'est bon` : `${n} caractères · ${light ? "une phrase suffit" : "deux ou trois phrases, c'est l'idéal"}`; };
       t.addEventListener("change-len", upd);
       upd();
       fin.addEventListener("click", () => {
