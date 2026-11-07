@@ -783,3 +783,5 @@ code,.md a{overflow-wrap:anywhere}
 .lb-levels button.bonus.ok{border-style:solid}
 .lb-bsep{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;color:var(--muted);margin-left:6px;letter-spacing:.04em}
 .lb-n.bonus{color:var(--muted)}
+
+.pastrap{color:var(--orange,#d97706);font-weight:600}
