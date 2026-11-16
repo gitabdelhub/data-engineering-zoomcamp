@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="202 150 340 340">
+<title>Mon Zoomcamp</title>
+<rect x="202" y="150" width="340" height="340" rx="80" fill="#eaf1ff"/>
+<g fill="#9bb7e8"><rect x="244" y="269" width="38" height="8" rx="4"/><rect x="235" y="296" width="44" height="8" rx="4"/><rect x="247" y="323" width="35" height="8" rx="4"/></g>
+<path d="M305 230v141a75 24 0 0 0 150 0V230z" fill="#4c8dff"/>
+<path d="M302 350a78 24 0 0 0 156 0" fill="none" stroke="#3d71cc" stroke-width="7"/>
+<ellipse cx="380" cy="230" rx="75" ry="24" fill="#9dc0ff"/>
+<ellipse cx="379.5" cy="230.5" rx="47.5" ry="12.5" fill="#81aeff"/>
+<circle cx="349.5" cy="281.5" r="19" fill="#fff"/><circle cx="406.5" cy="281.5" r="19" fill="#fff"/>
+<circle cx="355.5" cy="286" r="10.5" fill="#1b1340"/><circle cx="412.5" cy="286" r="10.5" fill="#1b1340"/>
+<circle cx="359.5" cy="282.5" r="3.2" fill="#fff"/><circle cx="416.5" cy="282.5" r="3.2" fill="#fff"/>
+<ellipse cx="329" cy="311" rx="11" ry="6" fill="#ae86cf"/><ellipse cx="431" cy="311" rx="11" ry="6" fill="#ae86cf"/>
+<path d="M364 312q16 18 32 0" fill="none" stroke="#1b1340" stroke-width="6" stroke-linecap="round"/>
+<path d="M458 320.5h28a14 14 0 0 1 14 14v19" fill="none" stroke="#1b1340" stroke-width="14" stroke-linecap="round"/>
+<g fill="#ff9a3c"><circle cx="500" cy="380.5" r="9.5"/><circle cx="500" cy="407.5" r="6.5"/><circle cx="500" cy="428.5" r="3.8"/></g>
+</svg>

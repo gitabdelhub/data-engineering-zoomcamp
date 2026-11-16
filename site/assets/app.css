@@ -864,3 +864,9 @@ a.gb-streak:hover,a.gb-level:hover,a.gb-troph:hover{background:var(--bg-2)}
 .aghead h3{margin:0}
 .agcode{max-height:420px;overflow:auto}
 .rappel>.gpanel{margin-bottom:16px}
+
+/* logo : Silo, la mascotte */
+.logo .silo{width:38px;height:38px;flex:none;border-radius:10px;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.logo:hover .silo{transform:rotate(-6deg) scale(1.06)}
+.logo .wm{font-family:"Fredoka","Geist",system-ui,sans-serif;font-weight:600;letter-spacing:-.01em;font-size:21px}
+@media (max-width:480px){.logo{gap:8px}.logo .silo{width:32px;height:32px;border-radius:8px}.logo .wm{font-size:18px}}
