@@ -75,6 +75,7 @@
   function markDone(id) {
     const before = !S.done[id] && xpInfo();
     S.done[id] = true; S.doneAt[id] = Date.now(); touchDay(); save();
+    pingAgenda();
     const cur = current(), href = cur ? "#/l/" + cur.id : "#/progression";
     $("#continue").href = href; $("#nav-seance").href = href;
     if (before) reward(before, (byId(id) || {}).title || "");
@@ -252,7 +253,7 @@
       : "Une étape aujourd'hui, et ta série commence.";
     return `<div class="gbar">
       <a class="gb-streak" href="#/trophees"><span class="fl${s.today ? " on" : ""}" aria-hidden="true">🔥</span><div><b>${s.cur} jour${s.cur > 1 ? "s" : ""} de série</b><small>${esc(msg)}</small></div></a>
-      <div class="gb-week">${weekDots(s)}<small>${s.jokerUsed ? "Joker de la semaine utilisé" : "1 joker cette semaine : un jour manqué ne casse rien"}</small></div>
+      <div class="gb-week">${weekDots(s)}<small>${s.jokerUsed ? "Joker de la semaine utilisé" : "1 joker cette semaine : un jour manqué ne casse rien"} · <a href="#/agenda">Mes rappels</a></small></div>
       <a class="gb-level" href="#/trophees"><div class="lv"><b>Niveau ${x.level}</b><small>${esc(x.rank)}</small></div><div class="xpbar"><b style="width:${(x.into / LEVEL_XP * 100).toFixed(1)}%"></b></div><small>${x.total} XP · encore ${LEVEL_XP - x.into} pour le niveau ${x.level + 1}</small></a>
       <a class="gb-troph" href="#/trophees"><b>🏆 ${got}<small> / ${tr.length}</small></b><small>trophées</small></a>
     </div>`;
@@ -351,6 +352,73 @@
     show();
   }
 
+
+  /* ---------- mes rappels : Google Agenda, sans dépendre du site ni de Claude ---------- */
+  // Le script tourne dans le compte Google d'AB (site/agenda/Code.gs). Le site ne fait que le prévenir
+  // quand une leçon est terminée, pour arrêter les relances du jour.
+
+  const AGENDA_RE = /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec\?k=[0-9a-f]{32}$/;
+
+  function pingAgenda() {
+    const k = todayKey();
+    if (!S.agenda || S.agendaPing === k) return;
+    fetch(`${S.agenda}&a=fait&ping=1&j=${k}`, { mode: "no-cors", cache: "no-store" })
+      .then(() => { S.agendaPing = k; save(); })
+      .catch(() => { /* hors ligne : on réessaiera à la prochaine ouverture du site */ });
+  }
+
+  function doneToday() {
+    const k = todayKey();
+    return Object.values(S.doneAt).some(t => t && dayKey(t) === k);
+  }
+
+  async function viewAgenda(query) {
+    const token = routeToken;
+    const lien = new URLSearchParams(query || "").get("lien");
+    let msg = "";
+    if (lien !== null) {
+      if (AGENDA_RE.test(lien)) { S.agenda = lien; S.agendaPing = ""; save(); msg = "ok"; if (doneToday()) pingAgenda(); }
+      else msg = "bad";
+      history.replaceState(null, "", "#/agenda");
+    }
+    const linked = !!S.agenda;
+    const steps = [
+      `Sur ton PC, ouvre <a href="https://script.google.com/home" target="_blank" rel="noopener">script.google.com</a> avec <b>le compte Google de ton agenda</b> (celui qui doit recevoir les rappels ; change de compte en haut à droite si besoin). Clique « Nouveau projet », puis renomme-le « Rappels Mon Zoomcamp » (clic sur « Projet sans titre »).`,
+      `Efface tout ce qu'il y a dans <code>Code.gs</code>, colle le code ci-dessous (bouton « Copier le code »), puis enregistre (Ctrl + S).`,
+      `En haut à droite : <b>Déployer</b>, puis <b>Nouveau déploiement</b>. Clique la roue dentée à côté de « Sélectionner le type » et choisis <b>Application Web</b>. Règle « Exécuter en tant que : <b>Moi</b> » et « Qui a accès : <b>Tout le monde</b> », puis <b>Déployer</b>.`,
+      `Google demande ton autorisation : <b>Autoriser l'accès</b>, choisis ton compte, puis « Paramètres avancés » et « Accéder à Rappels Mon Zoomcamp (non sécurisé) », et <b>Autoriser</b>. C'est normal : c'est ton propre script, Google ne l'a simplement pas vérifié. Il lit et écrit seulement dans ton agenda.`,
+      `Copie l'<b>URL de l'application Web</b> (elle finit par <code>/exec</code>) et colle-la entre les guillemets de <code>LIEN: ""</code>, tout en haut du code. Enregistre (Ctrl + S).`,
+      `Dans la barre du haut, choisis la fonction <b>installer</b> dans la liste, puis <b>Exécuter</b>. Si Google redemande l'autorisation, refais l'étape 4. En bas, le journal affiche « C'est installé » et deux liens.`,
+      `Ouvre le lien <b>« Relier le site »</b> ici, sur ce PC. Ton <b>lien perso</b>, pour choisir ton heure, est aussi dans chaque rendez-vous de ton agenda : pas besoin de le noter.`,
+      `Sur ton téléphone, l'application <b>Google Agenda</b> doit être connectée à ce compte, avec les notifications autorisées. C'est elle qui sonne.`,
+    ];
+    app.innerHTML = `<section class="gut"><div class="max rappel">
+      <div class="hwtop"><span class="eyebrow">Tourne chez Google, gratuit, même quand le site ou Claude sont éteints</span><h1>Mes rappels</h1>
+        <p class="lead2">Chaque jour à 7 h, ton agenda te demande à quelle heure tu travailles. À ton heure, ta séance sonne. Si ce n'est pas fait, il te refait signe toutes les heures jusqu'à 22 h. Quand tu termines une leçon ici, les relances du jour s'arrêtent toutes seules.</p></div>
+      ${msg === "ok" ? `<div class="gpanel agok"><h3>Site relié ✓</h3><p>Quand tu termines une leçon ici, les relances du jour s'arrêtent.</p></div>` : ""}
+      ${msg === "bad" ? `<div class="gpanel agbad"><h3>Ce lien ne ressemble pas au bon</h3><p>Ouvre le lien « Relier le site » affiché par <b>installer</b>, en entier.</p></div>` : ""}
+      ${linked && msg !== "ok" ? `<div class="gpanel agok"><h3>Site relié ✓</h3><p>Une leçon terminée ici arrête les relances du jour${S.agendaPing === todayKey() ? " (c'est fait pour aujourd'hui)" : ""}.</p></div>` : ""}
+      ${linked ? `<div class="row agrow"><a class="btn dark sm" href="${esc(S.agenda)}" target="_blank" rel="noopener">Choisir mon heure</a><button class="btn ghost sm" id="agoff">Délier le site</button></div>` : ""}
+      <div class="gpanel">
+        <h3>${linked ? "Revoir l'installation" : "Installer, une seule fois (environ 5 minutes)"}</h3>
+        <ol class="agsteps">${steps.map(s => `<li>${s}</li>`).join("")}</ol>
+      </div>
+      <div class="gpanel">
+        <div class="aghead"><h3>Le code</h3><button class="btn dark sm" id="agcopy">Copier le code</button></div>
+        <pre class="code agcode"><code id="agsrc">Chargement…</code></pre>
+        <p class="small">Tu peux changer les heures en haut du code (<code>HEURE_MATIN</code>, <code>HEURE_DEFAUT</code>, <code>FIN</code>). Pour tout arrêter : choisis la fonction <b>desinstaller</b> et Exécuter.</p>
+      </div>
+    </div></section>`;
+    if ($("#agoff")) $("#agoff").addEventListener("click", () => { delete S.agenda; delete S.agendaPing; save(); viewAgenda(); });
+    let code = "";
+    try { code = await (await fetch(`agenda/Code.gs?t=${Date.now()}`, { cache: "no-store" })).text(); } catch (e) { /* hors ligne */ }
+    if (token !== routeToken) return;
+    $("#agsrc").textContent = code || "Le code n'a pas pu être chargé. Il est aussi dans ton fork : site/agenda/Code.gs.";
+    $("#agcopy").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(code); flash($("#agcopy"), "Copié ✓"); } catch (e) { flash($("#agcopy"), "Sélectionne le texte et copie-le"); }
+    });
+  }
+
   /* ---------- mes trophées ---------- */
 
   function heatmap(s) {
@@ -379,7 +447,7 @@
       <div class="hwtop"><span class="eyebrow">Calculé depuis ta progression, gardée dans ce navigateur</span><h1>Mes trophées</h1></div>
       <div class="gbar">
         <div class="gb-streak"><span class="fl${s.today ? " on" : ""}" aria-hidden="true">🔥</span><div><b>${s.cur} jour${s.cur > 1 ? "s" : ""} de série</b><small>Record : ${s.best} jour${s.best > 1 ? "s" : ""}</small></div></div>
-        <div class="gb-week">${weekDots(s)}<small>${s.jokerUsed ? "Joker de la semaine utilisé" : "1 joker cette semaine"}</small></div>
+        <div class="gb-week">${weekDots(s)}<small>${s.jokerUsed ? "Joker de la semaine utilisé" : "1 joker cette semaine"} · <a href="#/agenda">Mes rappels</a></small></div>
         <div class="gb-level"><div class="lv"><b>Niveau ${x.level}</b><small>${esc(x.rank)}</small></div><div class="xpbar"><b style="width:${(x.into / LEVEL_XP * 100).toFixed(1)}%"></b></div><small>${x.total} XP · encore ${LEVEL_XP - x.into} pour le niveau ${x.level + 1}</small></div>
         <div class="gb-troph"><b>🏆 ${got.length}<small> / ${tr.length}</small></b><small>trophées</small></div>
       </div>
@@ -745,14 +813,15 @@
     cleanups.forEach(f => { try { f(); } catch (e) { /* rien */ } });
     cleanups = [];
     routeToken++;
-    const [r, a, b] = location.hash.replace(/^#\/?/, "").split("/");
-    setNav(r === "l" || r === "rappel" ? "seance" : r || "home");
+    const [path, query] = location.hash.replace(/^#\/?/, "").split("?");
+    const [r, a, b] = path.split("/");
+    setNav(r === "l" || r === "rappel" || r === "agenda" ? "seance" : r || "home");
     // Le titre de l'onglet suit la page : utile avec plusieurs onglets ou dans l'historique.
     const it = r === "l" && byId(a), mod = r === "m" && C.modules.find(m => m.id === a);
     // Règle d'AB : passer d'une étape à la suivante (par n'importe quel bouton ou lien) la coche comme terminée.
     if (it && lastIt && !isDone(lastIt.id) && seqOf(lastIt)[idx(lastIt) + 1] === it) markDone(lastIt.id);
     lastIt = it || null;
-    const names = { methode: "Comment ça marche", progression: "Ma progression", rappel: "Le rappel", trophees: "Mes trophées" };
+    const names = { methode: "Comment ça marche", progression: "Ma progression", rappel: "Le rappel", trophees: "Mes trophées", agenda: "Mes rappels" };
     const pv = r === "v" && C.modules.find(m => m.id === a);
     const page = it ? it.title : mod ? "Module " + mod.id + " · " + mod.title : pv ? "Aperçu · " + pv.title : names[r];
     doc.title = page ? page + " · " + C.title : C.title;
@@ -764,6 +833,7 @@
     if (r === "progression") return viewProgress();
     if (r === "rappel") return viewRappel();
     if (r === "trophees") return viewTrophies();
+    if (r === "agenda") return viewAgenda(query);
     return viewHome();
   }
 
@@ -2129,6 +2199,7 @@
     let fresh = [];
     if (intro) { S.gameIntro = Date.now(); fresh = checkTrophies(true); save(); }
     onRoute();
+    if (S.agenda && doneToday()) pingAgenda();   // une leçon finie hors ligne : on prévient l'agenda maintenant
     if (intro) {
       const x = xpInfo();
       if (doneCount(ALL)) gameToast(`<div><b>Nouveau : XP, niveaux, série et trophées</b><span>Ce que tu as déjà fait compte : ${x.total} XP, niveau ${x.level}, ${fresh.length} trophée${fresh.length > 1 ? "s" : ""}.</span></div><a href="#/trophees">Voir mes trophées</a>`, true);
