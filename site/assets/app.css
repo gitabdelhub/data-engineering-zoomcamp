@@ -853,3 +853,14 @@ a.gb-streak:hover,a.gb-level:hover,a.gb-troph:hover{background:var(--bg-2)}
 .tro.ok .ti{filter:none;opacity:1}
 .tro .at{color:var(--orange);font-weight:600}
 
+
+/* mes rappels (Google Agenda) */
+.agok{border-color:#b6e2c4;background:color-mix(in srgb,#2fb36a 8%,var(--bg))}
+.agbad{border-color:#f0c2b0;background:color-mix(in srgb,var(--orange) 8%,var(--bg))}
+.agrow{margin:0 0 20px}
+.agsteps{margin:0;padding-left:22px;display:grid;gap:10px;line-height:1.55}
+.agsteps code,.gpanel p code{font-size:.92em}
+.aghead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.aghead h3{margin:0}
+.agcode{max-height:420px;overflow:auto}
+.rappel>.gpanel{margin-bottom:16px}
