@@ -30,7 +30,7 @@
   /* ---------- la progression ---------- */
 
   const KEY = "mzc.v1";
-  function blank() { return { done: {}, les: {}, notes: {}, hw: {}, video: {}, maj: {}, doneAt: {} }; }
+  function blank() { return { done: {}, les: {}, notes: {}, hw: {}, video: {}, maj: {}, doneAt: {}, days: {}, rappel: {}, rev: {}, troph: {}, plan: { wd: {}, seq: 0 } }; }
   function load() {
     try { return Object.assign(blank(), JSON.parse(localStorage.getItem(KEY) || "{}")); }
     catch (e) { return blank(); }
@@ -39,7 +39,7 @@
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch (e) { return false; /* navigation privée */ } }
   let saveTimer = 0;
   // Ce que tu tapes est enregistré tout seul : un petit « Enregistré » le confirme.
-  function saveSoon(quiet) { clearTimeout(saveTimer); saveTimer = setTimeout(() => { const ok = save(); if (!quiet || !ok) savedToast(ok); }, 400); }
+  function saveSoon(quiet) { clearTimeout(saveTimer); saveTimer = setTimeout(() => { if (!quiet) touchDay(); const ok = save(); if (!quiet || !ok) savedToast(ok); }, 400); }
   let toastTimer = 0;
   function savedToast(ok) {
     let t = $("#savetoast");
@@ -73,9 +73,443 @@
   const current = () => ITEMS.find(i => !isDone(i.id)) || null;
   const doneCount = (list = ITEMS) => list.filter(i => isDone(i.id)).length;
   function markDone(id) {
-    S.done[id] = true; S.doneAt[id] = Date.now(); save();
+    const before = !S.done[id] && xpInfo();
+    S.done[id] = true; S.doneAt[id] = Date.now(); touchDay(); save();
     const cur = current(), href = cur ? "#/l/" + cur.id : "#/progression";
     $("#continue").href = href; $("#nav-seance").href = href;
+    if (before) reward(before, (byId(id) || {}).title || "");
+  }
+
+  /* ---------- le jeu : XP, niveaux, série, trophées ---------- */
+  // Tout se calcule depuis ta progression : ce que tu as fait avant ces trophées compte aussi.
+
+  const XP = { lesson: 50, homework: 150, defi: 200, explain: 20, rappel: 10 };
+  const LEVEL_XP = 500;
+  const RANKS = [[1, "Curieux"], [3, "Stagiaire data"], [6, "Junior data engineer"], [10, "Data engineer"], [14, "Senior data engineer"], [17, "Lead data engineer"]];
+  const pad2 = n => String(n).padStart(2, "0");
+  const dayKey = t => { const d = new Date(t); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); };
+  const todayKey = () => dayKey(Date.now());
+  const dayDate = k => { const [y, m, d] = k.split("-").map(Number); return new Date(y, m - 1, d, 12); };
+  const addDays = (k, n) => { const d = dayDate(k); d.setDate(d.getDate() + n); return dayKey(d); };
+  // La semaine commence le lundi : sa clé est la date de son lundi.
+  const weekOf = k => { const d = dayDate(k); return addDays(k, -((d.getDay() + 6) % 7)); };
+
+  // Une journée compte dès que tu as vraiment travaillé : une étape, une réponse, un rappel.
+  function touchDay() { const k = todayKey(); if (!S.days[k]) { S.days[k] = 1; save(); } }
+  function activeDays() {
+    const set = new Set(Object.keys(S.days));
+    Object.values(S.doneAt).forEach(t => t && set.add(dayKey(t)));
+    Object.keys(S.rappel).forEach(k => set.add(k));
+    return set;
+  }
+
+  // La série : les jours où tu as travaillé, sans interruption. Un joker par semaine (lundi à dimanche) :
+  // un seul jour manqué dans la semaine ne casse rien. Aujourd'hui ne casse rien tant que la journée n'est pas finie.
+  function streakInfo() {
+    const days = activeDays(), today = todayKey();
+    const list = [...days].sort();
+    let cur = 0, best = 0;
+    const joker = {};
+    if (list.length) {
+      for (let k = list[0]; k <= today; k = addDays(k, 1)) {
+        if (days.has(k)) { cur++; best = Math.max(best, cur); }
+        else if (k !== today) {
+          const w = weekOf(k);
+          if (joker[w] || !cur) cur = 0;
+          else joker[w] = k;
+        }
+      }
+    }
+    const week = weekOf(today);
+    return { cur, best, today: days.has(today), jokerUsed: !!joker[week], days, week };
+  }
+
+  function xpInfo() {
+    const parts = { lesson: 0, homework: 0, defi: 0, explain: 0, rappel: 0 };
+    ALL.forEach(i => {
+      if (isDone(i.id)) parts[i.type] = (parts[i.type] || 0) + (XP[i.type] || 0);
+      const st = S.les[i.id];
+      if (i.type === "lesson" && isDone(i.id) && st && (st.explain || "").trim().length >= 20) parts.explain += XP.explain;
+    });
+    parts.rappel = Object.keys(S.rappel).length * XP.rappel;
+    const total = Object.values(parts).reduce((a, b) => a + b, 0);
+    const level = Math.floor(total / LEVEL_XP) + 1;
+    const rank = RANKS.filter(r => r[0] <= level).pop()[1];
+    return { parts, total, level, rank, into: total % LEVEL_XP };
+  }
+
+  // Les trophées. « secret » : on ne dit pas comment l'obtenir avant de l'avoir.
+  const MOD_TROPHY = { "00": "Gardien du dépôt", "01": "Capitaine Docker", "02": "Chef d'orchestre", W1: "Plombier des données", "03": "Architecte de l'entrepôt", "06": "Étincelle", "04": "Analytics engineer", "07": "Temps réel", P: "Data engineer" };
+  function trophyList() {
+    const done = id => isDone(id);
+    const doneTimes = Object.entries(S.doneAt).filter(([id, t]) => t && S.done[id]).map(([, t]) => t);
+    const perDay = {};
+    doneTimes.forEach(t => { const k = dayKey(t); perDay[k] = (perDay[k] || 0) + 1; });
+    const s = streakInfo();
+    const dl = [...s.days].sort();
+    const gap = dl.some((k, i) => i && dayDate(k) - dayDate(dl[i - 1]) >= 4 * 864e5);
+    const weeks = {};
+    dl.forEach(k => { const w = weekOf(k); weeks[w] = (weeks[w] || 0) + 1; });
+    const expl = ALL.filter(i => i.type === "lesson" && isDone(i.id) && S.les[i.id] && (S.les[i.id].explain || "").trim().length >= 20).length;
+    const hws = ITEMS.filter(i => i.type === "homework");
+    const rappels = Object.keys(S.rappel).length;
+    const T = [
+      ["first", "Premier pas", "Termine ta première étape", doneCount(ALL) >= 1],
+      ["c0004", "Premier commit", "Termine « Ton premier commit »", done("00-04")],
+      ["c0006", "Brancheur", "Termine « Les branches et la fusion »", done("00-06")],
+      ["c0007", "Démineur", "Résous ton premier conflit (module 0, leçon 7)", done("00-07")],
+      ["c0011", "En ligne", "Mets ton site en ligne avec GitHub Pages", done("00-11")],
+      ...PATH.filter(m => m.items.length).map(m => ["mod" + m.id, MOD_TROPHY[m.id] || modName(m) + " validé", m.id === "P" ? "Termine le projet final" : m.id === "W1" ? "Termine le workshop d'ingestion" : "Termine le module " + Number(m.id) + " : " + m.title, doneCount(m.items) === m.items.length]),
+      ["hw1", "Premier homework", "Rends ton premier homework", hws.some(i => done(i.id))],
+      ["hwall", "Tous les homeworks", "Fais tous les homeworks du parcours", hws.length && hws.every(i => done(i.id))],
+      ["defi1", "Premier défi", "Réussis ton premier défi", ITEMS.some(i => i.type === "defi" && done(i.id))],
+      ["half", "Mi-parcours", "Termine la moitié du parcours", doneCount() >= ITEMS.length / 2],
+      ["s3", "Lancé", "3 jours de série", s.best >= 3],
+      ["s7", "Une semaine", "7 jours de série", s.best >= 7],
+      ["s14", "Deux semaines", "14 jours de série", s.best >= 14],
+      ["s30", "Un mois", "30 jours de série", s.best >= 30],
+      ["s60", "Inarrêtable", "60 jours de série", s.best >= 60],
+      ["s100", "Centurion", "100 jours de série", s.best >= 100],
+      ["e1", "Première explication", "Explique une leçon avec tes mots", expl >= 1],
+      ["e10", "Prof en herbe", "10 leçons expliquées avec tes mots", expl >= 10],
+      ["e30", "Pédagogue", "30 leçons expliquées avec tes mots", expl >= 30],
+      ["r1", "Mémoire en marche", "Fais ton premier rappel", rappels >= 1],
+      ["r10", "Mémoire d'éléphant", "Fais le rappel 10 jours différents", rappels >= 10],
+      ["week", "Semaine pleine", "Travaille 6 jours dans la même semaine", Object.values(weeks).some(n => n >= 6)],
+      ["early", "Lève-tôt", "Termine une étape avant 8 h", doneTimes.some(t => new Date(t).getHours() < 8), true],
+      ["night", "Oiseau de nuit", "Termine une étape après 22 h", doneTimes.some(t => new Date(t).getHours() >= 22), true],
+      ["marathon", "Marathon", "Termine 3 étapes le même jour", Object.values(perDay).some(n => n >= 3), true],
+      ["comeback", "Retour gagnant", "Reviens après 3 jours ou plus sans étudier", gap, true]
+    ];
+    return T.map(([id, name, how, ok, secret]) => ({ id, name, how, ok: !!ok, secret: !!secret, at: S.troph[id] || 0 }));
+  }
+
+  // Note les trophées nouvellement obtenus. Au tout premier passage, ceux que tu avais déjà gagnés arrivent en bloc.
+  function checkTrophies(retro) {
+    const fresh = trophyList().filter(t => t.ok && !S.troph[t.id]);
+    if (!fresh.length) return [];
+    const now = retro ? 1 : Date.now();   // 1 : gagné avant l'arrivée des trophées, date inconnue
+    fresh.forEach(t => { S.troph[t.id] = now; });
+    save();
+    return fresh;
+  }
+
+  let gtoastTimer = 0;
+  function gameToast(html, big) {
+    let t = $("#gtoast");
+    if (!t) {
+      t = doc.createElement("div");
+      t.id = "gtoast";
+      t.className = "gtoast";
+      t.setAttribute("role", "status");
+      doc.body.appendChild(t);
+    }
+    t.innerHTML = html;
+    t.classList.add("on");
+    clearTimeout(gtoastTimer);
+    gtoastTimer = setTimeout(() => t.classList.remove("on"), big ? 6500 : 3800);
+  }
+  // Après une action qui rapporte : l'XP gagnée, un niveau, des trophées.
+  function reward(before, label) {
+    const after = xpInfo();
+    const fresh = checkTrophies();
+    const gained = after.total - before.total;
+    if (!gained && !fresh.length) return updateChip();
+    const lines = [];
+    if (gained) lines.push(`<b class="xp">+${gained} XP</b><span>${esc(label)}</span>`);
+    if (after.level > before.level) lines.push(`<b>Niveau ${after.level}</b><span>${esc(after.rank)}</span>`);
+    fresh.slice(0, 3).forEach(t => lines.push(`<b>🏆 ${esc(t.name)}</b><span>${esc(t.how)}</span>`));
+    if (fresh.length > 3) lines.push(`<b>🏆 +${fresh.length - 3}</b><span>autres trophées</span>`);
+    gameToast(lines.map(l => `<div>${l}</div>`).join("") + `<a href="#/trophees">Voir mes trophées</a>`, fresh.length || after.level > before.level);
+    if (fresh.length || after.level > before.level) celebrate(false);
+    updateChip();
+  }
+
+  function updateChip() {
+    const c = $("#gchip");
+    if (!c) return;
+    const s = streakInfo(), x = xpInfo();
+    c.innerHTML = `<span class="fl${s.today ? " on" : ""}" aria-hidden="true">🔥</span>${s.cur}<span class="sep" aria-hidden="true"></span>Niv. ${x.level}`;
+    c.title = `Série : ${s.cur} jour${s.cur > 1 ? "s" : ""}${s.today ? "" : " (fais une étape aujourd'hui pour la garder)"} · ${x.total} XP`;
+  }
+
+  const DAYS = ["L", "M", "M", "J", "V", "S", "D"];
+  function weekDots(s) {
+    const today = todayKey();
+    return `<div class="wdots" aria-label="Ta semaine">${DAYS.map((d, i) => {
+      const k = addDays(s.week, i);
+      const cls = s.days.has(k) ? "ok" : k === today ? "now" : k < today ? "miss" : "";
+      return `<span class="${cls}" title="${k}"><i>${s.days.has(k) ? "✓" : ""}</i>${d}</span>`;
+    }).join("")}</div>`;
+  }
+
+  // La bande de jeu de l'accueil : série, niveau, semaine, trophées.
+  function gameBar() {
+    const s = streakInfo(), x = xpInfo(), tr = trophyList();
+    const got = tr.filter(t => t.ok).length;
+    const msg = s.today ? "Journée validée. Ta série est à l'abri."
+      : s.cur ? `Fais une étape ou le rappel aujourd'hui pour passer à ${s.cur + 1} jour${s.cur + 1 > 1 ? "s" : ""}.`
+      : "Une étape aujourd'hui, et ta série commence.";
+    return `<div class="gbar">
+      <a class="gb-streak" href="#/trophees"><span class="fl${s.today ? " on" : ""}" aria-hidden="true">🔥</span><div><b>${s.cur} jour${s.cur > 1 ? "s" : ""} de série</b><small>${esc(msg)}</small></div></a>
+      <div class="gb-week">${weekDots(s)}<small>${s.jokerUsed ? "Joker de la semaine utilisé" : "1 joker cette semaine : un jour manqué ne casse rien"} · <a href="#/semaine">Planifier ma semaine</a></small></div>
+      <a class="gb-level" href="#/trophees"><div class="lv"><b>Niveau ${x.level}</b><small>${esc(x.rank)}</small></div><div class="xpbar"><b style="width:${(x.into / LEVEL_XP * 100).toFixed(1)}%"></b></div><small>${x.total} XP · encore ${LEVEL_XP - x.into} pour le niveau ${x.level + 1}</small></a>
+      <a class="gb-troph" href="#/trophees"><b>🏆 ${got}<small> / ${tr.length}</small></b><small>trophées</small></a>
+    </div>`;
+  }
+
+  /* ---------- le rappel : 2 minutes sur tes leçons d'avant ---------- */
+  // Répétition espacée : une notion que tu savais revient de plus en plus tard, une notion oubliée revient demain.
+
+  const GAPS = [1, 3, 7, 14, 30, 60];
+  async function rappelCards(max = 3) {
+    const today = todayKey();
+    const lessons = ALL.filter(i => i.type === "lesson" && i.overlay && isDone(i.id))
+      .sort((a, b) => (S.doneAt[b.id] || 0) - (S.doneAt[a.id] || 0));
+    if (!lessons.length) return [];
+    const due = Object.entries(S.rev).filter(([, r]) => r.due <= today).sort((a, b) => a[1].due < b[1].due ? -1 : 1).map(([k]) => k);
+    const want = [...due];
+    // Puis des notions jamais revues, en commençant par les leçons les plus récentes.
+    const fresh = lessons.slice(0, 6);
+    const cards = [];
+    const ovs = {};
+    const keysOf = async it => {
+      if (!(it.id in ovs)) {
+        try { ovs[it.id] = listItems(parseOverlay(await getText(it.overlay)).cles).map(l => l.split("|").map(x => x.trim())); }
+        catch (e) { ovs[it.id] = []; }
+      }
+      return ovs[it.id];
+    };
+    for (const key of want) {
+      if (cards.length >= max) break;
+      const [id, n] = key.split("#"), it = byId(id);
+      if (!it || !it.overlay) continue;
+      const k = (await keysOf(it))[Number(n)];
+      if (k) cards.push({ key, it, t: k[0], why: k[2] || "" });
+    }
+    for (const it of fresh) {
+      if (cards.length >= max) break;
+      const ks = await keysOf(it);
+      for (let n = 0; n < ks.length && cards.length < max; n++) {
+        const key = it.id + "#" + n;
+        if (S.rev[key] || cards.some(c => c.key === key)) continue;
+        cards.push({ key, it, t: ks[n][0], why: ks[n][2] || "" });
+        break;   // une notion par leçon, pour varier
+      }
+    }
+    return cards;
+  }
+
+  async function viewRappel() {
+    const token = routeToken;
+    app.innerHTML = `<section class="gut"><div class="max rappel"><div class="hwtop"><span class="eyebrow">Ma séance · environ 2 minutes</span><h1>Le rappel</h1>
+      <p class="lead2">Sans regarder la leçon : essaie d'expliquer chaque notion en une phrase, dans ta tête ou par écrit. Puis compare. C'est ce petit effort qui fait retenir.</p></div>
+      <div id="rp"><p class="small">Chargement…</p></div></div></section>`;
+    const cards = await rappelCards(3);
+    if (token !== routeToken) return;
+    const box = $("#rp");
+    if (!cards.length) {
+      box.innerHTML = `<div class="donec"><h2>Rien à rappeler pour l'instant.</h2><p>Le rappel porte sur les leçons que tu as terminées. Fais ta prochaine leçon, et demain elle reviendra ici.</p><div><a class="btn" href="${$("#continue").getAttribute("href")}">Ma leçon du jour <span class="arr">→</span></a></div></div>`;
+      return;
+    }
+    let i = 0, knew = 0;
+    const show = () => {
+      const c = cards[i];
+      box.innerHTML = `<div class="rpcard">
+        <div class="rph"><span class="eyebrow">${i + 1} sur ${cards.length} · ${esc(modLabel(modOf(c.it)))} · ${esc(c.it.title)}</span></div>
+        <h2>🔑 ${mdInline(c.t)}</h2>
+        <textarea class="rpta" rows="3" placeholder="Ta phrase, avec tes mots (facultatif)" aria-label="Ton explication"></textarea>
+        <div class="row"><button class="btn" id="rpshow">Voir la réponse</button></div>
+        <div class="rpans" hidden>
+          <p>${mdInline(c.why) || "Relis le passage de la leçon sur cette notion."}</p>
+          <p class="small"><a href="#/l/${c.it.id}">Revoir la leçon</a></p>
+          <div class="row"><button class="btn" data-k="1">Je savais</button><button class="btn ghost" data-k="0">À revoir</button></div>
+        </div></div>`;
+      $("#rpshow").addEventListener("click", e => { e.target.closest(".row").hidden = true; $(".rpans", box).hidden = false; });
+      $$(".rpans [data-k]", box).forEach(b => b.addEventListener("click", () => {
+        const ok = b.dataset.k === "1", r = S.rev[c.key] || { box: 0 };
+        r.box = ok ? Math.min((r.box || 0) + 1, GAPS.length - 1) : 0;
+        r.due = addDays(todayKey(), ok ? GAPS[r.box] : 1);
+        S.rev[c.key] = r;
+        if (ok) knew++;
+        i++;
+        if (i < cards.length) { save(); show(); } else finish();
+      }));
+    };
+    const finish = () => {
+      const before = xpInfo(), first = !S.rappel[todayKey()];
+      S.rappel[todayKey()] = cards.length;
+      touchDay();
+      save();
+      const s = streakInfo();
+      box.innerHTML = `<div class="donec"><span class="lab">Rappel terminé</span><h2>${knew} sur ${cards.length}.</h2>
+        <p>${knew === cards.length ? "Tout est encore là. Ces notions reviendront plus tard, de plus en plus espacées." : "Ce que tu as marqué « À revoir » reviendra demain. C'est normal : on oublie, puis on retient mieux."}</p>
+        <p><b>🔥 ${s.cur} jour${s.cur > 1 ? "s" : ""} de série.</b> Ta journée compte déjà, même si tu t'arrêtes ici.</p>
+        <div class="row"><a class="btn" href="${$("#continue").getAttribute("href")}">Continuer avec ma leçon du jour <span class="arr">→</span></a><a class="btn ghost" href="#/">Ça suffit pour aujourd'hui</a></div></div>`;
+      if (first) reward(before, "Rappel du jour"); else updateChip();
+    };
+    show();
+  }
+
+
+  /* ---------- ma semaine : les rendez-vous dans ton agenda ---------- */
+  // Tes horaires changent d'un jour à l'autre : tu choisis un créneau par jour, le site écrit les rendez-vous.
+
+  function planDays() {
+    S.plan = Object.assign({ wd: {}, seq: 0 }, S.plan);
+    return Array.from({ length: 7 }, (_, n) => {
+      const k = addDays(todayKey(), n), d = dayDate(k);
+      const def = S.plan.wd[d.getDay()] || { t: "19:00", m: 30, off: false };
+      const name = d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+      return { k, label: (n === 0 ? "aujourd'hui, " : n === 1 ? "demain, " : "") + name, wd: d.getDay(), t: def.t, m: def.m, off: def.off };
+    });
+  }
+  const siteUrl = () => location.origin + location.pathname + "#/";
+  const calStamp = (k, t) => k.replace(/-/g, "") + "T" + t.replace(":", "") + "00";
+  function endOf(k, t, m) {
+    const [h, mi] = t.split(":").map(Number), d = dayDate(k);
+    d.setHours(h, mi + m, 0, 0);
+    return { k: dayKey(d), t: pad2(d.getHours()) + ":" + pad2(d.getMinutes()) };
+  }
+  const icsText = s => String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  // Une ligne d'iCalendar ne dépasse pas 75 octets : on la replie.
+  function fold(line) {
+    const enc = new TextEncoder(), out = [];
+    let cur = "", n = 0;
+    for (const ch of line) {
+      const b = enc.encode(ch).length;
+      if (n + b > 73) { out.push(cur); cur = " "; n = 1; }
+      cur += ch; n += b;
+    }
+    out.push(cur);
+    return out.join("\r\n");
+  }
+  const SEANCE_TXT = "Commence par le rappel (2 min), puis ta leçon du jour.";
+  function buildIcs(days) {
+    const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+    const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Mon Zoomcamp//FR", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+    days.filter(d => !d.off).forEach(d => {
+      const e = endOf(d.k, d.t, d.m);
+      L.push("BEGIN:VEVENT", `UID:mzc-${d.k}@${REPO.owner}.mon-zoomcamp`, `SEQUENCE:${S.plan.seq}`, `DTSTAMP:${stamp}`,
+        `DTSTART:${calStamp(d.k, d.t)}`, `DTEND:${calStamp(e.k, e.t)}`,
+        "SUMMARY:" + icsText("Mon Zoomcamp : ta séance"),
+        "DESCRIPTION:" + icsText(`${SEANCE_TXT}\n${siteUrl()}`),
+        "URL:" + siteUrl(),
+        "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + icsText("Ta séance Mon Zoomcamp commence dans 10 minutes"), "TRIGGER:-PT10M", "END:VALARM",
+        "END:VEVENT");
+    });
+    L.push("END:VCALENDAR");
+    return L.map(fold).join("\r\n") + "\r\n";
+  }
+  function googleLink(d) {
+    const e = endOf(d.k, d.t, d.m);
+    const q = new URLSearchParams({ action: "TEMPLATE", text: "Mon Zoomcamp : ta séance", dates: calStamp(d.k, d.t) + "/" + calStamp(e.k, e.t), details: `${SEANCE_TXT}\n${siteUrl()}` });
+    const tz = (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone;
+    if (tz) q.set("ctz", tz);
+    return "https://calendar.google.com/calendar/render?" + q.toString();
+  }
+
+  function viewPlan() {
+    const days = planDays();
+    app.innerHTML = `<section class="gut"><div class="max rappel">
+      <div class="hwtop"><span class="eyebrow">Une minute, une fois par semaine</span><h1>Ma semaine</h1>
+        <p class="lead2">Tes cours changent d'un jour à l'autre : choisis ton créneau pour chacun des 7 prochains jours. Le site crée les rendez-vous de ta séance pour ton agenda, avec le lien du site dedans. Un jour sans séance, c'est ton joker.</p></div>
+      <div class="plan" id="plan">${days.map((d, i) => `<div class="pday${d.off ? " off" : ""}" data-i="${i}">
+        <b>${esc(d.label)}</b>
+        <label><span class="sr">Heure</span><input type="time" value="${d.t}"${d.off ? " disabled" : ""}></label>
+        <label><span class="sr">Durée</span><select${d.off ? " disabled" : ""}>${[20, 30, 45, 60, 90].map(m => `<option value="${m}"${m === d.m ? " selected" : ""}>${m} min</option>`).join("")}</select></label>
+        <label class="po"><input type="checkbox"${d.off ? " checked" : ""}> Pas de séance</label>
+      </div>`).join("")}</div>
+      <div class="gpanel plan-out">
+        <h3>Google Agenda</h3>
+        <p class="small">Un clic par jour, puis « Enregistrer » dans Google Agenda. Tu reçois la notification habituelle de ton agenda sur ton téléphone.</p>
+        <div class="glinks" id="glinks"></div>
+        <h3>iPhone ou autre agenda</h3>
+        <p class="small">Un seul fichier pour toute la semaine, avec une alerte 10 minutes avant chaque séance. Sur iPhone, ouvre-le depuis ton téléphone (par e-mail ou AirDrop) et choisis « Tout ajouter ».</p>
+        <div><button class="btn dark sm" id="ics">Télécharger la semaine (.ics)</button></div>
+        <p class="small">Un créneau change en cours de semaine ? Déplace simplement le rendez-vous dans ton agenda.</p>
+      </div>
+    </div></section>`;
+    const rows = $$(".pday", app);
+    const read = () => rows.forEach((row, i) => {
+      const d = days[i];
+      d.t = $("input[type=time]", row).value || "19:00";
+      d.m = Number($("select", row).value);
+      d.off = $("input[type=checkbox]", row).checked;
+    });
+    const sync = quiet => {
+      read();
+      days.forEach(d => { S.plan.wd[d.wd] = { t: d.t, m: d.m, off: d.off }; });
+      if (!quiet) save();
+      rows.forEach((row, i) => {
+        row.classList.toggle("off", days[i].off);
+        $("input[type=time]", row).disabled = days[i].off;
+        $("select", row).disabled = days[i].off;
+      });
+      const on = days.filter(d => !d.off);
+      $("#glinks").innerHTML = on.map(d => `<a class="btn ghost sm" href="${esc(googleLink(d))}" target="_blank" rel="noopener">${esc(dayDate(d.k).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" }))} · ${d.t}</a>`).join("") || `<span class="small">Aucune séance prévue cette semaine.</span>`;
+      $("#ics").disabled = !on.length;
+    };
+    $("#plan").addEventListener("change", () => sync(false));
+    sync(true);
+    $("#ics").addEventListener("click", () => {
+      read();
+      S.plan.seq++;
+      save();
+      const a = doc.createElement("a");
+      a.href = URL.createObjectURL(new Blob([buildIcs(days)], { type: "text/calendar;charset=utf-8" }));
+      a.download = "mon-zoomcamp-semaine.ics";
+      doc.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      flash($("#ics"), "Fichier téléchargé ✓");
+    });
+  }
+
+  /* ---------- mes trophées ---------- */
+
+  function heatmap(s) {
+    const today = todayKey();
+    const start = addDays(weekOf(today), -7 * 15);
+    let cols = "";
+    for (let w = 0; w < 16; w++) {
+      let cells = "";
+      for (let d = 0; d < 7; d++) {
+        const k = addDays(start, w * 7 + d);
+        const cls = k > today ? "fut" : s.days.has(k) ? "ok" : "";
+        cells += `<i class="${cls}" title="${k}"></i>`;
+      }
+      cols += `<span>${cells}</span>`;
+    }
+    return `<div class="heat" aria-label="Tes 16 dernières semaines">${cols}</div>`;
+  }
+
+  function viewTrophies() {
+    checkTrophies();
+    const s = streakInfo(), x = xpInfo(), tr = trophyList();
+    const got = tr.filter(t => t.ok);
+    const fmt = t => t ? new Date(t).toLocaleDateString("fr-FR", { day: "numeric", month: "long" }) : "";
+    const row = (label, n) => `<div><span>${label}</span><b>${n} XP</b></div>`;
+    app.innerHTML = `<section class="gut"><div class="max progpage">
+      <div class="hwtop"><span class="eyebrow">Calculé depuis ta progression, gardée dans ce navigateur</span><h1>Mes trophées</h1></div>
+      <div class="gbar">
+        <div class="gb-streak"><span class="fl${s.today ? " on" : ""}" aria-hidden="true">🔥</span><div><b>${s.cur} jour${s.cur > 1 ? "s" : ""} de série</b><small>Record : ${s.best} jour${s.best > 1 ? "s" : ""}</small></div></div>
+        <div class="gb-week">${weekDots(s)}<small>${s.jokerUsed ? "Joker de la semaine utilisé" : "1 joker cette semaine"} · <a href="#/semaine">Planifier ma semaine</a></small></div>
+        <div class="gb-level"><div class="lv"><b>Niveau ${x.level}</b><small>${esc(x.rank)}</small></div><div class="xpbar"><b style="width:${(x.into / LEVEL_XP * 100).toFixed(1)}%"></b></div><small>${x.total} XP · encore ${LEVEL_XP - x.into} pour le niveau ${x.level + 1}</small></div>
+        <div class="gb-troph"><b>🏆 ${got.length}<small> / ${tr.length}</small></b><small>trophées</small></div>
+      </div>
+      <div class="gcols">
+        <div class="gpanel"><h3>Tes 16 dernières semaines</h3>${heatmap(s)}<p class="small">Une case par jour, du lundi (en haut) au dimanche. Orange : tu as travaillé ce jour-là.</p></div>
+        <div class="gpanel"><h3>D'où vient ton XP</h3><div class="xprows">
+          ${row(`Leçons terminées · ${XP.lesson} XP`, x.parts.lesson)}${row(`Homeworks · ${XP.homework} XP`, x.parts.homework)}${row(`Défis · ${XP.defi} XP`, x.parts.defi)}
+          ${row(`Explications écrites · ${XP.explain} XP`, x.parts.explain)}${row(`Jours de rappel · ${XP.rappel} XP`, x.parts.rappel)}
+        </div><p class="small">Un niveau tous les ${LEVEL_XP} XP. Les titres suivent un vrai parcours : stagiaire, junior, data engineer, senior, lead.</p></div>
+      </div>
+      <div class="sh" style="margin:24px 0 0"><div><span class="eyebrow">${got.length} sur ${tr.length}</span><h2>Trophées</h2></div></div>
+      <div class="trophs">${tr.map(t => t.ok
+        ? `<div class="tro ok"><span class="ti" aria-hidden="true">🏆</span><b>${esc(t.name)}</b><small>${esc(t.how)}</small><small class="at">${t.at > 1 ? esc(fmt(t.at)) : "Gagné avant les trophées"}</small></div>`
+        : `<div class="tro"><span class="ti" aria-hidden="true">${t.secret ? "?" : "🔒"}</span><b>${t.secret ? "Trophée secret" : esc(t.name)}</b><small>${t.secret ? "Continue, il viendra tout seul." : esc(t.how)}</small></div>`).join("")}</div>
+    </div></section>`;
+    updateChip();
   }
 
   function modStatus(m) {
@@ -418,6 +852,7 @@
     const cont = $("#continue");
     cont.href = cur ? "#/l/" + cur.id : "#/progression";
     $("#nav-seance").href = cont.href;
+    updateChip();
   }
   let lastIt = null;
   function onRoute() {
@@ -425,13 +860,13 @@
     cleanups = [];
     routeToken++;
     const [r, a, b] = location.hash.replace(/^#\/?/, "").split("/");
-    setNav(r === "l" ? "seance" : r || "home");
+    setNav(r === "l" || r === "rappel" || r === "semaine" ? "seance" : r || "home");
     // Le titre de l'onglet suit la page : utile avec plusieurs onglets ou dans l'historique.
     const it = r === "l" && byId(a), mod = r === "m" && C.modules.find(m => m.id === a);
     // Règle d'AB : passer d'une étape à la suivante (par n'importe quel bouton ou lien) la coche comme terminée.
     if (it && lastIt && !isDone(lastIt.id) && seqOf(lastIt)[idx(lastIt) + 1] === it) markDone(lastIt.id);
     lastIt = it || null;
-    const names = { methode: "Comment ça marche", progression: "Ma progression" };
+    const names = { methode: "Comment ça marche", progression: "Ma progression", rappel: "Le rappel", trophees: "Mes trophées", semaine: "Ma semaine" };
     const pv = r === "v" && C.modules.find(m => m.id === a);
     const page = it ? it.title : mod ? "Module " + mod.id + " · " + mod.title : pv ? "Aperçu · " + pv.title : names[r];
     doc.title = page ? page + " · " + C.title : C.title;
@@ -441,6 +876,9 @@
     if (r === "v") return viewPreview(a, b);
     if (r === "methode") return viewMethod();
     if (r === "progression") return viewProgress();
+    if (r === "rappel") return viewRappel();
+    if (r === "trophees") return viewTrophies();
+    if (r === "semaine") return viewPlan();
     return viewHome();
   }
 
@@ -477,6 +915,7 @@
     </div></section>
 
     <section class="section gut"><div class="max">
+      ${doneCount(ALL) || Object.keys(S.days).length ? gameBar() : ""}
       ${welcome() || '<div class="today" id="today"></div>'}
 
       <div class="sh" style="margin-top:64px"><div><span class="eyebrow">À ton rythme, sans date limite</span><h2>Ton programme</h2></div></div>
@@ -518,11 +957,13 @@
       return;
     }
     const mod = modOf(cur);
+    const canRappel = ALL.some(i => i.type === "lesson" && i.overlay && isDone(i.id)), rpDone = !!S.rappel[todayKey()];
     box.innerHTML = `<div class="today-h">
         <span class="eyebrow">${modLabel(mod)} · ${esc(mod.title)} · ${itemLabel(cur)}${cur.min ? " · " + esc(dur(cur)) : ""}</span>
         <h2>Ta séance du jour</h2>
         <p>${esc(cur.title)}. Suis les étapes dans l'ordre, c'est le plus efficace. Tu peux t'arrêter entre deux étapes, tout est enregistré.</p>
-        <div><a class="btn" href="#/l/${cur.id}">Continuer <span class="arr">→</span></a></div>
+        <div class="row"><a class="btn" href="${canRappel && !rpDone ? "#/rappel" : "#/l/" + cur.id}">${canRappel && !rpDone ? "Commencer par le rappel" : "Continuer"} <span class="arr">→</span></a></div>
+        ${canRappel && !rpDone ? `<p class="small">Journée difficile ? <a href="#/rappel">Fais seulement le rappel</a> : 2 minutes, et ta série est gardée.</p>` : ""}
       </div><ol class="seq" id="seq"><li><span class="st">…</span><div><b>Chargement</b></div></li></ol>`;
     const token = routeToken;
     let rows = [];
@@ -537,7 +978,8 @@
       rows = [{ state: "now", label: "Construire sans guide", hint: cur.seq || "Docker Compose, ingestion et vérification" }, { state: "lock", label: "Entrer ton code de réussite", hint: "Donné par le script quand tout est vert" }];
     }
     if (token !== routeToken) return;
-    $("#seq").innerHTML = rows.map((r, i) => `<li class="${r.state}"><span class="st">${r.state === "ok" ? "✓" : i + 1}</span><div><b>${esc(r.label)}</b><small>${esc(r.hint)}</small></div>${r.state === "now" ? `<a class="btn sm" href="#/l/${cur.id}">Ouvrir</a>` : ""}</li>`).join("");
+    if (canRappel) rows.unshift({ state: rpDone ? "ok" : "now", label: "Le rappel", hint: "2 minutes sur tes leçons d'avant, sans regarder", href: "#/rappel" });
+    $("#seq").innerHTML = rows.map((r, i) => `<li class="${r.state}"><span class="st">${r.state === "ok" ? "✓" : i + 1}</span><div><b>${esc(r.label)}</b><small>${esc(r.hint)}</small></div>${r.state === "now" ? `<a class="btn sm" href="${r.href || "#/l/" + cur.id}">Ouvrir</a>` : ""}</li>`).join("");
   }
 
   function programList() {
@@ -974,6 +1416,7 @@
     function go(i) { view = i; renderSteps(); renderStep(); $("#fsteps").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }
     function advance(from) {
       if (st.step <= from) st.step = from + 1;
+      touchDay();
       save();
       go(st.step);
     }
@@ -1703,6 +2146,7 @@
       .sort((a, b) => (S.doneAt[b.id] || 0) - (S.doneAt[a.id] || 0));
     app.innerHTML = `<section class="gut"><div class="max progpage">
       <div class="hwtop"><span class="eyebrow">Ta progression est gardée dans ce navigateur</span><h1>Ma progression</h1></div>
+      ${gameBar()}
       ${statRow()}
       <div class="progmods">${[...PATH, ...LIB.filter(m => m.items.length)].map(m => {
         const n = m.items.length, d = doneCount(m.items);
@@ -1795,6 +2239,16 @@
   }
 
   addEventListener("hashchange", onRoute);
-  loadMe().then(onRoute);
+  loadMe().then(() => {
+    const intro = !S.gameIntro;
+    let fresh = [];
+    if (intro) { S.gameIntro = Date.now(); fresh = checkTrophies(true); save(); }
+    onRoute();
+    if (intro) {
+      const x = xpInfo();
+      if (doneCount(ALL)) gameToast(`<div><b>Nouveau : XP, niveaux, série et trophées</b><span>Ce que tu as déjà fait compte : ${x.total} XP, niveau ${x.level}, ${fresh.length} trophée${fresh.length > 1 ? "s" : ""}.</span></div><a href="#/trophees">Voir mes trophées</a>`, true);
+      updateChip();
+    }
+  });
   syncStatus();
 })();
