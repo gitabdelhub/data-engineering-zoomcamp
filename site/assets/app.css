@@ -853,18 +853,3 @@ a.gb-streak:hover,a.gb-level:hover,a.gb-troph:hover{background:var(--bg-2)}
 .tro.ok .ti{filter:none;opacity:1}
 .tro .at{color:var(--orange);font-weight:600}
 
-/* ma semaine */
-.plan{display:grid;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:20px}
-.pday{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:12px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
-.pday:last-child{border-bottom:0}
-.pday b{font-size:16px}
-.pday b::first-letter{text-transform:uppercase}
-.pday.off b{color:var(--muted);text-decoration:line-through}
-.pday input[type=time],.pday select{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
-.pday input:disabled,.pday select:disabled{opacity:.45}
-.pday .po{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--muted);white-space:nowrap}
-.plan-out{display:grid;gap:10px}
-.plan-out h3+p{margin-top:-4px}
-.glinks{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media (max-width:560px){.pday{grid-template-columns:auto auto minmax(0,1fr);gap:8px;padding:12px 14px}.pday b{grid-column:1/-1}.pday input[type=time],.pday select{padding:7px 8px}.pday .po{white-space:normal;line-height:1.2}}

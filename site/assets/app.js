@@ -30,7 +30,7 @@
   /* ---------- la progression ---------- */
 
   const KEY = "mzc.v1";
-  function blank() { return { done: {}, les: {}, notes: {}, hw: {}, video: {}, maj: {}, doneAt: {}, days: {}, rappel: {}, rev: {}, troph: {}, plan: { wd: {}, seq: 0 } }; }
+  function blank() { return { done: {}, les: {}, notes: {}, hw: {}, video: {}, maj: {}, doneAt: {}, days: {}, rappel: {}, rev: {}, troph: {} }; }
   function load() {
     try { return Object.assign(blank(), JSON.parse(localStorage.getItem(KEY) || "{}")); }
     catch (e) { return blank(); }
@@ -252,7 +252,7 @@
       : "Une étape aujourd'hui, et ta série commence.";
     return `<div class="gbar">
       <a class="gb-streak" href="#/trophees"><span class="fl${s.today ? " on" : ""}" aria-hidden="true">🔥</span><div><b>${s.cur} jour${s.cur > 1 ? "s" : ""} de série</b><small>${esc(msg)}</small></div></a>
-      <div class="gb-week">${weekDots(s)}<small>${s.jokerUsed ? "Joker de la semaine utilisé" : "1 joker cette semaine : un jour manqué ne casse rien"} · <a href="#/semaine">Planifier ma semaine</a></small></div>
+      <div class="gb-week">${weekDots(s)}<small>${s.jokerUsed ? "Joker de la semaine utilisé" : "1 joker cette semaine : un jour manqué ne casse rien"}</small></div>
       <a class="gb-level" href="#/trophees"><div class="lv"><b>Niveau ${x.level}</b><small>${esc(x.rank)}</small></div><div class="xpbar"><b style="width:${(x.into / LEVEL_XP * 100).toFixed(1)}%"></b></div><small>${x.total} XP · encore ${LEVEL_XP - x.into} pour le niveau ${x.level + 1}</small></a>
       <a class="gb-troph" href="#/trophees"><b>🏆 ${got}<small> / ${tr.length}</small></b><small>trophées</small></a>
     </div>`;
@@ -351,120 +351,6 @@
     show();
   }
 
-
-  /* ---------- ma semaine : les rendez-vous dans ton agenda ---------- */
-  // Tes horaires changent d'un jour à l'autre : tu choisis un créneau par jour, le site écrit les rendez-vous.
-
-  function planDays() {
-    S.plan = Object.assign({ wd: {}, seq: 0 }, S.plan);
-    return Array.from({ length: 7 }, (_, n) => {
-      const k = addDays(todayKey(), n), d = dayDate(k);
-      const def = S.plan.wd[d.getDay()] || { t: "19:00", m: 30, off: false };
-      const name = d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
-      return { k, label: (n === 0 ? "aujourd'hui, " : n === 1 ? "demain, " : "") + name, wd: d.getDay(), t: def.t, m: def.m, off: def.off };
-    });
-  }
-  const siteUrl = () => location.origin + location.pathname + "#/";
-  const calStamp = (k, t) => k.replace(/-/g, "") + "T" + t.replace(":", "") + "00";
-  function endOf(k, t, m) {
-    const [h, mi] = t.split(":").map(Number), d = dayDate(k);
-    d.setHours(h, mi + m, 0, 0);
-    return { k: dayKey(d), t: pad2(d.getHours()) + ":" + pad2(d.getMinutes()) };
-  }
-  const icsText = s => String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
-  // Une ligne d'iCalendar ne dépasse pas 75 octets : on la replie.
-  function fold(line) {
-    const enc = new TextEncoder(), out = [];
-    let cur = "", n = 0;
-    for (const ch of line) {
-      const b = enc.encode(ch).length;
-      if (n + b > 73) { out.push(cur); cur = " "; n = 1; }
-      cur += ch; n += b;
-    }
-    out.push(cur);
-    return out.join("\r\n");
-  }
-  const SEANCE_TXT = "Commence par le rappel (2 min), puis ta leçon du jour.";
-  function buildIcs(days) {
-    const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
-    const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Mon Zoomcamp//FR", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
-    days.filter(d => !d.off).forEach(d => {
-      const e = endOf(d.k, d.t, d.m);
-      L.push("BEGIN:VEVENT", `UID:mzc-${d.k}@${REPO.owner}.mon-zoomcamp`, `SEQUENCE:${S.plan.seq}`, `DTSTAMP:${stamp}`,
-        `DTSTART:${calStamp(d.k, d.t)}`, `DTEND:${calStamp(e.k, e.t)}`,
-        "SUMMARY:" + icsText("Mon Zoomcamp : ta séance"),
-        "DESCRIPTION:" + icsText(`${SEANCE_TXT}\n${siteUrl()}`),
-        "URL:" + siteUrl(),
-        "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + icsText("Ta séance Mon Zoomcamp commence dans 10 minutes"), "TRIGGER:-PT10M", "END:VALARM",
-        "END:VEVENT");
-    });
-    L.push("END:VCALENDAR");
-    return L.map(fold).join("\r\n") + "\r\n";
-  }
-  function googleLink(d) {
-    const e = endOf(d.k, d.t, d.m);
-    const q = new URLSearchParams({ action: "TEMPLATE", text: "Mon Zoomcamp : ta séance", dates: calStamp(d.k, d.t) + "/" + calStamp(e.k, e.t), details: `${SEANCE_TXT}\n${siteUrl()}` });
-    const tz = (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone;
-    if (tz) q.set("ctz", tz);
-    return "https://calendar.google.com/calendar/render?" + q.toString();
-  }
-
-  function viewPlan() {
-    const days = planDays();
-    app.innerHTML = `<section class="gut"><div class="max rappel">
-      <div class="hwtop"><span class="eyebrow">Une minute, une fois par semaine</span><h1>Ma semaine</h1>
-        <p class="lead2">Tes cours changent d'un jour à l'autre : choisis ton créneau pour chacun des 7 prochains jours. Le site crée les rendez-vous de ta séance pour ton agenda, avec le lien du site dedans. Un jour sans séance, c'est ton joker.</p></div>
-      <div class="plan" id="plan">${days.map((d, i) => `<div class="pday${d.off ? " off" : ""}" data-i="${i}">
-        <b>${esc(d.label)}</b>
-        <label><span class="sr">Heure</span><input type="time" value="${d.t}"${d.off ? " disabled" : ""}></label>
-        <label><span class="sr">Durée</span><select${d.off ? " disabled" : ""}>${[20, 30, 45, 60, 90].map(m => `<option value="${m}"${m === d.m ? " selected" : ""}>${m} min</option>`).join("")}</select></label>
-        <label class="po"><input type="checkbox"${d.off ? " checked" : ""}> Pas de séance</label>
-      </div>`).join("")}</div>
-      <div class="gpanel plan-out">
-        <h3>Google Agenda</h3>
-        <p class="small">Un clic par jour, puis « Enregistrer » dans Google Agenda. Tu reçois la notification habituelle de ton agenda sur ton téléphone.</p>
-        <div class="glinks" id="glinks"></div>
-        <h3>iPhone ou autre agenda</h3>
-        <p class="small">Un seul fichier pour toute la semaine, avec une alerte 10 minutes avant chaque séance. Sur iPhone, ouvre-le depuis ton téléphone (par e-mail ou AirDrop) et choisis « Tout ajouter ».</p>
-        <div><button class="btn dark sm" id="ics">Télécharger la semaine (.ics)</button></div>
-        <p class="small">Un créneau change en cours de semaine ? Déplace simplement le rendez-vous dans ton agenda.</p>
-      </div>
-    </div></section>`;
-    const rows = $$(".pday", app);
-    const read = () => rows.forEach((row, i) => {
-      const d = days[i];
-      d.t = $("input[type=time]", row).value || "19:00";
-      d.m = Number($("select", row).value);
-      d.off = $("input[type=checkbox]", row).checked;
-    });
-    const sync = quiet => {
-      read();
-      days.forEach(d => { S.plan.wd[d.wd] = { t: d.t, m: d.m, off: d.off }; });
-      if (!quiet) save();
-      rows.forEach((row, i) => {
-        row.classList.toggle("off", days[i].off);
-        $("input[type=time]", row).disabled = days[i].off;
-        $("select", row).disabled = days[i].off;
-      });
-      const on = days.filter(d => !d.off);
-      $("#glinks").innerHTML = on.map(d => `<a class="btn ghost sm" href="${esc(googleLink(d))}" target="_blank" rel="noopener">${esc(dayDate(d.k).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" }))} · ${d.t}</a>`).join("") || `<span class="small">Aucune séance prévue cette semaine.</span>`;
-      $("#ics").disabled = !on.length;
-    };
-    $("#plan").addEventListener("change", () => sync(false));
-    sync(true);
-    $("#ics").addEventListener("click", () => {
-      read();
-      S.plan.seq++;
-      save();
-      const a = doc.createElement("a");
-      a.href = URL.createObjectURL(new Blob([buildIcs(days)], { type: "text/calendar;charset=utf-8" }));
-      a.download = "mon-zoomcamp-semaine.ics";
-      doc.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-      flash($("#ics"), "Fichier téléchargé ✓");
-    });
-  }
-
   /* ---------- mes trophées ---------- */
 
   function heatmap(s) {
@@ -493,7 +379,7 @@
       <div class="hwtop"><span class="eyebrow">Calculé depuis ta progression, gardée dans ce navigateur</span><h1>Mes trophées</h1></div>
       <div class="gbar">
         <div class="gb-streak"><span class="fl${s.today ? " on" : ""}" aria-hidden="true">🔥</span><div><b>${s.cur} jour${s.cur > 1 ? "s" : ""} de série</b><small>Record : ${s.best} jour${s.best > 1 ? "s" : ""}</small></div></div>
-        <div class="gb-week">${weekDots(s)}<small>${s.jokerUsed ? "Joker de la semaine utilisé" : "1 joker cette semaine"} · <a href="#/semaine">Planifier ma semaine</a></small></div>
+        <div class="gb-week">${weekDots(s)}<small>${s.jokerUsed ? "Joker de la semaine utilisé" : "1 joker cette semaine"}</small></div>
         <div class="gb-level"><div class="lv"><b>Niveau ${x.level}</b><small>${esc(x.rank)}</small></div><div class="xpbar"><b style="width:${(x.into / LEVEL_XP * 100).toFixed(1)}%"></b></div><small>${x.total} XP · encore ${LEVEL_XP - x.into} pour le niveau ${x.level + 1}</small></div>
         <div class="gb-troph"><b>🏆 ${got.length}<small> / ${tr.length}</small></b><small>trophées</small></div>
       </div>
@@ -860,13 +746,13 @@
     cleanups = [];
     routeToken++;
     const [r, a, b] = location.hash.replace(/^#\/?/, "").split("/");
-    setNav(r === "l" || r === "rappel" || r === "semaine" ? "seance" : r || "home");
+    setNav(r === "l" || r === "rappel" ? "seance" : r || "home");
     // Le titre de l'onglet suit la page : utile avec plusieurs onglets ou dans l'historique.
     const it = r === "l" && byId(a), mod = r === "m" && C.modules.find(m => m.id === a);
     // Règle d'AB : passer d'une étape à la suivante (par n'importe quel bouton ou lien) la coche comme terminée.
     if (it && lastIt && !isDone(lastIt.id) && seqOf(lastIt)[idx(lastIt) + 1] === it) markDone(lastIt.id);
     lastIt = it || null;
-    const names = { methode: "Comment ça marche", progression: "Ma progression", rappel: "Le rappel", trophees: "Mes trophées", semaine: "Ma semaine" };
+    const names = { methode: "Comment ça marche", progression: "Ma progression", rappel: "Le rappel", trophees: "Mes trophées" };
     const pv = r === "v" && C.modules.find(m => m.id === a);
     const page = it ? it.title : mod ? "Module " + mod.id + " · " + mod.title : pv ? "Aperçu · " + pv.title : names[r];
     doc.title = page ? page + " · " + C.title : C.title;
@@ -878,7 +764,6 @@
     if (r === "progression") return viewProgress();
     if (r === "rappel") return viewRappel();
     if (r === "trophees") return viewTrophies();
-    if (r === "semaine") return viewPlan();
     return viewHome();
   }
 
