@@ -195,3 +195,20 @@ Pourquoi deux tâches Airflow ne peuvent-elles pas se partager une variable Pyth
 @@ cles
 - XCom : passer une valeur d'une tâche à l'autre | airflow xcom | Les tâches tournent séparément, parfois sur des machines différentes. Les XCom sont leur seul moyen de se parler.
 - Ce qu'un XCom ne doit pas transporter | airflow xcom limits large data | Un XCom transporte une adresse ou un petit nombre, jamais un fichier ni une table : sinon la base d'Airflow grossit et tout ralentit.
+
+@@ practice-min
+15
+
+@@ breakfix-min
+5
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> @task
+👁 Exemple : la forme à reprendre dans tes DAGs de `mon-travail/module-02/airflow/dags/`
+
+>>> heure = BashOperator(task_id="heure", bash_command="date +%H")
+👁 Exemple à lire
+
+>>> v = choisir_ville()
+👁 Exemple à lire

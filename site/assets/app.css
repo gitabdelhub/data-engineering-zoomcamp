@@ -870,3 +870,11 @@ a.gb-streak:hover,a.gb-level:hover,a.gb-troph:hover{background:var(--bg-2)}
 .logo:hover .silo{transform:rotate(-6deg) scale(1.06)}
 .logo .wm{font-family:"Fredoka","Geist",system-ui,sans-serif;font-weight:600;letter-spacing:-.01em;font-size:21px}
 @media (max-width:480px){.logo{gap:8px}.logo .silo{width:32px;height:32px;border-radius:8px}.logo .wm{font-size:18px}}
+
+/* pas à pas toujours replié (2026-11-17) : seule la ligne « 📁 où taper » reste visible */
+.pasdir{margin:12px 0 4px;padding:7px 12px;border-left:3px solid var(--blue);background:color-mix(in srgb,var(--blue) 6%,var(--bg));border-radius:0 8px 8px 0;font-size:14.5px;line-height:1.5}
+.pasdir code{font-size:.92em}
+.pasdir+pre{margin-top:0}
+.guidefold{margin-top:12px}
+.rattrap{margin:0 0 14px;border-color:color-mix(in srgb,var(--orange,#d97706) 45%,var(--line))}
+.rattrap>summary{color:var(--ink)}

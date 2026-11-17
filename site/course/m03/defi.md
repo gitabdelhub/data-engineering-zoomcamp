@@ -150,3 +150,7 @@ On ne garde pas `SR_Flag` (toujours vide sur ce semestre) ni `Affiliated_base_nu
 
 @@ team
 Ce défi est une vraie commande d'équipe : branche `module-03/defi-fhv`, un commit pour le script et un pour le SQL, puis une pull request dans ton fork. Dans la description, colle la sortie du script de vérification, et explique en deux phrases tes choix de partitionnement et de clustering, comme tu le ferais pour l'équipe d'analystes. Fais relire la PR par un camarade, ou relis-toi dans Files changed avant de fusionner.
+
+@@ rattrapage
+# Pas de `charger_gcs.py` ? (l'exercice de la leçon 1)
+Le défi le copie en `charger_fhv.py`. Dans la [leçon 1](#/l/03-01), ouvre l'étape « À toi de jouer », puis le bouton « J'ai essayé : comparer avec la solution », et recopie `charger_gcs.py` dans `mon-travail/module-03`.

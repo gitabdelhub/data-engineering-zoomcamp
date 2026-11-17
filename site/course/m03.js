@@ -7,7 +7,7 @@
   COURSE.fill("03", [
     { type: "lesson", light: "p", id: "03-01", title: "Data warehouse et BigQuery", min: 90, src: dir + "01-data-warehouse-and-bigquery.md", hash: "60d9a459", overlay: "course/m03/01.md",
       videos: [{ yt: "jrHljAoD6nM", label: "Data warehouse et BigQuery" }], team: true },
-    { type: "lesson", id: "03-02", title: "Partitionnement et clustering", min: 60, src: dir + "02-partitioning-vs-clustering.md", hash: "ad1cdd8d", overlay: "course/m03/02.md",
+    { type: "lesson", bonus: ["practice"], id: "03-02", title: "Partitionnement et clustering", min: 60, src: dir + "02-partitioning-vs-clustering.md", hash: "ad1cdd8d", overlay: "course/m03/02.md",
       videos: [{ yt: "-CqXf7vhhDs", label: "Partitionnement et clustering" }] },
     { type: "lesson", id: "03-03", title: "Les bonnes pratiques de BigQuery", min: 45, src: dir + "03-bigquery-best-practices.md", hash: "c033d314", overlay: "course/m03/03.md",
       videos: [{ yt: "k81mLJVX08w", label: "Les bonnes pratiques de BigQuery" }] },

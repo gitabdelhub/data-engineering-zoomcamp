@@ -63,8 +63,10 @@ La cohorte 2026 est terminée : le formulaire officiel n'accepte sans doute plus
 
 @@ pas-q1
 >>> └── intermediate/
+👁 À lire seulement : un projet imaginaire
 **C'est un dessin, pas une commande.** Il décrit un projet imaginaire : réponds en le lisant. Tu peux vérifier ton raisonnement sur ton propre projet `mon_taxi` avec un modèle qui a des parents, en lisant ce que `uv run dbt run --select <modèle>` construit.
 
 @@ pas-q2
 >>> - accepted_values:
+👁 À lire seulement : un extrait de fichier
 **C'est un extrait de fichier à lire, pas à taper.** Réponds en le lisant. Pour vérifier, tu peux l'essayer dans ton projet `mon_taxi`, sur une **copie** de ton `schema.yml`, puis revenir en arrière.

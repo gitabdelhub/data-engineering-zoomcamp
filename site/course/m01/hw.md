@@ -20,7 +20,7 @@ Ajoute `*.parquet` et `*.csv` au `.gitignore` de ce dossier : les données ne se
 
 ### 2. Démarre ta base
 
-Dans ton dossier `compose` de la leçon 9 : `docker compose up -d pgdatabase pgadmin`. Le `-d` les lance en arrière-plan, et nommer les services évite de relancer l'ingestion.
+Dans ton dossier `compose` de la leçon 9 (exercice sauté ? prends celui du cours, `mon-travail/module-01/pipeline`) : `docker compose up -d pgdatabase pgadmin`. Le `-d` les lance en arrière-plan, et nommer les services évite de relancer l'ingestion.
 
 ### 3. Télécharge les données
 
@@ -104,10 +104,12 @@ Ouvre pgAdmin (Query Tool) ou pgcli, et lance tes requêtes sur `green_trips_202
 
 @@ pas-q2
 >>> container_name: postgres
+👁 À lire seulement : la question se répond en lisant ce fichier
 **C'est un fichier à lire, pas à lancer.** La question se répond en le lisant : pas besoin de le créer ni de faire `docker compose up`. Si tu veux quand même le tester, mets-le dans un dossier à part (`mkdir -p ~/essai-q2 && cd ~/essai-q2`, puis `code docker-compose.yml`), et arrête d'abord ta base de la leçon 9 : le port `8080` serait déjà pris.
 
 @@ pas-q3
 >>> wget https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2025-11.parquet
+📁 Terminal · `mon-travail/module-01/homework`
 **Où taper :** dans le terminal, depuis ton dossier du homework (étape 1 du guide en haut) :
 
 ~~~bash
@@ -118,6 +120,7 @@ wget https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2025-11.parq
 **Ce que tu dois voir :** une barre de progression, puis `'green_tripdata_2025-11.parquet' saved`. `ls -lh` montre le fichier et sa taille (quelques Mo).
 
 >>> wget https://github.com/DataTalksClub/nyc-tlc-data/releases/download/misc/taxi_zone_lookup.csv
+📁 Terminal · `mon-travail/module-01/homework`
 **Même dossier.** **Ce que tu dois voir :** `'taxi_zone_lookup.csv' saved`. Vérifie avec `head -3 taxi_zone_lookup.csv` : la ligne d'en-tête `"LocationID","Borough","Zone","service_zone"` puis deux zones.
 
 Ensuite, l'étape 4 du guide en haut charge les deux fichiers dans Postgres.

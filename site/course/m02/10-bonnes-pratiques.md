@@ -237,3 +237,8 @@ Choisis trois des six règles de la leçon. Pour chacune, raconte ce qui se pass
 - Un DAG idempotent | airflow idempotent dag best practices | Les relances sont normales en production. Un DAG qui crée des doublons quand on le relance n'est pas fini.
 - Rien de lourd en haut du fichier | airflow top level code best practices | Airflow relit ton fichier en permanence : un téléchargement en haut du fichier se lance des centaines de fois.
 - Lire les logs d'une tâche | airflow task logs debugging | Savoir trouver la vraie erreur dans les logs, c'est ce qui te rend autonome face à un DAG rouge.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> from datetime import timedelta
+👁 Exemple à lire : tu l'appliques dans l'exercice

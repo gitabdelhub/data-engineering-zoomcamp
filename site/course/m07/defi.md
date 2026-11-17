@@ -164,3 +164,7 @@ Le producteur envoie 76 515 messages en quelques secondes. La table a une ligne 
 
 @@ team
 Une vraie commande d'équipe. Sur une branche `module-07/defi-pourboires` : un commit pour le producteur, un pour le job, un pour la ligne du `.gitignore`. La pull request donne les commandes dans l'ordre (topic, table, producteur, job), le résultat du script de vérification, et ta CI de la leçon 9 doit être verte avant la fusion. Puis publie la version : `git tag -a v0.7.0 -m "Module 7 : pourboires en direct"`, `git push origin v0.7.0`, et une release GitHub avec **Generate release notes**, comme aux modules précédents. Pour aller plus loin : ajoute une colonne au tableau, la zone qui a le plus de trajets dans l'heure, sans casser la vérification (dans une seconde table).
+
+@@ rattrapage
+# Pas de job corrigé de la leçon 8 ?
+Le défi repart de ton job d'agrégation corrigé. Dans la [leçon 8](#/l/07-08), ouvre l'étape « À toi de jouer », puis le bouton « J'ai essayé : comparer avec la solution », et applique les trois changements à une copie du job du cours, dans `mon-travail/module-07/src/job/`.

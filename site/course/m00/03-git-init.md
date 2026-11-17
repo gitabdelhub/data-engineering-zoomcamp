@@ -265,3 +265,8 @@ Explique à un camarade qui n'a jamais utilisé Git : la différence entre Git e
 @@ teaser
 - [00-04] Ton `idees.txt` est rouge, « untracked ». À la leçon suivante, tu prends ta première photo.
 - [00-08] Ton Codespace est un dépôt parce qu'il a été **cloné** depuis ton fork. Tu sauras exactement ce que ça veut dire.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> git init
+📁 Terminal · ton dossier d'entraînement `/workspaces/labo-git` (pas ton fork)

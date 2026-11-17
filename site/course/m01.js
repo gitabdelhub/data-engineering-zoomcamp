@@ -6,16 +6,16 @@
   const WORKSHOP = { yt: "lP8xXebHmuE", label: "Atelier Docker, Postgres et ingestion", shared: "Une seule vidéo couvre les leçons 1 à 9 et 11. Le site la reprend là où tu t'es arrêté : avance jusqu'à la partie de cette leçon." };
   const dir = "01-docker-terraform/";
   COURSE.fill("01", [
-    { type: "lesson", id: "01-01", title: "Introduction à Docker", min: 45, src: dir + "01-introduction.md", hash: "60a0cb48", overlay: "course/m01/01.md", videos: [WORKSHOP] },
-    { type: "lesson", light: "p", id: "01-02", title: "Environnements virtuels et pipelines", min: 45, src: dir + "02-virtual-environment.md", hash: "609617f6", overlay: "course/m01/02.md", videos: [WORKSHOP] },
+    { type: "lesson", bonus: ["practice"], id: "01-01", title: "Introduction à Docker", min: 45, src: dir + "01-introduction.md", hash: "60a0cb48", overlay: "course/m01/01.md", videos: [WORKSHOP] },
+    { type: "lesson", light: true, id: "01-02", title: "Environnements virtuels et pipelines", min: 45, src: dir + "02-virtual-environment.md", hash: "609617f6", overlay: "course/m01/02.md", videos: [WORKSHOP] },
     { type: "lesson", id: "01-03", title: "Dockeriser le pipeline", min: 45, src: dir + "03-dockerizing-pipeline.md", hash: "8a18a5eb", overlay: "course/m01/03.md", videos: [WORKSHOP], team: true },
-    { type: "lesson", id: "01-04", title: "PostgreSQL dans Docker", min: 40, src: dir + "04-postgres-docker.md", hash: "ddacaee4", overlay: "course/m01/04.md", videos: [WORKSHOP] },
+    { type: "lesson", bonus: ["practice"], id: "01-04", title: "PostgreSQL dans Docker", min: 40, src: dir + "04-postgres-docker.md", hash: "ddacaee4", overlay: "course/m01/04.md", videos: [WORKSHOP] },
     { type: "lesson", light: "p", id: "01-05", title: "Le dataset NY Taxi et l'ingestion", min: 60, src: dir + "05-data-ingestion.md", hash: "5207a472", overlay: "course/m01/05.md", videos: [WORKSHOP] },
     { type: "lesson", id: "01-06", title: "Le script d'ingestion", min: 50, src: dir + "06-ingestion-script.md", hash: "1adff5dd", overlay: "course/m01/06.md", videos: [WORKSHOP] },
-    { type: "lesson", id: "01-07", title: "pgAdmin et les réseaux Docker", min: 40, src: dir + "07-pgadmin.md", hash: "312f4fc3", overlay: "course/m01/07.md", videos: [WORKSHOP] },
-    { type: "lesson", light: "p", id: "01-08", title: "Dockeriser l'ingestion", min: 45, src: dir + "08-dockerizing-ingestion.md", hash: "80f9335e", overlay: "course/m01/08.md", videos: [WORKSHOP] },
-    { type: "lesson", id: "01-09", title: "Docker Compose", min: 60, src: dir + "09-docker-compose.md", hash: "b8065c52", overlay: "course/m01/09.md", videos: [WORKSHOP], team: true },
-    { type: "lesson", id: "01-10", title: "Rappels SQL", min: 60, src: dir + "10-sql-refresher.md", hash: "b18b9375", overlay: "course/m01/10.md",
+    { type: "lesson", bonus: ["practice"], id: "01-07", title: "pgAdmin et les réseaux Docker", min: 40, src: dir + "07-pgadmin.md", hash: "312f4fc3", overlay: "course/m01/07.md", videos: [WORKSHOP] },
+    { type: "lesson", light: true, id: "01-08", title: "Dockeriser l'ingestion", min: 45, src: dir + "08-dockerizing-ingestion.md", hash: "80f9335e", overlay: "course/m01/08.md", videos: [WORKSHOP] },
+    { type: "lesson", bonus: ["practice"], id: "01-09", title: "Docker Compose", min: 60, src: dir + "09-docker-compose.md", hash: "b8065c52", overlay: "course/m01/09.md", videos: [WORKSHOP], team: true },
+    { type: "lesson", bonus: ["practice"], id: "01-10", title: "Rappels SQL", min: 60, src: dir + "10-sql-refresher.md", hash: "b18b9375", overlay: "course/m01/10.md",
       videos: [{ yt: "QEcps_iskgg", label: "Rappels SQL" }] },
     { type: "lesson", light: true, id: "01-11", title: "Nettoyage", min: 20, src: dir + "11-cleanup.md", hash: "022b5db5", overlay: "course/m01/11.md", videos: [WORKSHOP] },
     { type: "lesson", id: "01-12", title: "Terraform", min: 75, src: dir + "12-terraform-overview.md", hash: "839fc56c", overlay: "course/m01/12.md",

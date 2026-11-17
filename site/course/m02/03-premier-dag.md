@@ -247,3 +247,20 @@ Explique ce qui se passe entre le moment où tu enregistres `dags/journal.py` da
 @@ cles
 - La structure d'un DAG Airflow 3 : `@dag`, `@task`, opérateurs | airflow 3 dag decorator task sdk | Chaque DAG du cours, et de ton projet final, a cette forme. Attention : beaucoup de tutoriels montrent encore Airflow 2.
 - Quand Airflow lit ton fichier | airflow dag not showing dag processor | Un DAG qui n'apparaît pas dans l'interface, c'est le blocage numéro un des débutants.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> from datetime import datetime
+📁 Nouveau fichier `mon-travail/module-02/airflow/dags/premier_dag.py`
+
+>>> docker compose exec airflow-scheduler airflow dags reserialize
+📁 Terminal · `mon-travail/module-02/airflow` (là où est `docker-compose.yaml`)
+
+>>> docker compose exec airflow-scheduler airflow dags test premier_dag
+📁 Terminal · `mon-travail/module-02/airflow`
+
+@@ practice-min
+15
+
+@@ breakfix-min
+5

@@ -258,3 +258,11 @@ Explique avec tes mots la différence entre le CeleryExecutor et le LocalExecuto
 @@ cles
 - Le docker-compose d'Airflow, service par service | airflow docker compose installation | Tu vas le démarrer, l'arrêter et le déboguer pendant tout le module. Il faut savoir quel service fait quoi.
 - Le fichier `.env` et ce qui reste hors de Git | docker compose fichier env secrets gitignore | Les mots de passe vont dans `.env`, jamais dans Git. Une erreur ici expose tes accès sur GitHub.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> x-airflow-common:
+👁 À lire : le début du fichier `mon-travail/module-02/airflow/docker-compose.yaml`
+
+@@ practice-min
+20
