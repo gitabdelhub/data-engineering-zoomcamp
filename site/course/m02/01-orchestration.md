@@ -78,7 +78,9 @@ Ton script d'ingestion est lancé par cron le 1er de chaque mois à 9 h. Le 1er 
 **Avec l'orchestrateur**, la tâche échoue à 9 h, réessaie à 9 h 05, puis à 9 h 10, quand le serveur est revenu : elle réussit. Et si tous les essais avaient échoué, le run serait marqué en rouge dans l'interface, avec le log de l'erreur, et tu pourrais le relancer en un clic.
 
 @@ practice
-Avant d'écrire du code, dessine ton premier DAG **en texte**. Prends le pipeline que tu as construit au module 1 (télécharger des taxis et des zones, les charger dans Postgres) et découpe-le en tâches.
+**Objectif** : avant d'écrire du code, dessiner **en texte** ton premier DAG, c'est-à-dire découper en tâches le pipeline du module 1 (télécharger des taxis et des zones, les charger dans Postgres).
+
+**Tu pars de** : ton script `ingest_data.py` du module 1 (ou ton défi des aéroports), pour te rappeler les étapes. Tu écris ta réponse dans la case de l'exercice : pas de code, pas de terminal.
 
 @@ constraints
 - Au moins 4 tâches, chacune fait **une seule chose**, avec un nom clair en `snake_case`

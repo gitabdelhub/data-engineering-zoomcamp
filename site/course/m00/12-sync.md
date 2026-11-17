@@ -59,7 +59,9 @@ Le repo officiel corrige une faute dans la leçon `01-docker-terraform/04-postgr
 **Ni l'un ni l'autre.** Il faut d'abord que ton fork sur GitHub récupère la correction (la synchronisation). Pages republie alors le site avec la nouvelle leçon. Ton Codespace, lui, est une copie de plus : il ne la voit qu'après un `git pull`. Trois copies, trois mises à jour : repo officiel, puis ton fork, puis ton Codespace.
 
 @@ practice
-D'abord, synchronise ton fork **à la main** depuis ton Codespace pour comprendre le mécanisme. Ensuite, écris un workflow GitHub Actions qui le fait **tout seul**.
+**Objectif** : garder ton fork à jour avec le cours officiel. D'abord **à la main** depuis ton Codespace, pour comprendre le mécanisme. Ensuite avec un workflow GitHub Actions, `sync-fork.yml`, qui le fait **tout seul** chaque nuit.
+
+**Tu pars de** : ton fork dans `/workspaces/data-engineering-zoomcamp`. Le cours officiel : `https://github.com/DataTalksClub/data-engineering-zoomcamp`.
 
 @@ constraints
 - À la main : le remote `upstream` pointe vers le repo de DataTalksClub, et tu as vu combien de commits ton fork avait de retard avant de fusionner (zéro, c'est possible : le badge « Fork à jour » en haut du site te le dit)

@@ -78,7 +78,9 @@ Tu lances `docker compose up -d` alors que le fichier `~/.gcp/key.json` **n'exis
 **Compose démarre sans broncher.** Quand le fichier à monter n'existe pas, Docker crée à sa place… un **dossier vide**, nommé `key.json`, qui appartient à `root`. Airflow démarre, et c'est seulement au premier appel à Google qu'une tâche échoue avec `IsADirectoryError: [Errno 21] Is a directory: '/opt/airflow/gcp/key.json'`. Et `ls -la ~/.gcp` montre un dossier `key.json`. Tu vas le réparer dans l'exercice « casser et réparer ».
 
 @@ practice
-Écris le DAG `taxi_gcp` : le même pipeline que `taxi_postgres`, mais vers ton bucket et ton dataset BigQuery du module 1.
+**Objectif** : écrire le DAG `taxi_gcp`, le même pipeline que `taxi_postgres`, mais vers le cloud : les fichiers dans ton bucket, la table dans BigQuery.
+
+**Tu pars de** : ton DAG `taxi_postgres` (leçon 7), ton bucket et ton dataset `dez_dataset` créés par Terraform (module 1, leçon 13), et ta clé dans `~/.gcp/key.json`. Tu travailles dans `mon-travail/module-02/airflow`.
 
 @@ constraints
 - Ta clé est montée en lecture seule dans les conteneurs, et la connexion `google_cloud_default` et quatre variables (`gcp_project_id`, `gcp_bucket`, `gcp_dataset`, `gcp_location`) sont dans `.env`. Aucun ID de projet, nom de bucket ni chemin de clé dans le fichier du DAG
@@ -293,7 +295,7 @@ taxi_gcp()
 - Dans la console, l'onglet Détails de `green_tripdata` indique qu'elle est partitionnée par jour
 
 @@ breakfix
-Simule un Codespace reconstruit : `docker compose down`, puis renomme ta clé avec `mv ~/.gcp/key.json ~/.gcp/key.json.bak`, puis `docker compose up -d`. Lance `taxi_gcp`. Regarde l'erreur, puis ce qu'il y a dans `~/.gcp/`. Répare.
+Simule un Codespace reconstruit. Depuis `mon-travail/module-02/airflow` : `docker compose down`, puis `mv ~/.gcp/key.json ~/.gcp/key.json.bak`, puis `docker compose up -d`. Lance `taxi_gcp`. Regarde l'erreur, puis ce qu'il y a dans `~/.gcp/`. Répare.
 
 @@ breakfix-hints
 - `extract` réussit, `upload_to_gcs` échoue. Cherche `Error` dans son log.

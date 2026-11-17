@@ -81,7 +81,9 @@ Ta connexion `ny_taxi` pointe vers `pgdatabase:5432`. Depuis le terminal de ton 
 **`-h pgdatabase` échoue** : ce nom n'existe que sur le réseau Docker du compose, et ton terminal n'y est pas. **`-h localhost` marche** (si `psql` est installé), parce que le compose publie le port 5432 de `pgdatabase` sur ton Codespace. C'est exactement l'inverse pour tes tâches Airflow : elles sont **dans** le réseau Docker, donc `pgdatabase` marche et `localhost` échoue. Une même base, deux adresses, selon d'où tu viens.
 
 @@ practice
-Écris le DAG `compteur_visites` : il crée une table, y ajoute une ligne à chaque run, puis compte les lignes, en passant toujours par la connexion `ny_taxi`.
+**Objectif** : écrire le DAG `compteur_visites`, qui écrit dans ta base des taxis **sans aucun mot de passe dans le code**, en passant par une connexion Airflow nommée `ny_taxi`.
+
+**Tu pars de** : ton Airflow et ton service `pgdatabase` qui tournent (leçon 2). Tu modifies `.env` et tu crées `dags/compteur_visites.py`, dans `mon-travail/module-02/airflow`.
 
 @@ constraints
 - La connexion `ny_taxi` est définie dans ton fichier `.env`, vers ton service `pgdatabase`, et le DAG ne contient **aucun** mot de passe
@@ -187,7 +189,7 @@ Au premier run, le log de `compter` dit `La table visites contient 1 lignes`, pu
 - `SELECT * FROM visites` montre trois lignes, avec trois heures différentes
 
 @@ breakfix
-Dans `.env`, remplace `pgdatabase` par `localhost` dans l'adresse de la connexion, puis `docker compose up -d` et `airflow dags test compteur_visites`. Lis l'erreur, explique-la, puis répare.
+Dans `.env` (`mon-travail/module-02/airflow`), remplace `pgdatabase` par `localhost` dans l'adresse de la connexion, puis `docker compose up -d` et `docker compose exec airflow-scheduler airflow dags test compteur_visites`. Lis l'erreur, explique-la, puis répare.
 
 @@ breakfix-hints
 - La première tâche échoue. Cherche une ligne qui commence par `psycopg.OperationalError`.

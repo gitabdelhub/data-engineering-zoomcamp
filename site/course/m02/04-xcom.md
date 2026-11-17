@@ -65,7 +65,9 @@ Une tâche `@task` fait `return open("/etc/hostname")` : elle renvoie le fichier
 La **fonction** s'exécute sans erreur : ouvrir un fichier est banal. Mais la **tâche** est **rouge** : juste après, Airflow essaie d'enregistrer la valeur renvoyée comme XCom, et un fichier ouvert ne peut pas être transformé en texte. L'erreur arrive après ton code, ce qui la rend surprenante : ton `print` s'affiche, puis la tâche échoue quand même. Tu la verras en vrai dans l'exercice « casser et réparer ».
 
 @@ practice
-Écris le DAG `mois_a_charger`, qui prépare la liste des fichiers d'un trimestre en se passant les informations **uniquement** par des XCom.
+**Objectif** : écrire le DAG `mois_a_charger`, qui prépare la liste des fichiers d'un trimestre. Ses tâches se passent les informations **uniquement** par des XCom.
+
+**Tu pars de** : ton Airflow qui tourne. Ton fichier : `dags/mois_a_charger.py`, dans `mon-travail/module-02/airflow`. Aucune donnée à télécharger.
 
 @@ constraints
 - Une tâche `lister_mois` renvoie la liste des trois premiers mois de 2019, au format `2019-01`
@@ -166,7 +168,7 @@ L'espace libre dépend de ton Codespace.
 - Mon fichier ne contient aucun `>>`
 
 @@ breakfix
-Ajoute à ton DAG une tâche `@task` nommée `ouvrir`, qui fait `print("j'ouvre")` puis `return open("/etc/hostname")`, et appelle-la dans le DAG. Lance `airflow dags test mois_a_charger`. Trouve le message d'erreur exact, explique-le, puis corrige `ouvrir` pour qu'elle renvoie quelque chose d'utile à la place.
+Dans `dags/mois_a_charger.py`, ajoute une tâche `@task` nommée `ouvrir`, qui fait `print("j'ouvre")` puis `return open("/etc/hostname")`, et appelle-la dans le DAG. Depuis `mon-travail/module-02/airflow`, lance `docker compose exec airflow-scheduler airflow dags test mois_a_charger`. Trouve le message d'erreur exact, explique-le, puis corrige `ouvrir` pour qu'elle renvoie quelque chose d'utile.
 
 @@ breakfix-hints
 - Cherche `Error` dans la sortie : l'erreur arrive **après** ton `print`.

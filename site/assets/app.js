@@ -1593,7 +1593,7 @@
       const morePractice = ov.practice && !inPath.includes("practice");
       if (morePractice) {
         const cons = listItems(ov.constraints);
-        parts.unshift(["Un exercice en plus", ov.practice + (cons.length ? "\n\n" + cons.map(x => "- " + x).join("\n") : ""), (ov.guide ? "### Pas à pas\n\n" + ov.guide + "\n\n### Une solution\n\n" : "") + (ov.solution || ""), listItems(ov.hints), "Le pas à pas et une solution"]);
+        parts.unshift(["Un exercice en plus", ov.practice + (cons.length ? "\n\n**C'est réussi quand :**\n\n" + cons.map(x => "- " + x).join("\n") : ""), (ov.guide ? "### Pas à pas\n\n" + ov.guide + "\n\n### Une solution\n\n" : "") + (ov.solution || ""), listItems(ov.hints), "Le pas à pas et une solution"]);
       }
       if (!parts.length) return;
       const d = doc.createElement("details");
@@ -1635,7 +1635,7 @@
     function stepPractice(box) {
       const c = mdCard(box, "chal", `À toi de jouer · environ ${esc(dureeTxt(ov["practice-min"] || "15"))}`, ov.practice);
       const cons = listItems(ov.constraints);
-      if (cons.length) c.insertAdjacentHTML("beforeend", `<p class="small">Ton résultat doit respecter :</p><ul class="checks">${cons.map(x => `<li><span>${mdInline(x)}</span></li>`).join("")}</ul>`);
+      if (cons.length) c.insertAdjacentHTML("beforeend", `<p class="small"><b>C'est réussi quand :</b></p><ul class="checks">${cons.map(x => `<li><span>${mdInline(x)}</span></li>`).join("")}</ul>`);
       if (ov.team) box.appendChild(card("teamc", `<b>Travail en équipe</b><span>${mdInline(ov.team)}</span>`));
       // Le chemin, étape par étape : ce qu'on fait, pourquoi, un exemple, puis ta commande.
       if (ov.guide) {

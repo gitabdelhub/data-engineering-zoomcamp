@@ -138,7 +138,9 @@ Tu es sur `main`. Tu crées `menu` avec `git branch menu` (sans `switch`), puis 
 **`main`**. `git branch menu` crée l'étiquette, mais **ne te déplace pas** : HEAD pointe toujours sur `main`, donc c'est `main` qui avance. `menu` reste sur l'ancien commit. Pour travailler sur la nouvelle branche, il faut `git switch menu` (ou directement `git switch -c menu`). C'est le piège classique : toujours vérifier avec `git status` (première ligne : `On branch …`).
 
 @@ practice
-Dans `/workspaces/labo-git`, crée deux branches, fusionne-les dans `main` (une en avance rapide, une avec un commit de fusion), et regarde le résultat dans Git Graph.
+**Objectif** : créer deux branches et les fusionner dans `main`, une en avance rapide et une avec un commit de fusion, puis voir la différence dans Git Graph.
+
+**Tu pars de** : ton dépôt `/workspaces/labo-git`, sur `main`, avec ses commits des leçons 4 et 5.
 
 @@ constraints
 - Une branche `recettes` a été fusionnée dans `main` en **avance rapide** (pas de commit de fusion pour elle)

@@ -51,7 +51,9 @@ Avant de commencer : d'après toi, qu'est-ce qui fait le plus retenir une comman
 La recherche sur l'apprentissage est assez nette : ce qui fait retenir, c'est l'**effort de récupération**. Chercher la réponse dans ta tête, te tromper, puis corriger. Relire ou copier donne une impression de facilité, mais on oublie vite. C'est pour ça que ce cours te fait prédire, écrire et casser, au lieu de copier.
 
 @@ practice
-Écris ton **contrat d'apprentissage**. Il ne contient aucune date : c'est un engagement sur ta façon de travailler, pas sur un calendrier.
+**Objectif** : écrire ton **contrat d'apprentissage**, un court texte qui fixe ta façon de travailler. Il ne contient aucune date : c'est un engagement sur ta méthode, pas sur un calendrier. Tu le mettras dans ton fork à la leçon 8.
+
+**Tu pars de** : rien. Tu l'écris dans la case de l'exercice, ou dans un fichier texte de ton choix.
 
 @@ constraints
 - Pourquoi tu fais ce cours, en une phrase (par exemple : ton PFE de février)

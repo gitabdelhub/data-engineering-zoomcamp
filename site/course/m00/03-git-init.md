@@ -138,7 +138,9 @@ Un dépôt a 10 commits. Tu supprimes son dossier `.git`. Que reste-t-il : tes f
 **Tes fichiers restent**, dans leur état actuel. **L'historique disparaît** : les 10 commits étaient dans `.git`. Le dossier redevient un dossier normal, et `git status` répond `fatal: not a git repository`. Tu l'as vu au niveau 3 du Labo Git. (Si le dépôt était aussi sur GitHub, l'historique existe encore là-bas : c'est une des raisons de pousser son travail.)
 
 @@ practice
-Refais pour de vrai, dans ton Codespace, ce que tu as fait dans le Labo Git : crée ton dossier d'entraînement et transforme-le en dépôt.
+**Objectif** : refaire pour de vrai, dans ton Codespace, ce que tu as fait dans le Labo Git : créer ton dossier d'entraînement `/workspaces/labo-git` et le transformer en dépôt Git. Les leçons 4 à 7 s'y entraînent.
+
+**Tu pars de** : ton Codespace. Le dossier va **à côté** de ton fork, pas dedans, pour ne pas mélanger les deux dépôts.
 
 @@ constraints
 - Le dossier `/workspaces/labo-git` existe, **à côté** de ton fork (pas dedans)
@@ -239,7 +241,7 @@ nothing added to commit but untracked files present (use "git add" to track)
 - `git status` montre `idees.txt` sous `Untracked files`
 
 @@ breakfix
-Un piège classique : taper `git init` dans le mauvais dossier. Fais-le exprès : `cd ~`, puis `git init`. Maintenant, va dans `/tmp` puis reviens dans `~`, et tape `git status` : Git croit que tout ton dossier personnel est un dépôt, et liste plein de fichiers en `Untracked`. Répare ça, sans toucher à aucun autre fichier.
+Un piège classique : taper `git init` dans le mauvais dossier. Fais-le exprès dans le terminal : `cd ~`, puis `git init`. Maintenant, va dans `/tmp` puis reviens dans `~`, et tape `git status` : Git croit que tout ton dossier personnel est un dépôt, et liste plein de fichiers en `Untracked`. Répare ça, sans toucher à aucun autre fichier (vérifie avec `ls -a ~` avant d'effacer quoi que ce soit).
 
 @@ breakfix-hints
 - Un dépôt, c'est un dossier `.git`. Où Git vient-il de le créer ?

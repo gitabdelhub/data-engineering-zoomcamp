@@ -69,7 +69,9 @@ Tu crées un fichier dans ton Codespace. Tu ne fais ni commit ni push. Tu arrêt
 **Supprimé :** le fichier est perdu pour toujours. Seul ce qui a été poussé sur GitHub survit. GitHub supprime aussi tout seul les Codespaces restés arrêtés trop longtemps (30 jours par défaut), d'où la règle : on pousse son travail à la fin de chaque séance.
 
 @@ practice
-Prépare ton espace de travail **uniquement avec le terminal**, sans utiliser l'explorateur de fichiers de VS Code.
+**Objectif** : préparer ton espace de travail `mon-travail/`, celui de tout le cours, **uniquement avec le terminal**, sans utiliser l'explorateur de fichiers de VS Code.
+
+**Tu pars de** : ton Codespace ouvert sur ton fork. Le terminal commence dans `/workspaces/data-engineering-zoomcamp`, la racine du fork.
 
 @@ constraints
 - Les dossiers `mon-travail/module-00/` et `mon-travail/module-01/` existent à la racine de ton fork
@@ -173,7 +175,7 @@ Attention à la différence entre `>` et `>>` : `>` remplace tout le contenu du 
 - J'ai noté la version de Docker et celle de Python de mon Codespace
 
 @@ breakfix
-Lance un petit serveur web avec `python3 -m http.server 8000`. Ton terminal ne répond plus à tes commandes. Sans fermer ton Codespace : ouvre la page servie dans un onglet de ton navigateur, puis reprends la main sur ce terminal.
+Dans un terminal de ton Codespace, lance un petit serveur web : `python3 -m http.server 8000`. Ton terminal ne répond plus à tes commandes. Sans fermer ton Codespace : ouvre la page servie dans un onglet de ton navigateur (onglet **Ports**), puis reprends la main sur ce terminal.
 
 @@ breakfix-hints
 - Le serveur tourne **au premier plan** : le terminal attend qu'il se termine. Tu peux en ouvrir un second avec le bouton `+`.

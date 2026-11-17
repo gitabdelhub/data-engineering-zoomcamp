@@ -56,7 +56,9 @@ Tu remplaces `CeleryExecutor` par `LocalExecutor`, mais tu oublies de supprimer 
 **Oui, Airflow marche** : avec le LocalExecutor, plus personne n'envoie de tâches à Redis, donc Redis tourne pour rien. Tu perds seulement de la **mémoire** et du temps de démarrage. C'est un piège classique : une configuration qui marche, mais qui garde des pièces inutiles. Un fichier propre ne contient que ce qui sert.
 
 @@ practice
-Installe ton Airflow dans `mon-travail/module-02/airflow/`, à partir du compose officiel 3.3.2 que tu allèges toi-même.
+**Objectif** : faire tourner Airflow 3.3.2 dans ton Codespace, avec à côté une base Postgres pour les données des taxis. C'est l'installation de tout le module.
+
+**Tu pars de** : rien. Tu crées le dossier `mon-travail/module-02/airflow`, et tu y télécharges le `docker-compose.yaml` officiel d'Airflow 3.3.2, que tu allèges toi-même.
 
 @@ constraints
 - Le compose part du fichier officiel d'Airflow 3.3.2, avec le **LocalExecutor**, sans les services `redis`, `airflow-worker` et `flower`, et sans les DAGs d'exemple
@@ -224,7 +226,7 @@ Ton installation mérite un commit, mais pas tout le dossier. Avant `git add`, l
 - Dans `.devcontainer/devcontainer.json`, ajoute `8080` dans `forwardPorts` et une entrée `"8080": { "label": "Airflow" }` dans `portsAttributes`.
 
 @@ breakfix
-Dans ton compose, écris `LocalExecuter` (avec un **e** à la place du **o**), puis `docker compose up -d`. Que montre `docker compose ps` ? Trouve l'erreur exacte, puis répare.
+Dans ton `docker-compose.yaml` (`mon-travail/module-02/airflow`), écris `LocalExecuter` (avec un **e** à la place du **o**), puis `docker compose up -d`. Que montre `docker compose ps` ? Trouve l'erreur exacte, puis répare.
 
 @@ breakfix-hints
 - Un des services n'arrive jamais à `healthy` : regarde la colonne STATUS, la durée de « Up » repart sans cesse de zéro.
