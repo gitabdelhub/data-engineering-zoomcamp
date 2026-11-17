@@ -92,7 +92,9 @@ Ton DAG planifié a `start_date=datetime(2019, 1, 1)`, `end_date=datetime(2021, 
 **Aucun.** Avec `catchup=False`, Airflow ne lancerait que le run le plus récent… mais `end_date` est dépassée depuis longtemps : il n'y a plus aucun run à planifier. Ce DAG ne se lance donc **que** par backfill, ce qui est exactement ce qu'on veut ici : les fichiers des taxis s'arrêtent en juillet 2021. Dans un vrai projet, sans `end_date`, il se lancerait le 1er de chaque mois.
 
 @@ practice
-Crée `taxi_postgres_scheduled`, la version planifiée de ton pipeline, puis charge le premier trimestre 2019 des taxis verts **par backfill**.
+**Objectif** : créer `taxi_postgres_scheduled`, la version **planifiée** de ton pipeline, puis charger le premier trimestre 2019 des taxis verts d'un coup, par un backfill.
+
+**Tu pars de** : ton DAG `taxi_postgres` de la leçon 7, qui marche, dans `mon-travail/module-02/airflow`. Tu le copies, sans toucher à l'original.
 
 @@ constraints
 - Un nouveau fichier `dags/taxi_postgres_scheduled.py`, copié de `taxi_postgres.py` : ton DAG de la leçon 7 reste intact
@@ -279,7 +281,7 @@ docker compose exec airflow-scheduler airflow backfill create \
 - Les trois runs de backfill sont verts, et les comptes par fichier sont justes
 
 @@ breakfix
-Provoque la course entre les runs. Supprime la table finale :
+Provoque la course entre les runs. Depuis `mon-travail/module-02/airflow`, supprime la table finale :
 
 ~~~bash
 docker compose exec pgdatabase psql -U root -d ny_taxi -c "DROP TABLE green_tripdata"

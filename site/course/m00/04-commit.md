@@ -150,7 +150,9 @@ Tu modifies `README.md`, puis tu lances `git add README.md`. Ensuite, tu modifie
 La version **du moment du `git add`**. La deuxième modification n'est pas préparée : elle reste dans le dossier de travail, et `git status` montre `README.md` en « modified » juste après le commit. C'est le niveau bonus du Labo Git : la zone de préparation est une vraie copie, pas un marque-page.
 
 @@ practice
-Dans ton dossier d'entraînement `/workspaces/labo-git`, prends tes trois premières photos, proprement.
+**Objectif** : prendre tes trois premières photos (commits) proprement, chacune avec un message qui dit ce qu'elle change.
+
+**Tu pars de** : ton dépôt `/workspaces/labo-git` de la leçon 3, avec son fichier `idees.txt` pas encore suivi.
 
 @@ constraints
 - Tu as vérifié le nom et l'e-mail qui signeront tes commits

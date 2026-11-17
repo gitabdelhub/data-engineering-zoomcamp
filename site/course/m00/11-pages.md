@@ -39,7 +39,9 @@ Tu modifies un fichier du dossier `site/` et tu le pousses sur `main`. Au bout d
 En général **une à deux minutes**. Tu suis le déploiement dans l'onglet **Actions** de ton fork, avec le workflow « pages build and deployment » : jaune pendant qu'il tourne, vert quand c'est en ligne, rouge en cas d'échec. Ton navigateur peut aussi garder l'ancienne version en cache : Ctrl + F5 force le rechargement.
 
 @@ practice
-Personnalise ton site et suis son déploiement de bout en bout. Le site lit un petit fichier `site/moi.json` : s'il contient ton prénom, l'accueil te dit bonjour.
+**Objectif** : personnaliser ton site et suivre son déploiement de bout en bout. Le site lit un petit fichier `site/moi.json` : s'il contient ton prénom, l'accueil te dit bonjour.
+
+**Tu pars de** : ton fork, avec GitHub Pages déjà activé (le site que tu lis en ce moment). Tu crées `site/moi.json` dans une branche.
 
 @@ constraints
 - Le changement passe par une branche et une pull request, comme à la leçon « En équipe : branche, pull request et revue »
@@ -132,7 +134,7 @@ moiJson
 - L'accueil du site en ligne affiche mon prénom
 
 @@ breakfix
-Dans une nouvelle branche, casse volontairement `site/moi.json` : enlève un guillemet. Lance le site **en local** et ouvre la console du navigateur (F12, onglet Console). Que montre le site, et que dit la console ? Répare avant de pousser quoi que ce soit.
+Dans une nouvelle branche, casse volontairement `site/moi.json` : enlève un guillemet. Lance le site **en local** (`python3 -m http.server 8000` depuis la racine du fork, puis `/site/` dans l'onglet ouvert) et ouvre la console du navigateur (F12, onglet Console). Que montre le site, et que dit la console ? Répare avant de pousser quoi que ce soit.
 
 @@ breakfix-hints
 - Le site affiche un bandeau d'erreur quand `moi.json` est invalide, et la console donne le détail.

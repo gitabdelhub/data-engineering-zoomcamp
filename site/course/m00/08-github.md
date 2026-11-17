@@ -159,7 +159,9 @@ Ton collègue a poussé un commit sur GitHub il y a cinq minutes. Toi, tu n'as r
 **Non, pas vraiment.** `git status` compare ta branche à `origin/main`, c'est-à-dire **à la dernière nouvelle** que tu as eue de GitHub. Il ne va pas sur Internet. Après un `git fetch`, `origin/main` avance sur le commit de ton collègue, et `git status` dit alors « Your branch is behind 'origin/main' by 1 commit ». C'est le niveau 3 du Labo Git.
 
 @@ practice
-Applique tout ça à ton fork : récupère ce qui a changé sur GitHub, puis enregistre et pousse ton espace de travail, y compris ce que tu as fait au module 1.
+**Objectif** : appliquer tout ça à ton vrai fork : récupérer ce qui a changé sur GitHub, puis enregistrer et pousser ton espace de travail `mon-travail/`, y compris ce que tu as fait au module 1.
+
+**Tu pars de** : ton fork dans `/workspaces/data-engineering-zoomcamp` (plus le dépôt d'entraînement), ton `mon-travail/README.md` de la leçon 2 et ton contrat de la leçon 1.
 
 @@ constraints
 - Tu as regardé `git remote -v` dans ton fork, et tu sais quelle adresse est `origin`

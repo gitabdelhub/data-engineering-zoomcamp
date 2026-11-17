@@ -101,7 +101,9 @@ Tu lances `taxi_postgres` pour `green`, 2019, `01` : la table finale contient 63
 **630 918 dans les deux.** La staging a été vidée puis rechargée avec le même fichier : 630 918 lignes. La fusion compare chaque identifiant avec la table finale, les trouve tous, et n'ajoute **rien**. Le log de `merge` affiche le même total qu'au premier run. C'est l'idempotence : relancer n'abîme rien.
 
 @@ practice
-Construis le DAG `taxi_postgres`, qui charge un mois de taxis dans Postgres, et prouve qu'on peut le relancer sans créer de doublons.
+**Objectif** : construire `taxi_postgres`, le pipeline du module : il télécharge un mois de taxis, le charge dans Postgres, et peut être relancé **sans créer de doublons**.
+
+**Tu pars de** : ton Airflow, ton service `pgdatabase` et ta connexion `ny_taxi` (leçon 5). Tu modifies `docker-compose.yaml` et tu crées `dags/taxi_schema.py` et `dags/taxi_postgres.py`, dans `mon-travail/module-02/airflow`. Les données : `https://github.com/DataTalksClub/nyc-tlc-data/releases/download/<taxi>/<taxi>_tripdata_<année>-<mois>.csv.gz`.
 
 @@ constraints
 - Le dossier `data/` est monté dans les conteneurs d'Airflow, et `dags/taxi_schema.py` contient les colonnes des deux types de taxis
@@ -319,7 +321,7 @@ Pourquoi des f-strings dans les tâches, alors que la leçon 6 les déconseille 
 C'est le cœur du module : fais-le sur une branche `module-02/pipeline-taxis`, en plusieurs commits (un par tâche qui marche), puis une pull request dans ton fork. Dans la description, colle les logs des deux runs qui prouvent l'idempotence. Fais relire la PR par un camarade, ou relis-toi dans Files changed avant de fusionner.
 
 @@ breakfix
-Remplace ton `MERGE` par un simple ajout : `INSERT INTO green_tripdata SELECT * FROM green_tripdata_staging;` (seulement pour cet essai, avec `green`). Lance deux fois `green`, 2019, `01`. Que dit le total ? Comment réparer la table, et pas seulement le code ?
+Dans `dags/taxi_postgres.py`, remplace ton `MERGE` par un simple ajout : `INSERT INTO green_tripdata SELECT * FROM green_tripdata_staging;` (seulement pour cet essai). Lance deux fois `green`, 2019, `01`. Que dit le total (`docker compose exec pgdatabase psql -U root -d ny_taxi -c "SELECT count(*) FROM green_tripdata"`) ? Comment réparer la **table**, et pas seulement le code ?
 
 @@ breakfix-hints
 - Le deuxième run affiche le double du premier.

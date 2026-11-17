@@ -164,7 +164,9 @@ Ta PR est ouverte. Sam te demande une correction. Tu fais un nouveau commit sur 
 **Non.** La pull request suit ta **branche**, pas un commit précis. Ton nouveau commit apparaît tout seul dans la PR (onglet **Commits** et **Files changed**), et Sam peut relire la suite. C'est le niveau 2 du Labo Git.
 
 @@ practice
-Fais le cycle complet d'une pull request dans ton fork, en jouant deux rôles : Sam, qui écrit le code depuis une deuxième copie du dépôt, et toi, qui relis.
+**Objectif** : faire le cycle complet d'une pull request dans ton fork, en jouant deux rôles : Sam, qui écrit le code depuis une deuxième copie du dépôt, et toi, qui relis et fusionnes.
+
+**Tu pars de** : ton fork poussé (leçon 8). Sam travaille dans une deuxième copie, `~/collegue`, que tu crées avec `git clone`.
 
 @@ constraints
 - Une deuxième copie de ton fork existe dans `~/collegue`, avec un nom d'auteur différent (Sam) réglé **seulement** pour cette copie

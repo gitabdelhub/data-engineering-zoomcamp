@@ -57,7 +57,9 @@ Tu mets `BUCKET = Variable.get("gcp_bucket")` tout en haut de ton fichier de DAG
 **Le DAG marche**, et c'est bien le problème : rien ne t'alerte. Mais la ligne s'exécute à **chaque lecture** du fichier par le dag-processor, environ toutes les 30 secondes, donc **plus de 100 fois par heure**, plus une fois au début de chaque tâche. Avec une variable dans une base ou un coffre-fort de secrets, c'est autant de requêtes pour rien. Et si la variable disparaît, c'est **tout le DAG** qui disparaît, avec une erreur d'import. Dans une tâche, ou avec `{{ var.value.gcp_bucket }}`, elle n'est lue qu'au moment du run.
 
 @@ practice
-Voici un DAG qui « marche » : il charge les zones de taxis dans Postgres. Il viole presque toutes les règles de la leçon. Trouve chaque problème, puis réécris-le proprement sous le nom `zones_propre`.
+**Objectif** : trouver tout ce qui ne va pas dans un DAG qui « marche », puis le réécrire proprement sous le nom `zones_propre`.
+
+**Tu pars de** : le DAG ci-dessous, qui charge les zones de taxis dans Postgres. Tu le copies dans `dags/zones_mauvais.py`, dans `mon-travail/module-02/airflow`. Il viole presque toutes les règles de la leçon.
 
 ~~~python
 from datetime import datetime

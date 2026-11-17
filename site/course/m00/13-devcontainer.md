@@ -40,7 +40,9 @@ Tu ajoutes `.devcontainer/devcontainer.json` à ton fork et tu le pousses. Ton C
 **Non.** Un Codespace est construit à sa création. Pour qu'il prenne en compte le fichier, il faut le **reconstruire** (Rebuild Container) ou créer un nouveau Codespace. VS Code te le propose souvent par une notification dès que le fichier change.
 
 @@ practice
-Décris ton environnement de data engineer dans `.devcontainer/devcontainer.json`, à la racine de ton fork, puis reconstruis ton Codespace.
+**Objectif** : décrire ton environnement de data engineer dans un fichier, `.devcontainer/devcontainer.json`, pour que chaque nouveau Codespace ait tous tes outils sans rien installer à la main. Puis reconstruire ton Codespace.
+
+**Tu pars de** : ton fork, à la racine (`/workspaces/data-engineering-zoomcamp`). Si un `.devcontainer/` existe déjà, regarde-le d'abord.
 
 @@ constraints
 - Une image de base Python 3.13 du catalogue officiel des devcontainers

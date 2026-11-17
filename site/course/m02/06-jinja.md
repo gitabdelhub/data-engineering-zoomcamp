@@ -82,7 +82,9 @@ Dans un DAG, tu écris `CHEMIN = f"/opt/airflow/data/{{ params.taxi }}.csv"` pui
 `ls /opt/airflow/data/{ params.taxi }.csv`. La f-string a transformé `{{` en `{` **avant même** qu'Airflow lise le fichier. Jinja reçoit une seule accolade, ne reconnaît pas de template, et laisse le texte tel quel. La commande cherche un fichier au nom absurde, et `ls` échoue. Enlève le `f` devant la chaîne, et la commande devient `ls /opt/airflow/data/green.csv`.
 
 @@ practice
-Écris le DAG `fichier_du_mois` : on choisit un type de taxi, une année et un mois au lancement, et le DAG annonce le fichier correspondant et sa taille sur GitHub, **sans le télécharger**.
+**Objectif** : écrire le DAG `fichier_du_mois`. Au lancement, on choisit un type de taxi, une année et un mois ; le DAG annonce le nom du fichier correspondant et sa taille sur GitHub, **sans le télécharger**.
+
+**Tu pars de** : ton Airflow qui tourne. Ton fichier : `dags/fichier_du_mois.py`, dans `mon-travail/module-02/airflow`. Les fichiers des taxis sont sur `https://github.com/DataTalksClub/nyc-tlc-data/releases/download/<taxi>/`.
 
 @@ constraints
 - Trois paramètres : `taxi` (`yellow` ou `green`), `year` (`2019`, `2020` ou `2021`) et `month` (de `01` à `12`), avec des listes de choix
@@ -193,7 +195,7 @@ La taille est en octets : environ 33,6 Mio compressés.
 - Mon fichier ne contient aucune f-string autour d'un template
 
 @@ breakfix
-Dans ton DAG, transforme la constante `FICHIER` en f-string (ajoute un `f` devant les guillemets), puis relance avec les mêmes paramètres. Que devient le log de `afficher_nom` ? Et `taille_distante` ? Explique, puis répare.
+Dans `dags/fichier_du_mois.py`, transforme la constante `FICHIER` en f-string (ajoute un `f` devant les guillemets), puis relance depuis l'interface avec les mêmes paramètres. Que devient le log de `afficher_nom` ? Et celui de `taille_distante` ? Explique, puis répare.
 
 @@ breakfix-hints
 - Regarde l'onglet Rendered Templates de `afficher_nom` : il reste des accolades.

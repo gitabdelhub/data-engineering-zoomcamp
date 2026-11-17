@@ -151,7 +151,9 @@ Ton `.gitignore` contient `*.csv`. Ton fichier `zones.csv` était déjà dans un
 **Oui**, en « modified ». Le `.gitignore` ne s'applique qu'aux fichiers **pas encore suivis**. `zones.csv` est déjà dans l'historique : Git continue de le suivre. Pour qu'il soit vraiment ignoré, il faut `git rm --cached zones.csv` puis un commit (le fichier reste sur ton disque).
 
 @@ practice
-Dans `/workspaces/labo-git`, entraîne-toi à revenir en arrière, puis protège ton dépôt avec un `.gitignore`.
+**Objectif** : t'entraîner aux trois façons de revenir en arrière (restaurer un fichier, aller voir un vieux commit, annuler un commit), puis protéger ton dépôt avec un `.gitignore`.
+
+**Tu pars de** : ton dépôt `/workspaces/labo-git` et ses trois commits de la leçon 4 (`idees.txt` et `todo.txt`).
 
 @@ constraints
 - Tu as abîmé `idees.txt` puis tu l'as remis comme au dernier commit avec `git restore`

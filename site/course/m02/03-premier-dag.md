@@ -101,7 +101,9 @@ Tu enregistres un nouveau fichier `dags/essai.py` qui contient un DAG correct, m
 **Rien du tout.** Le fichier est du Python valide, donc pas d'erreur d'import. Mais la fonction décorée par `@dag` n'est jamais appelée : aucun DAG n'est créé. C'est un des pièges les plus déroutants pour débuter, justement parce qu'aucun message ne te prévient. Tu le provoqueras dans l'exercice « casser et réparer ».
 
 @@ practice
-Écris ton propre DAG, `journal`, dans `dags/journal.py`, et lance-le de deux façons.
+**Objectif** : écrire ton propre DAG, `journal`, avec trois tâches dont deux en parallèle, puis le lancer de deux façons : depuis l'interface et depuis le terminal.
+
+**Tu pars de** : ton Airflow qui tourne (leçon 2). Ton fichier : `dags/journal.py`, dans `mon-travail/module-02/airflow`. L'exemple `premier_dag` de la leçon est ton modèle.
 
 @@ constraints
 - `dag_id="journal"`, le tag `module-02`, lancé seulement à la main
@@ -218,7 +220,7 @@ La date s'affiche en anglais (`Wednesday 28 October 2026`) : le conteneur d'Airf
 Ton premier DAG mérite la routine d'équipe : une branche `module-02/premier-dag`, un commit avec `dags/journal.py`, une pull request dans ton fork. Fais-la relire par un camarade, ou relis-toi toi-même dans l'onglet Files changed, ligne par ligne, avant de fusionner.
 
 @@ breakfix
-Copie ton DAG : `cp dags/journal.py dags/journal2.py`. Dans la copie, change le `dag_id` en `journal2`, puis **supprime la dernière ligne**, l'appel `journal()`. Lance `reserialize`, puis `list-import-errors`, puis `airflow dags list`. Où est `journal2` ? Pourquoi aucune erreur ne s'affiche ? Répare, puis supprime la copie.
+Dans le terminal, depuis `mon-travail/module-02/airflow` : `cp dags/journal.py dags/journal2.py`. Dans la copie, change le `dag_id` en `journal2`, puis **supprime la dernière ligne**, l'appel `journal()`. Lance `reserialize`, puis `list-import-errors`, puis `airflow dags list`. Où est `journal2` ? Pourquoi aucune erreur ne s'affiche ? Répare, puis supprime la copie.
 
 @@ breakfix-hints
 - `list-import-errors` ne signale rien de nouveau : Python n'a trouvé aucune erreur dans ton fichier.

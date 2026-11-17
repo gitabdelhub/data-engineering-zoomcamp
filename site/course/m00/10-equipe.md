@@ -148,7 +148,9 @@ Ta PR est en conflit avec `main`. Ton collègue te propose : « Fusionne directe
 Ça contourne la revue : ta résolution de conflit arriverait dans `main` sans que personne ne l'ait relue ni testée. Avec un `main` **protégé**, GitHub refuse même le `push` (`protected branch hook declined`). La bonne méthode : fusionner `main` **dans ta branche**, résoudre, pousser ta branche, et laisser la PR faire son travail.
 
 @@ practice
-Avec tes deux copies (ton fork et `~/collegue`), provoque le conflit le plus courant en équipe : deux PR qui changent la même ligne. Fusionne celle de Sam, puis débloque la tienne.
+**Objectif** : provoquer le conflit le plus courant en équipe, deux PR qui changent la même ligne, puis fusionner celle de Sam et débloquer la tienne.
+
+**Tu pars de** : tes deux copies (ton fork et `~/collegue`) avec un `main` à jour, et le fichier `mon-travail/equipe/regles.md` de la leçon 9.
 
 @@ constraints
 - Deux branches, une chez toi et une chez Sam, changent la **même ligne** de `mon-travail/equipe/regles.md`, et chacune a sa PR vers le `main` de ton fork

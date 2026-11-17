@@ -165,7 +165,9 @@ Sur `main`, tu ajoutes une ligne **à la fin** de `notes.txt`. Sur la branche `i
 **Conflit.** Les deux ajouts sont au même endroit (après la dernière ligne commune) : Git ne sait pas lequel mettre en premier, ni s'il faut garder les deux. Le résultat attendu est souvent « les deux lignes », mais c'est à toi de le dire. C'est un des conflits les plus fréquents en équipe, par exemple quand deux personnes ajoutent chacune une ligne à la fin d'un fichier de configuration ou d'un `requirements.txt`.
 
 @@ practice
-Dans `/workspaces/labo-git`, provoque un vrai conflit, résous-le dans l'éditeur de fusion de VS Code, puis entraîne-toi à abandonner une fusion.
+**Objectif** : provoquer un vrai conflit, le résoudre dans l'éditeur de fusion de VS Code, puis t'entraîner à abandonner une fusion qui part mal.
+
+**Tu pars de** : ton dépôt `/workspaces/labo-git`, sur `main`. Le conflit portera sur un nouveau fichier, `menu.txt`, que tu crées.
 
 @@ constraints
 - Deux branches ont modifié la même ligne de `menu.txt`, et leur fusion a produit un conflit
