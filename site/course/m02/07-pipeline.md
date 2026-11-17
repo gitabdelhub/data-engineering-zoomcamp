@@ -355,3 +355,37 @@ Explique avec tes mots ce qu'est l'idempotence, et comment le trio staging, `uni
 @@ cles
 - Staging puis `MERGE` | sql merge staging table upsert | C'est ce qui rend un chargement relançable sans doublons. Tu le retrouves dans BigQuery, dbt et ton projet final.
 - L'idempotence | pipeline de données idempotent | Relancé deux fois, un pipeline doit donner le même résultat. C'est la première qualité qu'on attend d'un data engineer.
+
+@@ practice-min
+30
+
+@@ breakfix-min
+5
+
+@@ rattrapage
+# Pas de connexion `ny_taxi` ? (l'exercice de la leçon 5)
+📁 Terminal · `mon-travail/module-02/airflow` · le service `pgdatabase` de la leçon 2 est dans ton compose
+
+~~~bash
+grep -q AIRFLOW_CONN_NY_TAXI .env || echo 'AIRFLOW_CONN_NY_TAXI=postgresql://root:root@pgdatabase:5432/ny_taxi' >> .env
+docker compose up -d
+~~~
+
+La première ligne n'ajoute la connexion que si elle manque, sans toucher au reste de `.env`. Vérifie : `docker compose exec airflow-scheduler airflow connections get ny_taxi` montre l'hôte `pgdatabase`.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> hook.copy_expert(
+👁 Exemple à lire : tu l'écris dans l'exercice
+
+>>> UPDATE villes_staging
+👁 Exemple à lire (une table imaginaire, `villes`)
+
+>>> CREATE TABLE IF NOT EXISTS villes_staging (LIKE villes);
+👁 Exemple à lire
+
+>>> MERGE INTO villes AS T
+👁 Exemple à lire
+
+>>> https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/
+👁 La forme de l'adresse des fichiers

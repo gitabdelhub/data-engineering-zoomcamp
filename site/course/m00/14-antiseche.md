@@ -106,3 +106,8 @@ Sans regarder l'antisèche : quelles commandes tapes-tu, dans l'ordre, pour fair
 
 @@ teaser
 - [00-11] Git est en place. Les trois dernières leçons du module équipent ton fork : ton site en ligne, la synchro automatique et ton devcontainer.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> git switch main && git pull
+📁 Terminal · le dossier de ton dépôt

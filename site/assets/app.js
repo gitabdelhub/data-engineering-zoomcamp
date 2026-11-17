@@ -572,6 +572,7 @@
     });
     $$("a", el).forEach(a => {
       const href = a.getAttribute("href") || "";
+      if (href.startsWith("#/")) return; // une page du site (les rattrapages y renvoient)
       if (href.startsWith("#")) { a.removeAttribute("href"); return; }
       if (!/^[a-z]+:/i.test(href) && base) {
         const abs = new URL(href, base).href.split("#")[0];
@@ -600,6 +601,16 @@
       return { key: (nl < 0 ? part : part.slice(0, nl)).trim(), body: nl < 0 ? "" : part.slice(nl + 1).trim() };
     });
   }
+  // « @@ rattrapage » : ce qu'un exercice facultatif d'avant aurait créé, en une ou deux commandes.
+  function rattrapBox(src, base) {
+    const lines = src.split("\n");
+    const title = /^# /.test(lines[0]) ? lines.shift().slice(2).trim() : "Tu as sauté un exercice d'avant ? Rattrape-le en une minute";
+    const d = doc.createElement("details");
+    d.className = "pas rattrap";
+    d.innerHTML = `<summary>↩︎ ${mdInline(title)}</summary><div class="md"></div>`;
+    renderMd($(".md", d), lines.join("\n").trim(), base);
+    return d;
+  }
   function addPas(el, src, base) {
     const list = parsePas(src);
     if (!list.length) return;
@@ -614,14 +625,27 @@
       }
       if (idx < 0) { console.warn("Étape non placée :", e.key); return; }
       from = idx + 1;
+      // Toujours replié (AB, 2026-11-17) : tu essaies d'abord seul, tu déplies quand tu bloques.
+      // Seule la ligne « 📁 » (où taper) ou « 👁 » (à lire seulement) reste visible : le dossier, c'est ce qui manquait.
+      const lines = e.body.split("\n");
+      const where = [];
+      while (lines.length && /^(📁|👁)/u.test(lines[0].trim())) where.push(lines.shift().trim());
+      const body = lines.join("\n").trim();
+      const trap = /attention|ne tape pas|⚠️|piège|ne correspond pas|ce que le texte ne dit pas|ne marche pas|erreur/i.test(body);
+      let after = targets[idx];
+      if (where.length) {
+        const w = doc.createElement("p");
+        w.className = "pasdir";
+        w.innerHTML = where.map(mdInline).join("<br>");
+        // Avant le bloc de code : on lit d'abord où taper, puis quoi taper.
+        if (after.tagName === "PRE") after.before(w); else { after.after(w); after = w; }
+      }
+      if (!body) return;
       const box = doc.createElement("details");
       box.className = "pas";
-      // Replié par défaut (AB, 2026-11-07 : lire le cours puis le pas à pas, c'est lourd). Ouvert d'office s'il signale un piège.
-      const trap = /attention|ne tape pas|⚠️|piège|ne correspond pas|ce que le texte ne dit pas|ne marche pas|erreur/i.test(e.body);
-      box.open = trap;
       box.innerHTML = `<summary>Comment faire, exactement${trap ? ' <small class="pastrap">· un piège à connaître</small>' : ""}</summary><div class="md"></div>`;
-      renderMd($(".md", box), e.body, base);
-      targets[idx].after(box);
+      renderMd($(".md", box), body, base);
+      after.after(box);
     });
   }
 
@@ -1281,7 +1305,10 @@
   // Prédire et casser-réparer restent là, en bonus repliés dans la dernière étape.
   // ov.leger (leçon marquée light: true, 2026-11-07) : le cours guidé, puis Terminer ; l'exercice, prédire et casser passent en bonus.
   // light: "p" garde l'exercice (il construit la suite du module) ; prédire et casser passent en bonus.
-  function stepsOf(ov) { return (ov.leger === "p" ? ["discover", "practice", "explain"] : ov.leger ? ["discover", "explain"] : ov.essentiel ? ["discover", "practice", "explain"] : ["discover", "predict", "practice", "breakfix", "explain"]).filter(k => k === "discover" || ov[k]); }
+  // ov.enbonus (bonus: [...] dans mXX.js, 2026-11-17) : des étapes sorties du parcours, une par une. Elles vont dans le bonus replié.
+  // « 15 » devient « 15 min » ; « 2 à 3 h » reste tel quel (projet final).
+  function dureeTxt(v) { return /h\b/.test(v) ? v : v + " min"; }
+  function stepsOf(ov) { const out = ov.enbonus || []; return (ov.leger === "p" ? ["discover", "practice", "explain"] : ov.leger ? ["discover", "explain"] : ov.essentiel ? ["discover", "practice", "explain"] : ["discover", "predict", "practice", "breakfix", "explain"]).filter(k => k === "discover" || (ov[k] && !out.includes(k))); }
   function stepName(k, ov) { return (ov.essentiel || ov.leger) && k === "explain" ? "Terminer" : STEP_NAMES[k]; }
   function stepHint(k, ov) { return (ov.essentiel || ov.leger) && k === "explain" ? "Une phrase avec tes mots, et les bonus si tu veux" : STEP_HINTS[k]; }
 
@@ -1341,7 +1368,7 @@
     notes.addEventListener("input", () => { S.notes[it.id] = notes.value; saveSoon(); });
 
     let ov, course = "", base = null, meta = {};
-    try { ov = parseOverlay(await getText(it.overlay)); if (it.light && !ov.essentiel) ov.leger = it.light; }
+    try { ov = parseOverlay(await getText(it.overlay)); if (it.light && !ov.essentiel) ov.leger = it.light; ov.enbonus = [].concat(it.bonus || []); }
     catch (e) {
       if (token === routeToken) $("#stepbox").innerHTML = `<div class="upd"><b>Erreur</b><span>Je n'arrive pas à charger les exercices de cette leçon (${esc(e.message)}). Recharge la page.</span></div>`;
       return;
@@ -1493,6 +1520,7 @@
       if (token !== routeToken) return;
       if (rev) box.appendChild(rev);
       if (ov.brief) mdCard(box, "chal brief", "L'essentiel en français", ov.brief);
+      if (ov.rattrapage) box.appendChild(rattrapBox(ov.rattrapage, base));
       if (ov.essentiel) return discoverLight(box);
       // Mes propres leçons (sans texte officiel) : d'abord la leçon et le Labo Git, ensuite les schémas et les concepts clés.
       const own = !it.src && ov.labo;
@@ -1559,16 +1587,18 @@
     // Les bonus repliés de la dernière étape : prédire, puis casser et réparer.
     function bonusBox(box) {
       const parts = [];
-      if (ov.predict) parts.push(["Prédis", ov.predict, ov["predict-answer"], [], "La réponse"]);
-      if (ov.breakfix) parts.push(["Casse et répare", ov.breakfix, ov["breakfix-answer"], listItems(ov["breakfix-hints"]), "L'explication"]);
-      if (ov.leger === true && ov.practice) {
+      const inPath = stepsOf(ov);
+      if (ov.predict && !inPath.includes("predict")) parts.push(["Prédis", ov.predict, ov["predict-answer"], [], "La réponse"]);
+      if (ov.breakfix && !inPath.includes("breakfix")) parts.push(["Casse et répare", ov.breakfix, ov["breakfix-answer"], listItems(ov["breakfix-hints"]), "L'explication"]);
+      const morePractice = ov.practice && !inPath.includes("practice");
+      if (morePractice) {
         const cons = listItems(ov.constraints);
         parts.unshift(["Un exercice en plus", ov.practice + (cons.length ? "\n\n" + cons.map(x => "- " + x).join("\n") : ""), (ov.guide ? "### Pas à pas\n\n" + ov.guide + "\n\n### Une solution\n\n" : "") + (ov.solution || ""), listItems(ov.hints), "Le pas à pas et une solution"]);
       }
       if (!parts.length) return;
       const d = doc.createElement("details");
       d.className = "techbox bonus";
-      d.innerHTML = (ov.leger === true ? `<summary><span>🎯 Pour aller plus loin (facultatif)</span><small>Tu as déjà tout tapé dans le cours. Fais ces exercices seulement si une notion reste floue.</small></summary>` : `<summary><span>🎯 Bonus : deux petits défis pour retenir</span><small>Facultatif. Une question à prédire, et une erreur à provoquer puis réparer.</small></summary>`) +
+      d.innerHTML = (morePractice ? `<summary><span>🎯 Pour aller plus loin (facultatif)</span><small>Tu as déjà tout tapé dans le cours. Fais ces exercices seulement si une notion reste floue.</small></summary>` : `<summary><span>🎯 Bonus : deux petits défis pour retenir</span><small>Facultatif. ${parts.length > 1 ? "Une question à prédire, et une erreur à provoquer puis réparer." : parts[0][0] === "Prédis" ? "Une question à prédire." : "Une erreur à provoquer puis réparer."}</small></summary>`) +
         parts.map(([t], i) => `<div class="bn"><h3>${esc(t)}</h3><div class="md bq"></div><div class="bh"></div><details class="bans"><summary>${esc(parts[i][4])} (après avoir essayé)</summary><div class="md ba"></div></details></div>`).join("");
       $$(".bn", d).forEach((bn, i) => {
         const [, q, a, hints] = parts[i];
@@ -1576,11 +1606,13 @@
         renderMd($(".ba", bn), a || "", base);
         if (hints.length) $(".bh", bn).innerHTML = `<details class="bans"><summary>Des indices</summary><ul class="small">${hints.map(h => `<li>${mdInline(h)}</li>`).join("")}</ul></details>`;
       });
+      // La partie « équipe » suit l'exercice quand il passe en bonus.
+      if (morePractice && ov.team) d.insertAdjacentHTML("beforeend", `<div class="teamc"><b>Travail en équipe</b><span>${mdInline(ov.team)}</span></div>`);
       box.appendChild(d);
     }
 
     function stepPredict(box) {
-      const c = mdCard(box, "chal", "Prédis d'abord", ov.predict);
+      const c = mdCard(box, "chal", "Prédis d'abord · 2 min", ov.predict);
       const t = area("predict", "", "Ta prédiction en une ou deux phrases, et pourquoi. Pas de mauvaise réponse ici : c'est l'effort qui compte.", 15);
       c.appendChild(t);
       const ok = doc.createElement("button");
@@ -1601,12 +1633,18 @@
     }
 
     function stepPractice(box) {
-      const c = mdCard(box, "chal", "À toi de jouer", ov.practice);
+      const c = mdCard(box, "chal", `À toi de jouer · environ ${esc(dureeTxt(ov["practice-min"] || "15"))}`, ov.practice);
       const cons = listItems(ov.constraints);
       if (cons.length) c.insertAdjacentHTML("beforeend", `<p class="small">Ton résultat doit respecter :</p><ul class="checks">${cons.map(x => `<li><span>${mdInline(x)}</span></li>`).join("")}</ul>`);
       if (ov.team) box.appendChild(card("teamc", `<b>Travail en équipe</b><span>${mdInline(ov.team)}</span>`));
       // Le chemin, étape par étape : ce qu'on fait, pourquoi, un exemple, puis ta commande.
-      if (ov.guide) mdCard(c, "guide", "Pas à pas", ov.guide);
+      if (ov.guide) {
+        const g = doc.createElement("details");
+        g.className = "pas guidefold";
+        g.innerHTML = `<summary>Pas à pas · ouvre-le seulement si tu bloques</summary><div class="md"></div>`;
+        renderMd($(".md", g), ov.guide, base);
+        c.appendChild(g);
+      }
       const t = it.prose ? area("attempt", "", "Ton texte, ici ou dans ton Codespace puis collé ici.", 25)
         : area("attempt", "mono", "Ton essai : les commandes, le code ou le fichier que tu as écrits dans ton Codespace.", 25);
       c.appendChild(t);
@@ -1672,7 +1710,7 @@
     }
 
     function stepBreakfix(box) {
-      const c = mdCard(box, "chal", "Casse et répare", ov.breakfix);
+      const c = mdCard(box, "chal", `Casse et répare · environ ${esc(dureeTxt(ov["breakfix-min"] || "10"))}`, ov.breakfix);
       c.appendChild(hintBox(listItems(ov["breakfix-hints"]), "bfHints", "Un indice"));
       const t = area("bf", "", "Ce qui s'est passé, la cause, et comment tu as réparé.", 40);
       c.appendChild(t);
@@ -1694,7 +1732,7 @@
 
     function stepExplain(box) {
       const light = ov.essentiel || ov.leger;
-      if (light) bonusBox(box);
+      bonusBox(box);
       const c = mdCard(box, "chal", light ? "Pour finir : explique en une phrase, avec tes mots (facultatif)" : "Explique avec tes mots", ov.explain);
       const min = light ? 40 : EXPLAIN_MIN;
       const t = area("explain", "big", ov.essentiel ? "Une phrase suffit, sans relire la leçon. Si tu bloques, rouvre « L'essentiel en 5 minutes »." : ov.leger ? "Une phrase suffit, sans relire la leçon. Si tu bloques, relis « L'essentiel en français » en haut de la leçon." : "Deux ou trois phrases, sans relire le cours. Si tu bloques, c'est le signe qu'il faut revoir un passage.", min);
@@ -1870,6 +1908,7 @@
     if (token !== routeToken) return;
     renderMd($("#hwintro"), ov.intro || "", base);
     if (ov.guide) { const g = $("#hwguide"); g.hidden = false; renderMd($(".md", g), ov.guide, new URL(it.overlay, location.href).href); }
+    if (ov.rattrapage) $("#majbox").before(rattrapBox(ov.rattrapage, new URL(it.overlay, location.href).href));
     const Q = hw.questions;
     const qs = n => H.q[n] = Object.assign({ choice: null, other: "", how: "", hints: 0 }, H.q[n]);
     const isQDone = n => { const q = H.q[n]; return q && (q.choice != null || q.other.trim()) && q.how.trim().length >= 30; };
@@ -1980,6 +2019,7 @@
         ${isDone(it.id) ? `<p class="okmsg">✅ Défi validé. Bravo !</p>` : `<div class="row"><input type="text" id="code" placeholder="8 caractères" maxlength="16" autocomplete="off" spellcheck="false"><button class="btn" id="codeok">Valider le défi</button></div><p class="small" id="codemsg"></p><button class="btn ghost sm" id="skipdefi">Marquer comme fait sans le code</button>`}
       </div>`;
     if (ov.guide) renderMd($("#defiguide"), ov.guide, base);
+    if (ov.rattrapage) more.prepend(rattrapBox(ov.rattrapage, base));
     if (ov.solution) renderMd($("#defisol"), ov.solution, base);
     const hints = listItems(ov.hints);
     const hw = doc.createElement("div");

@@ -221,3 +221,23 @@ Pourquoi les DAGs citent-ils un `conn_id` au lieu d'écrire directement l'adress
 @@ cles
 - Connexions et hooks | airflow connections hooks | Les accès aux bases et au cloud se règlent une fois, hors du code. C'est aussi ce qui garde tes mots de passe hors de Git.
 - L'hôte, c'est le nom du service Docker | docker compose nom du service hôte localhost | Le même piège qu'au module 1, leçon 7 : dans un conteneur, `localhost` désigne le conteneur lui-même.
+
+@@ practice-min
+15
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> postgresql://utilisateur:motdepasse@hôte:port/base
+👁 La forme de l'adresse, pas une commande
+
+>>> docker compose exec airflow-scheduler airflow connections get ny_taxi
+📁 Terminal · `mon-travail/module-02/airflow`
+
+>>> creer = SQLExecuteQueryOperator(
+👁 Exemple à lire : tu l'écris dans l'exercice
+
+>>> @task
+👁 Exemple à lire
+
+>>> from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
+👁 Exemple à lire

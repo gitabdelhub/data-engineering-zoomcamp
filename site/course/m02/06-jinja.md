@@ -218,3 +218,20 @@ Quelle est la différence entre une valeur écrite en dur dans le DAG, un param�
 @@ cles
 - Les templates Jinja | airflow jinja templating | Ils injectent la date et les paramètres du run au moment de l'exécution. Toute la planification de la leçon 8 en dépend.
 - Le piège des f-strings | airflow jinja f-string accolades | Une f-string avale les accolades de Jinja sans erreur : ton DAG tourne, mais avec de mauvaises valeurs.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> from airflow.sdk import Param
+👁 Exemple à lire : la forme pour tes DAGs de `dags/`
+
+>>> docker compose exec airflow-scheduler airflow dags test meteo_ville -c
+📁 Terminal · `mon-travail/module-02/airflow`
+
+>>> BashOperator(task_id="dire", bash_command="echo 'Météo de {{ params.ville }}'")
+👁 Exemple à lire
+
+>>> @task
+👁 Exemple à lire
+
+>>> VILLE = "{{ params.ville }}"
+👁 Exemple à lire

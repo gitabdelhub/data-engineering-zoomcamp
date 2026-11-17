@@ -292,3 +292,8 @@ Explique à un camarade ce que font `git clone`, `git push`, `git fetch` et `git
 @@ teaser
 - [00-09] Tu sais envoyer et récupérer. Il manque la règle d'or du travail en équipe : on ne pousse pas directement sur `main`.
 - [00-12] Ton fork a deux origines : ton Codespace (`origin`) et le dépôt officiel (`upstream`). Tu automatiseras sa mise à jour.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> git config --global pull.rebase false
+📁 Terminal · n'importe quel dossier (réglage pour tous tes dépôts)

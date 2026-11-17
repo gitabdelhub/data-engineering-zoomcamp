@@ -338,3 +338,21 @@ Explique le chemin de ta clé de compte de service, depuis le fichier téléchar
 @@ cles
 - La clé Google Cloud dans les conteneurs | airflow google cloud connection service account key docker | La clé doit être lisible par Airflow sans jamais entrer dans Git. Une erreur ici, et ton compte est exposé.
 - Table externe, puis `MERGE` dans BigQuery | bigquery external table merge | La même idée que staging puis fusion de la leçon 7, mais dans l'entrepôt. Le module 3 repart de là.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> ${HOME}/.gcp/key.json:/opt/airflow/gcp/key.json:ro
+📁 Fichier `mon-travail/module-02/airflow/docker-compose.yaml`
+
+>>> AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT=
+📁 Fichier `mon-travail/module-02/airflow/.env`
+
+>>> AIRFLOW_VAR_GCP_BUCKET=dez-zoomcamp-123456-dez-lake
+📁 Même fichier `.env`
+
+@@ practice-min
+20
+
+@@ rattrapage
+# Pas de DAG `taxi_postgres` ? (l'exercice de la leçon 7)
+Cette leçon en repart. Dans la [leçon 7](#/l/02-07), ouvre l'étape « À toi de jouer », puis le bouton « J'ai essayé : comparer avec la solution ». Recopie chaque fichier de la solution à l'endroit indiqué, dans `mon-travail/module-02/airflow`, puis lance `docker compose exec airflow-scheduler airflow dags reserialize`. Lis les commentaires en recopiant : c'est le pipeline de tout le module.

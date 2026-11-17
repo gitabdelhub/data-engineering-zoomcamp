@@ -331,3 +331,27 @@ Explique la différence entre un run planifié, un run manuel et un run de backf
 - Les expressions cron | cron expression syntaxe | Toutes les planifications (Airflow, GitHub Actions, ta synchro du module 0) s'écrivent ainsi.
 - La date logique | airflow logical date data interval | Le concept le plus déroutant d'Airflow : le run planifié le 1er février traite les données de janvier.
 - `catchup` et le backfill | airflow catchup backfill | C'est comme ça qu'on charge des mois passés sans les lancer un par un à la main.
+
+@@ practice-min
+20
+
+@@ breakfix-min
+10
+
+@@ rattrapage
+# Pas de DAG `taxi_postgres` ? (l'exercice de la leçon 7)
+Cette leçon en repart. Dans la [leçon 7](#/l/02-07), ouvre l'étape « À toi de jouer », puis le bouton « J'ai essayé : comparer avec la solution ». Recopie chaque fichier de la solution à l'endroit indiqué, dans `mon-travail/module-02/airflow`, puis lance `docker compose exec airflow-scheduler airflow dags reserialize`. Lis les commentaires en recopiant : c'est le pipeline de tout le module.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> ┌──────── minute (0-59)
+👁 À lire : comment se lit une expression cron
+
+>>> from airflow.timetables.trigger import CronTriggerTimetable
+👁 Exemple à lire
+
+>>> FICHIER = "{{ params.taxi }}_tripdata_{{ logical_date.strftime
+👁 Exemple à lire
+
+>>> docker compose exec airflow-scheduler airflow backfill create \
+📁 Terminal · `mon-travail/module-02/airflow`

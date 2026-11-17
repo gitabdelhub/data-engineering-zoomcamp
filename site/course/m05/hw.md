@@ -58,4 +58,5 @@ Note `bruin version` dans ton README : quelques options du cours officiel ont ch
 
 @@ pas-q3
 >>> default: ["yellow", "green"]
+👁 À lire seulement : un extrait de `pipeline.yml`
 **C'est un extrait de `pipeline.yml` à lire, pas à taper.** Ton propre `mon-pipeline/pipeline/pipeline.yml` (module 5) a la même variable : tu peux essayer chaque proposition dessus et lire ce que Bruin répond.

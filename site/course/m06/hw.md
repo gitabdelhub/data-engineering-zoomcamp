@@ -55,6 +55,7 @@ Ces données ne sont pas celles du cours, et je ne les ai pas téléchargées : 
 
 @@ pas-q6
 >>> wget https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv
+📁 Terminal · `mon-travail/module-06` (le fichier va dans `data/homework/`)
 **Déjà fait** si tu as suivi l'étape 1 du guide en haut : le fichier est dans `data/homework/`. Sinon, depuis `mon-travail/module-06` : `wget -P data/homework https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv`.
 
 Le texte dit `bash` mais demande une « temp view » : c'est dans Spark, avec `spark.read.option("header", "true").csv('data/homework/taxi_zone_lookup.csv')`, puis `createOrReplaceTempView('zones')`.

@@ -218,3 +218,12 @@ Tu remarqueras que l'arrondissement `Unknown` domine largement : dans ces donné
 
 @@ team
 Comme en entreprise : fais le défi sur une branche, ouvre une pull request dans ton fork, et colle la sortie du script de vérification dans la description. Fais relire ton code par un camarade, ou relis-toi dans Files changed, ligne par ligne, avant de fusionner. Une fois la PR fusionnée, marque la fin du module avec un **tag annoté** `module-02` sur `main`, et pousse-le, comme au module 1.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> bash site/checks/defi-02.sh
+📁 Terminal · la racine du fork (`/workspaces/data-engineering-zoomcamp`)
+
+@@ rattrapage
+# Pas de `taxi_postgres_scheduled` ? (l'exercice de la leçon 8)
+Le défi en repart. Dans la [leçon 8](#/l/02-08), ouvre l'étape « À toi de jouer », puis le bouton « J'ai essayé : comparer avec la solution », et recopie `dags/taxi_postgres_scheduled.py` dans `mon-travail/module-02/airflow`.

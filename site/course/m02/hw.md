@@ -154,3 +154,7 @@ Pour chaque question : ta réponse, puis la commande, la requête ou le raisonne
 
 @@ submit
 La cohorte 2026 est terminée : le formulaire officiel n'accepte sans doute plus de réponses. Ton rendu, c'est ton dossier `mon-travail/module-02/homework/` poussé sur ton fork, avec ton `README.md`. Pour vérifier tes réponses sans les recevoir toutes faites : compare-les avec celles d'autres étudiants sur le Slack de DataTalksClub (canal `#course-data-engineering`), ou cherche « de zoomcamp 2026 homework 2 » sur GitHub, où beaucoup publient leur rendu. Les questions 3 à 5 ne dépendent pas de l'outil : les rendus faits avec Kestra doivent trouver les mêmes nombres que toi.
+
+@@ rattrapage
+# Il te manque `taxi_postgres` ou `taxi_postgres_scheduled` ?
+Le homework s'appuie sur les DAGs des leçons [7](#/l/02-07) et [8](#/l/02-08). Pour chacun : ouvre l'étape « À toi de jouer », puis le bouton « J'ai essayé : comparer avec la solution », recopie les fichiers dans `mon-travail/module-02/airflow`, puis `docker compose exec airflow-scheduler airflow dags reserialize`.

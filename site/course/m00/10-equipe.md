@@ -265,3 +265,8 @@ Explique à un camarade de PFE les deux situations de cette leçon (push refusé
 - [00-14] Juste après : toute la partie Git sur une page, l'antisèche à garder ouverte, et les 10 erreurs du débutant.
 - [00-11] Ton site en ligne se met à jour par une branche et une PR, comme dans cette leçon.
 - [01-13] Au module 1, tu te resserviras de `git revert` pour annuler un changement Terraform déjà poussé, sans réécrire l'historique de l'équipe.
+
+@@ pas
+<!-- dossiers : lignes 📁 seulement -->
+>>> git switch ma-branche
+📁 Terminal · le dossier de ton dépôt
