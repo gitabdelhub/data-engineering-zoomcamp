@@ -60,7 +60,7 @@ window.COURSE = {
       gate: "Homework 7, défi des pourboires en direct et ta CI au vert", team: true, items: []
     },
     {
-      id: "P", docs: [["L'énoncé officiel du projet final", "cohorts/2026/project.md"]], title: "Projet final", chips: ["Ton dataset", "Terraform en CD", "Dashboard"],
+      id: "P", docs: [["L'énoncé officiel du projet final", "cohorts/2026/project.md"]], title: "Projet final", chips: ["Ton dataset", "Terraform en CD", "Couche IA", "Dashboard"],
       cover: ["#4d93ff", "#0b4fc4"], logo: ["github", "#181717"],
       sats: [["docker", "#2496ED"], ["terraform", "#844FBA"], ["googlebigquery", "#4285F4"], ["dbt", "#FF694B"]], help: 1,
       gate: "Ton projet rendu et relu", team: true, items: []
