@@ -17,3 +17,6 @@ serving_dir
 *.parquet
 *.csv
 *.duckdb
+*.csv.gz
+.venv/
+key.json
