@@ -99,3 +99,12 @@ Comme à la leçon 2 : **Plus → Paramètres de requête**, cache décoché. Pl
 
 @@ submit
 La cohorte 2026 est terminée : le formulaire officiel n'accepte sans doute plus de réponses. Ton rendu, c'est ton dossier `mon-travail/module-03/homework/` poussé sur ton fork, avec ton `README.md`. Avant de pousser, `git status` ne doit montrer aucun `.parquet` ni `.json`. Pour vérifier tes réponses sans les recevoir toutes faites : compare-les avec celles d'autres étudiants sur le Slack de DataTalksClub (canal `#course-data-engineering`), ou cherche « de zoomcamp 2026 homework 3 » sur GitHub, où beaucoup publient leur rendu.
+
+@@ sanscarte
+Il te faut la [leçon 01-14](#/l/01-14). Ce qui change, sans toucher aux questions :
+
+- Ton script d'envoi marche tel quel avec `STORAGE_EMULATOR_HOST` et le nom de ton faux bucket : les six fichiers Parquet vont à la racine du bucket. Vérifie avec `curl -s "localhost:4443/storage/v1/b/<ton-bucket>/o" | grep '"name"'`.
+- **Avant de charger** : supprime les tables du module 3 (`DROP TABLE dez_dataset.green_part;` etc.). Le homework pèse quelques Go, et le bac à sable en offre 10.
+- La **table normale** se remplit avec le pont : `vers_bigquery.py yellow_tripdata_2024 dez_dataset.<ta-table>` (un Parquet porte ses types : pas besoin de créer la table avant).
+- La **table externe** ne se fait pas. Pour les questions qui la comparent à la table normale, raisonne avec la leçon 4 : ce que BigQuery sait, ou ne sait pas, de la taille d'une table qu'il ne stocke pas.
+- Pour la table partitionnée, même piège qu'à la leçon 2 : compte ses lignes, et passe au numéro de jour si elles ont expiré.

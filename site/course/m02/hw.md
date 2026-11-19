@@ -158,3 +158,6 @@ La cohorte 2026 est terminée : le formulaire officiel n'accepte sans doute plus
 @@ rattrapage
 # Il te manque `taxi_postgres` ou `taxi_postgres_scheduled` ?
 Le homework s'appuie sur les DAGs des leçons [7](#/l/02-07) et [8](#/l/02-08). Pour chacun : ouvre l'étape « À toi de jouer », puis le bouton « J'ai essayé : comparer avec la solution », recopie les fichiers dans `mon-travail/module-02/airflow`, puis `docker compose exec airflow-scheduler airflow dags reserialize`.
+
+@@ sanscarte
+Le homework ne demande pas Google Cloud. Pour la ligne « Envoyer le même pipeline vers Google Cloud Storage et BigQuery » de ton README, fais la version sans carte de la leçon 02-09 (son encadré 💳), et écris-le : « lac émulé (fake-gcs-server), entrepôt dans le bac à sable BigQuery ».

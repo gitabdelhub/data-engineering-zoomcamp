@@ -154,3 +154,8 @@ Ce défi est une vraie commande d'équipe : branche `module-03/defi-fhv`, un com
 @@ rattrapage
 # Pas de `charger_gcs.py` ? (l'exercice de la leçon 1)
 Le défi le copie en `charger_fhv.py`. Dans la [leçon 1](#/l/03-01), ouvre l'étape « À toi de jouer », puis le bouton « J'ai essayé : comparer avec la solution », et recopie `charger_gcs.py` dans `mon-travail/module-03`.
+
+@@ sanscarte
+Il te faut la [leçon 01-14](#/l/01-14). Ton `charger_fhv.py` envoie les fichiers dans ton faux bucket, sous `fhv/`, et le pont les charge dans une table normale : il n'y a pas de table externe. Crée d'abord la table vide avec les colonnes des fichiers FHV, puis `vers_bigquery.py fhv/ dez_dataset.<ta-table-brute>`.
+
+Pour `fhv_2019_s2`, partitionne par **numéro de jour** : ajoute `UNIX_DATE(DATE(pickup_datetime)) AS jour` au `SELECT`, et `PARTITION BY RANGE_BUCKET(jour, GENERATE_ARRAY(18078, 18262, 1))` (18078 = le 1er juillet 2019, 18262 = le 1er janvier 2020). Le script de vérification reconnaît cette forme, et donne le même code de réussite.
