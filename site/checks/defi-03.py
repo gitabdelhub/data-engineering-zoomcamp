@@ -15,7 +15,7 @@ import sys
 TABLE = "fhv_2019_s2"
 
 LABELS = [
-    "La table est partitionnée sur l'heure de prise en charge",
+    "La table est partitionnée sur le jour de prise en charge",
     "Une partition par jour, et aucune date hors du semestre",
     "La table est clusterisée par base",
     "Une requête sans filtre sur la date est refusée",
@@ -26,9 +26,11 @@ LABELS = [
 ]
 
 
-def queries(ds, t):
-    # Toujours un filtre sur la date : la table doit l'exiger
-    since = "DATE(pickup_datetime) >= '2019-01-01'"
+def queries(ds, t, jour=False):
+    # Toujours un filtre sur la date : la table doit l'exiger.
+    # Sans carte (leçon 01-14), la table est partitionnée par numéro de jour (colonne jour).
+    since = "jour >= UNIX_DATE('2019-01-01')" if jour else "DATE(pickup_datetime) >= '2019-01-01'"
+    day = "jour = UNIX_DATE('2019-10-15')" if jour else "DATE(pickup_datetime) = '2019-10-15'"
     return [
         f"SELECT column_name FROM `{ds}.INFORMATION_SCHEMA.COLUMNS` WHERE table_name = '{TABLE}' AND is_partitioning_column = 'YES'",
         f"SELECT COUNT(*) FROM `{ds}.INFORMATION_SCHEMA.PARTITIONS` WHERE table_name = '{TABLE}'",
@@ -36,7 +38,7 @@ def queries(ds, t):
         f"SELECT option_value FROM `{ds}.INFORMATION_SCHEMA.TABLE_OPTIONS` WHERE table_name = '{TABLE}' AND option_name = 'require_partition_filter'",
         f"SELECT COUNT(*) FROM `{t}` WHERE {since}",
         f"SELECT COUNT(DISTINCT dispatching_base_num) FROM `{t}` WHERE {since}",
-        f"SELECT COUNT(*) FROM `{t}` WHERE DATE(pickup_datetime) = '2019-10-15' AND dispatching_base_num = 'B01467'",
+        f"SELECT COUNT(*) FROM `{t}` WHERE {day} AND dispatching_base_num = 'B01467'",
         f"SELECT COUNT(*) FROM `{t}` WHERE {since} AND PUlocationID IS NULL",
     ]
 
@@ -89,13 +91,20 @@ def check(run, ds):
     print(f"Défi du module 3 : vérification de la table {t}")
     print()
     ok, values = 0, []
-    for label, sql, expected in zip(LABELS, queries(ds, t), EXPECTED):
+    # La colonne de partition décide de la forme des filtres : pickup_datetime, ou jour sans carte
+    try:
+        jour = normalize(run(queries(ds, t)[0]) or "") == "jour"
+    except Exception:
+        jour = False
+    for i, (label, sql, expected) in enumerate(zip(LABELS, queries(ds, t, jour), EXPECTED)):
         try:
             value = run(sql)
             value = "" if value is None else normalize(value)
             error = ""
         except Exception as e:  # une table absente ou un filtre manquant : on l'affiche
             value, error = "", str(e).splitlines()[0][:200]
+        if i == 0 and value == "jour":
+            value = "pickup_datetime"  # le numéro du jour de prise en charge : même partition, même code
         if value and fingerprint(value) == expected:
             print(f"✅ {label}")
             ok += 1

@@ -602,12 +602,13 @@
     });
   }
   // « @@ rattrapage » : ce qu'un exercice facultatif d'avant aurait créé, en une ou deux commandes.
-  function rattrapBox(src, base) {
+  // « @@ sanscarte » : la même boîte, pour faire la leçon sans compte Google Cloud payant (leçon 01-14).
+  function rattrapBox(src, base, carte) {
     const lines = src.split("\n");
-    const title = /^# /.test(lines[0]) ? lines.shift().slice(2).trim() : "Tu as sauté un exercice d'avant ? Rattrape-le en une minute";
+    const title = /^# /.test(lines[0]) ? lines.shift().slice(2).trim() : (carte ? "Pas de carte bancaire ? Ce que tu fais à la place" : "Tu as sauté un exercice d'avant ? Rattrape-le en une minute");
     const d = doc.createElement("details");
-    d.className = "pas rattrap";
-    d.innerHTML = `<summary>↩︎ ${mdInline(title)}</summary><div class="md"></div>`;
+    d.className = "pas rattrap" + (carte ? " sanscarte" : "");
+    d.innerHTML = `<summary>${carte ? "💳" : "↩︎"} ${mdInline(title)}</summary><div class="md"></div>`;
     renderMd($(".md", d), lines.join("\n").trim(), base);
     return d;
   }
@@ -1520,6 +1521,7 @@
       if (token !== routeToken) return;
       if (rev) box.appendChild(rev);
       if (ov.brief) mdCard(box, "chal brief", "L'essentiel en français", ov.brief);
+      if (ov.sanscarte) box.appendChild(rattrapBox(ov.sanscarte, base, true));
       if (ov.rattrapage) box.appendChild(rattrapBox(ov.rattrapage, base));
       if (ov.essentiel) return discoverLight(box);
       // Mes propres leçons (sans texte officiel) : d'abord la leçon et le Labo Git, ensuite les schémas et les concepts clés.
@@ -1909,6 +1911,7 @@
     renderMd($("#hwintro"), ov.intro || "", base);
     if (ov.guide) { const g = $("#hwguide"); g.hidden = false; renderMd($(".md", g), ov.guide, new URL(it.overlay, location.href).href); }
     if (ov.rattrapage) $("#majbox").before(rattrapBox(ov.rattrapage, new URL(it.overlay, location.href).href));
+    if (ov.sanscarte) $("#majbox").before(rattrapBox(ov.sanscarte, new URL(it.overlay, location.href).href, true));
     const Q = hw.questions;
     const qs = n => H.q[n] = Object.assign({ choice: null, other: "", how: "", hints: 0 }, H.q[n]);
     const isQDone = n => { const q = H.q[n]; return q && (q.choice != null || q.other.trim()) && q.how.trim().length >= 30; };
@@ -2020,6 +2023,7 @@
       </div>`;
     if (ov.guide) renderMd($("#defiguide"), ov.guide, base);
     if (ov.rattrapage) more.prepend(rattrapBox(ov.rattrapage, base));
+    if (ov.sanscarte) more.prepend(rattrapBox(ov.sanscarte, base, true));
     if (ov.solution) renderMd($("#defisol"), ov.solution, base);
     const hints = listItems(ov.hints);
     const hw = doc.createElement("div");

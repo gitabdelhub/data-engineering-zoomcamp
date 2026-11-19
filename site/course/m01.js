@@ -26,6 +26,7 @@
       ] },
     { type: "lesson", light: "p", id: "01-13", title: "Google Cloud", min: 60, src: dir + "13-gcp-overview.md", hash: "836ade16", overlay: "course/m01/13.md",
       videos: [{ yt: "18jIzE41fJ4", label: "Introduction à Google Cloud" }] },
+    { type: "lesson", id: "01-14", title: "Google Cloud sans carte bancaire", min: 60, overlay: "course/m01/14.md" },
     { type: "homework", id: "01-hw", title: "Homework 1 : Docker et SQL", min: 120, src: "cohorts/2026/01-docker-terraform/homework.md", hash: "b1046958", overlay: "course/m01/hw.md" },
     { type: "defi", id: "01-defi", title: "Défi : les aéroports du monde", min: 120, overlay: "course/m01/defi.md", script: "site/checks/defi-01.sh",
       codeHash: "6ad95425d4aa9b2f529e087aa28c37f3600302fd3d46e5822efb51a82c49b4b9", team: true }

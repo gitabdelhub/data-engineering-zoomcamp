@@ -878,3 +878,4 @@ a.gb-streak:hover,a.gb-level:hover,a.gb-troph:hover{background:var(--bg-2)}
 .guidefold{margin-top:12px}
 .rattrap{margin:0 0 14px;border-color:color-mix(in srgb,var(--orange,#d97706) 45%,var(--line))}
 .rattrap>summary{color:var(--ink)}
+.rattrap.sanscarte{border-color:color-mix(in srgb,var(--blue,#146ef5) 45%,var(--line))}

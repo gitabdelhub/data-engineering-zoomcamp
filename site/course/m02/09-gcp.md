@@ -358,3 +358,51 @@ Explique le chemin de ta clé de compte de service, depuis le fichier téléchar
 @@ rattrapage
 # Pas de DAG `taxi_postgres` ? (l'exercice de la leçon 7)
 Cette leçon en repart. Dans la [leçon 7](#/l/02-07), ouvre l'étape « À toi de jouer », puis le bouton « J'ai essayé : comparer avec la solution ». Recopie chaque fichier de la solution à l'endroit indiqué, dans `mon-travail/module-02/airflow`, puis lance `docker compose exec airflow-scheduler airflow dags reserialize`. Lis les commentaires en recopiant : c'est le pipeline de tout le module.
+
+@@ sanscarte
+Il te faut la [leçon 01-14](#/l/01-14) : le faux Cloud Storage qui tourne, et ton dataset dans le bac à sable. Trois changements, le reste de la leçon ne bouge pas.
+
+**1. Les conteneurs d'Airflow doivent voir le faux Cloud Storage.** Pour eux, `localhost` est leur propre conteneur : ils passent par `host.docker.internal`. Dans `docker-compose.yaml`, dans `x-airflow-common` :
+
+~~~yaml
+  environment:
+    # ... les lignes existantes, puis :
+    STORAGE_EMULATOR_HOST: http://host.docker.internal:4443
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+~~~
+
+**2. `upload_to_gcs` en tâche Python.** L'opérateur `LocalFilesystemToGCSOperator` veut une vraie clé pour Cloud Storage. Remplace-le par :
+
+~~~python
+    @task(task_id="upload_to_gcs")
+    def upload(file: str):
+        from google.cloud import storage  # STORAGE_EMULATOR_HOST : le faux Cloud Storage, sans clé
+        storage.Client(project="dez-local").bucket(Variable.get("gcp_bucket")).blob(file).upload_from_filename(f"{DATA}/{file}")
+~~~
+
+et, dans la dernière ligne, `extract >> upload(FICHIER) >> ...`.
+
+**3. Pas de table externe ni de `MERGE` dans le bac à sable.** Dans `create_table`, enlève la ligne `PARTITION BY` (les partitions de 2019 expireraient, voir la leçon 01-14). Dans `load_month`, remplace l'étape 1 (la table externe) par un chargement du fichier local, et l'étape 3 (le `MERGE`) par une réécriture de la table :
+
+~~~python
+        from google.cloud import bigquery
+        client = BigQueryHook().get_client(project_id=project, location=Variable.get("gcp_location"))
+        brut = f"{project}.{dataset}.{month}_ext"   # garde ce nom : l'étape 2 lit {ext}
+        schema = [bigquery.SchemaField(n, BQ_TYPES[k]) for n, k in COLUMNS[taxi].items()]
+        config = bigquery.LoadJobConfig(source_format="CSV", skip_leading_rows=1, schema=schema,
+                                        write_disposition="WRITE_TRUNCATE", ignore_unknown_values=True)
+        with open(f"{DATA}/{file}", "rb") as f:  # le fichier que la tâche extract a téléchargé
+            client.load_table_from_file(f, brut, job_config=config).result()
+        # ... l'étape 2 de la leçon, sans changement ...
+        final = f"`{project}.{dataset}.{taxi}_tripdata`"
+        # 3. Sans MERGE : on réécrit la table avec ses lignes, plus les trajets qu'elle n'a pas encore
+        run_query(f"""
+            CREATE OR REPLACE TABLE {final} AS
+            SELECT * FROM {final}
+            UNION ALL
+            SELECT * FROM {tmp} S WHERE S.unique_row_id NOT IN (SELECT unique_row_id FROM {final});
+        """)
+~~~
+
+Le résultat est le même qu'avec le `MERGE` : relancer un mois n'ajoute aucun doublon. Le prix : toute la table est réécrite à chaque mois, ce qui reste minuscule ici. **Pas testé sur un vrai bac à sable** (pas de compte dans mon environnement) : si BigQuery refuse une requête, son message dit quelle ligne.
