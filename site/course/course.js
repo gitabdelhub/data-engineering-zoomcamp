@@ -66,6 +66,14 @@ window.COURSE = {
       gate: "Ton projet rendu et relu", team: true, items: []
     },
     {
+      id: "K", library: true,
+      intro: "Hors parcours et facultatif. Kubernetes fait tourner des conteneurs sur un groupe de machines : en entreprise, Airflow, Spark et les services d'IA y sont souvent déployés. Ce module suit le module 10 du ML Zoomcamp et son workshop, avec un vrai cluster kind dans ton Codespace, et il ne dépend d'aucun autre module. J'y ai ajouté pour les data engineers les Secrets, Postgres avec un disque, les Jobs planifiés et Helm.",
+      title: "Kubernetes", chips: ["Kubernetes", "kind", "Helm"],
+      cover: ["#5b8def", "#1d3f9e"], logo: ["kubernetes", "#326CE5"],
+      sats: [["helm", "#0F1689"], ["docker", "#2496ED"], ["postgresql", "#4169E1"]], help: 1,
+      gate: "Le défi de l'ingestion mensuelle", items: []
+    },
+    {
       id: "05", library: true,
       intro: "Ce module ne fait plus partie de ton parcours. Il reste ouvert ici, avec ta progression et tes notes, si tu veux découvrir Bruin, une plateforme qui réunit ingestion, transformations SQL et qualité des données.",
       title: "Data platforms", chips: ["Bruin", "DuckDB"],

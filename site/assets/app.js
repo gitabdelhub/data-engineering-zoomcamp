@@ -479,7 +479,7 @@
   }
   // Le nom d'un module tel qu'on l'écrit dans une phrase.
   function modLabel(m) { return m.id === "W1" ? "Workshop" : "Module " + m.id; }
-  function modName(m) { return m.id === "P" ? "Projet final" : m.id === "W1" ? "Workshop" : m.bonus ? "Bonus" : "Module " + Number(m.id); }
+  function modName(m) { return m.id === "P" ? "Projet final" : m.id === "W1" ? "Workshop" : m.bonus ? "Bonus" : isNaN(m.id) ? "Module " + m.id : "Module " + Number(m.id); }
   function itemLabel(it) {
     if (it.type === "homework") return "Homework";
     if (it.type === "defi") return "Défi";
